@@ -1,0 +1,12 @@
+{
+    "name": "zoolanders/framework",
+    "description": "Framework for any ZOOlanders extensions",
+    "license": "GPL v2 or later",
+    "authors": [
+        {
+            "name": "JOOlanders SL",
+            "email": "info@zoolanders.com"
+        }
+    ],
+    "require": {}
+}

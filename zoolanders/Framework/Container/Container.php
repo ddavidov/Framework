@@ -5,6 +5,7 @@ namespace Zoolanders\Container;
 use Pimple\Container as Pimple;
 use Zoolanders\Filesystem\Filesystem;
 use Zoolanders\Zoo\Zoo;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
@@ -17,6 +18,12 @@ class Container extends Pimple
     protected static $container = null;
 
     /**
+     * The path to the config file
+     * @var string
+     */
+    protected $configFile = 'libraries/zoolanders/Framework/config.json';
+
+    /**
      * Container constructor.
      * @param array $values
      */
@@ -24,18 +31,15 @@ class Container extends Pimple
     {
         parent::__construct($values);
 
-        // Zoo service to proxy stuff to zoo's framework
-        if (!isset($this['zoo'])) {
-            $this['zoo'] = function (Container $c) {
-                return new Zoo($c);
-            };
-        }
+        $config = new Registry();
+        $config->loadFile(JPATH_SITE . '/' . $this->configFile);
 
-        // Filesystem abstraction service
-        if (!isset($this['filesystem'])) {
-            $this['filesystem'] = function (Container $c) {
-                return new Filesystem($c);
-            };
+        foreach ($config->get('services', []) as $name => $class) {
+            if (!isset($this[$name])) {
+                $this[$name] = function (Container $c) use ($class) {
+                    return new $class($c);
+                };
+            }
         }
 
         // Database Driver service

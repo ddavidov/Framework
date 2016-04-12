@@ -1,0 +1,6 @@
+{
+    "services": {
+        "zoo"           : "\\Zoolanders\\Zoo\\Zoo",
+        "filesystem"    : "\\Zoolanders\\Filesystem\\Filesystem"
+    }
+}

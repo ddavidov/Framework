@@ -47,6 +47,11 @@ class Zoo
         return call_user_func_array([$this->app, $name], $arguments);
     }
 
+    /**
+     * Proxy also the helpers calls
+     * @param $name
+     * @return mixed
+     */
     public function __get($name)
     {
         return $this->app->$name;

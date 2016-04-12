@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders;
+namespace Zoolanders\Zoo;
 
 use Zoolanders\Container\Container;
 use App;
@@ -13,6 +13,16 @@ class Zoo
      * @var Container
      */
     protected $container;
+
+    /**
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * @var bool
+     */
+    protected $loaded = false;
 
     /**
      * Zoo Service constructor.
@@ -34,7 +44,12 @@ class Zoo
      */
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->getApp(), $name], $arguments);
+        return call_user_func_array([$this->app, $name], $arguments);
+    }
+
+    public function __get($name)
+    {
+        return $this->app->$name;
     }
 
     /**
@@ -43,7 +58,7 @@ class Zoo
      */
     public function getApp()
     {
-        return App::getInstance('zoo');
+        return $this->app;
     }
 
     /**
@@ -52,7 +67,7 @@ class Zoo
      */
     public function isLoaded()
     {
-        return class_exists('\\App');
+        return $this->loaded;
     }
 
     /**
@@ -65,73 +80,75 @@ class Zoo
         }
 
         // load zoo
-        require_once($this->container->platform->getPlatformBaseDirs()['public'] . '/administrator/components/com_zoo/config.php');
+        require_once(JPATH_SITE . '/administrator/components/com_zoo/config.php');
 
-        $zoo = $this->getApp();
+        $this->app = App::getInstance('zoo');
 
         // register plugin path
-        if ($path = $zoo->path->path('root:plugins/system/zoo_zlelements/zoo_zlelements')) {
-            $zoo->path->register($path, 'zlpath');
+        if ($path = $this->app->path->path('root:plugins/system/zoo_zlelements/zoo_zlelements')) {
+            $this->app->path->register($path, 'zlpath');
         }
 
         // register elements path
-        if ($path = $zoo->path->path('zlpath:elements')) {
-            $zoo->path->register($path, 'elements');
+        if ($path = $this->app->path->path('zlpath:elements')) {
+            $this->app->path->register($path, 'elements');
         }
 
         // register fields path
-        if ($path = $zoo->path->path('zlpath:fields')) {
-            $zoo->path->register($path, 'zlfields');
+        if ($path = $this->app->path->path('zlpath:fields')) {
+            $this->app->path->register($path, 'zlfields');
         }
 
         // register helpers
-        if ($path = $zoo->path->path('zlpath:helpers')) {
-            $zoo->path->register($path, 'helpers');
-            $zoo->loader->register('ZlHelper', 'helpers:zlhelper.php');
+        if ($path = $this->app->path->path('zlpath:helpers')) {
+            $this->app->path->register($path, 'helpers');
+            $this->app->loader->register('ZlHelper', 'helpers:zlhelper.php');
         }
 
         // register plugin path
-        if ($path = $zoo->path->path('root:plugins/system/zlframework/zlframework')) {
-            $zoo->path->register($path, 'zlfw');
+        if ($path = $this->app->path->path('root:plugins/system/zlframework/zlframework')) {
+            $this->app->path->register($path, 'zlfw');
         }
 
         // register classes
-        if ($path = $zoo->path->path('zlfw:classes')) {
-            $zoo->path->register($path, 'classes');
-            $zoo->loader->register('ZLStorage', 'classes:zlstorage/ZLStorage.php');
+        if ($path = $this->app->path->path('zlfw:classes')) {
+            $this->app->path->register($path, 'classes');
+            $this->app->loader->register('ZLStorage', 'classes:zlstorage/ZLStorage.php');
         }
 
         // register elements fields
-        if ($path = $zoo->path->path('zlfw:zlfield')) {
-            $zoo->path->register($path, 'zlfield'); // used since ZLFW 2.5.8
-            $zoo->path->register($path . '/fields/elements', 'zlfields'); // temporal until all ZL Extensions adapted
-            $zoo->path->register($path . '/fields/elements', 'fields'); // necessary since ZOO 2.5.13
+        if ($path = $this->app->path->path('zlfw:zlfield')) {
+            $this->app->path->register($path, 'zlfield'); // used since ZLFW 2.5.8
+            $this->app->path->register($path . '/fields/elements', 'zlfields'); // temporal until all ZL Extensions adapted
+            $this->app->path->register($path . '/fields/elements', 'fields'); // necessary since ZOO 2.5.13
         }
 
         // register elements - order is important!
-        if ($path = $zoo->path->path('zlfw:elements')) {
-            $zoo->path->register($path, 'elements'); // register elements path
+        if ($path = $this->app->path->path('zlfw:elements')) {
+            $this->app->path->register($path, 'elements'); // register elements path
 
-            $zoo->loader->register('ElementPro', 'elements:pro/pro.php');
-            $zoo->loader->register('ElementRepeatablepro', 'elements:repeatablepro/repeatablepro.php');
-            $zoo->loader->register('ElementFilespro', 'elements:filespro/filespro.php');
+            $this->app->loader->register('ElementPro', 'elements:pro/pro.php');
+            $this->app->loader->register('ElementRepeatablepro', 'elements:repeatablepro/repeatablepro.php');
+            $this->app->loader->register('ElementFilespro', 'elements:filespro/filespro.php');
         }
 
         if ($path = JPATH_ROOT . '/media/zoo/custom_elements') {
-            $zoo->path->register($path, 'elements'); // register custom elements path
+            $this->app->path->register($path, 'elements'); // register custom elements path
         }
 
         // register helpers
-        if ($path = $zoo->path->path('zlfw:helpers')) {
-            $zoo->path->register($path, 'helpers');
-            $zoo->loader->register('zlfwHelper', 'helpers:zlfwhelper.php');
-            $zoo->loader->register('ZLDependencyHelper', 'helpers:zldependency.php');
-            $zoo->loader->register('ZlStringHelper', 'helpers:zlstring.php');
-            $zoo->loader->register('ZlFilesystemHelper', 'helpers:zlfilesystem.php');
-            $zoo->loader->register('ZlPathHelper', 'helpers:zlpath.php');
-            $zoo->loader->register('ZlModelHelper', 'helpers:model.php');
-            $zoo->loader->register('ZLXmlHelper', 'helpers:zlxmlhelper.php');
-            $zoo->loader->register('ZLFieldHTMLHelper', 'helpers:zlfieldhtml.php');
+        if ($path = $this->app->path->path('zlfw:helpers')) {
+            $this->app->path->register($path, 'helpers');
+            $this->app->loader->register('zlfwHelper', 'helpers:zlfwhelper.php');
+            $this->app->loader->register('ZLDependencyHelper', 'helpers:zldependency.php');
+            $this->app->loader->register('ZlStringHelper', 'helpers:zlstring.php');
+            $this->app->loader->register('ZlFilesystemHelper', 'helpers:zlfilesystem.php');
+            $this->app->loader->register('ZlPathHelper', 'helpers:zlpath.php');
+            $this->app->loader->register('ZlModelHelper', 'helpers:model.php');
+            $this->app->loader->register('ZLXmlHelper', 'helpers:zlxmlhelper.php');
+            $this->app->loader->register('ZLFieldHTMLHelper', 'helpers:zlfieldhtml.php');
         }
+
+        $this->loaded = true;
     }
 }

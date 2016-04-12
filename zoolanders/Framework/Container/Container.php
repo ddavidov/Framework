@@ -4,7 +4,7 @@ namespace Zoolanders\Container;
 
 use Pimple\Container as Pimple;
 use Zoolanders\Filesystem\Filesystem;
-use Zoolanders\Zoo;
+use Zoolanders\Zoo\Zoo;
 
 defined('_JEXEC') or die;
 
@@ -50,13 +50,15 @@ class Container extends Pimple
      * Singleton pattern
      * @return Container
      */
-    public static function &getInstance(array $values = [])
+    public static function &getInstance($values = [])
     {
         if (self::$container) {
             return self::$container;
         }
 
-        return new Container($values);
+        self::$container = new Container($values);
+
+        return self::$container;
     }
 
     /**

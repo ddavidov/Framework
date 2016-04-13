@@ -1,6 +1,9 @@
 {
     "services": {
-        "zoo"           : "\\Zoolanders\\Zoo\\Zoo",
-        "filesystem"    : "\\Zoolanders\\Filesystem\\Filesystem"
+        "zoo": "\\Zoolanders\\Zoo\\Zoo",
+        "filesystem": "\\Zoolanders\\Filesystem\\Filesystem",
+        "system": {
+            "language": "\\Zoolanders\\System\\Language"
+        }
     }
 }

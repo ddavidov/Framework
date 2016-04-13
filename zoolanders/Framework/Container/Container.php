@@ -21,32 +21,30 @@ class Container extends Pimple
      * The path to the config file
      * @var string
      */
-    protected $configFile = 'libraries/zoolanders/Framework/config.json';
+    protected static $configFile = 'libraries/zoolanders/Framework/config.json';
 
     /**
-     * Container constructor.
-     * @param array $values
+     * Load the service into the DI Container
+     * @param $services
      */
-    public function __construct(array $values = [])
+    protected function loadServices($services)
     {
-        parent::__construct($values);
+        // Load the services
+        foreach ($services as $name => $class) {
+            // it's either an array or an object,
+            if (is_object($class) || is_array($class) || $class instanceof Registry){
+                $tmp = new Container();
+                $tmp->loadServices($class);
+                $this[$name] = $tmp;
+                return;
+            }
 
-        $config = new Registry();
-        $config->loadFile(JPATH_SITE . '/' . $this->configFile);
-
-        foreach ($config->get('services', []) as $name => $class) {
+            // Otherwise add the service
             if (!isset($this[$name])) {
                 $this[$name] = function (Container $c) use ($class) {
                     return new $class($c);
                 };
             }
-        }
-
-        // Database Driver service
-        if (!isset($this['db'])) {
-            $this['db'] = function () {
-                return $this['zoo']->database;
-            };
         }
     }
 
@@ -60,7 +58,24 @@ class Container extends Pimple
             return self::$container;
         }
 
-        self::$container = new Container($values);
+        $container = new Container($values);
+
+        // get the config file
+        $config = new Registry();
+        $config->loadFile(JPATH_SITE . '/' . self::$configFile);
+
+        // load the services classes from the config file
+        $services = $config->get('services', []);
+        $container->loadServices($services);
+
+        // Database Driver service
+        if (!isset($container['db'])) {
+            $container['db'] = function () use ($container) {
+                return $container['zoo']->database;
+            };
+        }
+
+        self::$container = $container;
 
         return self::$container;
     }

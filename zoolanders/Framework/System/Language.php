@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\System\Language;
+namespace Zoolanders\System;
 
 /**
  * Class Language

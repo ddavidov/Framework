@@ -1,9 +1,12 @@
 {
     "services": {
-        "zoo": "\\Zoolanders\\Zoo\\Zoo",
-        "filesystem": "\\Zoolanders\\Filesystem\\Filesystem",
+        "zoo": "\\Zoolanders\\Service\\Zoo",
+        "filesystem": "\\Zoolanders\\Service\\Filesystem",
         "system": {
-            "language": "\\Zoolanders\\System\\Language"
-        }
+            "language": "\\Zoolanders\\Service\\System\\Language",
+            "application": "\\Zoolanders\\Service\\System\\Application",
+            "document": "\\Zoolanders\\Service\\System\\Document"
+        },
+        "document": "\\Zoolanders\\Service\\System\\Document"
     }
 }

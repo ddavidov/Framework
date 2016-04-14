@@ -15,16 +15,22 @@ class plgSystemZlframework extends JPlugin
 {
 	public $app;
 
+	/**
+	 * @var \Zoolanders\Container\Container
+	 */
+	protected $container;
+
 	protected $autoloadLanguage = true;
 
 	function onAfterInitialise()
 	{
 		require_once JPATH_LIBRARIES . '/zoolanders/include.php';
-		$container = Zoolanders\Container\Container::getInstance();
-		$this->app = $container->zoo->getApp();
+		$this->container = Zoolanders\Container\Container::getInstance();
+
+		$this->app = $this->container->zoo->getApp();
 
 		// check and perform installation tasks
-		if(!$this->checkInstallation()) return; // must go after language, elements path and helpers
+		if (!$this->checkInstallation()) return; // must go after language, elements path and helpers
 
 		// let's define the check was succesfull to speed up other plugins loading
 		if (!defined('ZLFW_DEPENDENCIES_CHECK_OK')) define('ZLFW_DEPENDENCIES_CHECK_OK', true);
@@ -36,16 +42,16 @@ class plgSystemZlframework extends JPlugin
 		$this->app->event->dispatcher->connect('type:beforesave', array($this, 'typeBeforeSave'));
 
 		// perform admin tasks
-		if ($container->system->application->isAdmin()) {
-			$container->system->document->addStylesheet('zlfw:assets/css/zl_ui.css');
+		if ($this->container->system->application->isAdmin()) {
+			$this->container->system->document->addStylesheet('zlfw:assets/css/zl_ui.css');
 		}
 
 		// init ZOOmailing if installed
-		if ( $path = $this->app->path->path( 'root:plugins/acymailing/zoomailing/zoomailing' ) ) {
+		if ($path = $this->app->path->path('root:plugins/acymailing/zoomailing/zoomailing')) {
 
 			// register path and include
 			$this->app->path->register($path, 'zoomailing');
-			require_once($path.'/init.php');
+			require_once($path . '/init.php');
 		}
 
 		// load ZL Fields, workaround for first time using ZL elements
@@ -55,7 +61,7 @@ class plgSystemZlframework extends JPlugin
 		if ($this->app->zlfw->isTheEnviroment('zoo-type')) {
 			$this->app->document->addStylesheet('elements:separator/assets/zlfield.css');
 			$this->app->document->addScript('elements:separator/assets/zlfield.min.js');
-			$this->app->document->addScriptDeclaration( 'jQuery(function($) { $("body").ZOOtoolsSeparatorZLField({ enviroment: "'.$this->app->zlfw->getTheEnviroment().'" }) });' );
+			$this->app->document->addScriptDeclaration('jQuery(function($) { $("body").ZOOtoolsSeparatorZLField({ enviroment: "' . $this->app->zlfw->getTheEnviroment() . '" }) });');
 		}
 	}
 
@@ -78,14 +84,15 @@ class plgSystemZlframework extends JPlugin
 	{
 		$matches = array();
 		if (preg_match('/zl-decrypted\[(.*)\]/', $item, $matches)) {
-			$item = 'zl-encrypted['.App::getInstance('zoo')->zlfw->crypt($matches[1], 'encrypt').']';
+			$item = 'zl-encrypted[' . App::getInstance('zoo')->zlfw->crypt($matches[1], 'encrypt') . ']';
 		}
 	}
 
 	/**
 	 * Setting the Core Elements
 	 */
-	public function coreConfig( $event, $arguments = array() ){
+	public function coreConfig($event, $arguments = array())
+	{
 		$config = $event->getReturnValue();
 		$config['_itemlinkpro'] = array('name' => 'Item Link Pro', 'type' => 'itemlinkpro');
 		$config['_staticcontent'] = array('name' => 'Static Content', 'type' => 'staticcontent');
@@ -98,8 +105,7 @@ class plgSystemZlframework extends JPlugin
 	public function checkInstallation()
 	{
 		// if in admin views
-		if ($this->app->system->application->isAdmin() && $this->app->zlfw->environment->is('admin.com_zoo admin.com_installer admin.com_plugins'))
-		{
+		if ($this->container->system->application->isAdmin() && $this->container->environment->is('admin.com_zoo admin.com_installer admin.com_plugins')) {
 			return $this->_checkDependencies();
 		}
 
@@ -119,10 +125,10 @@ class plgSystemZlframework extends JPlugin
 
 		// checks if dependencies are up to date
 		$status = $this->app->zlfw->dependencies->check("zlfw:dependencies.config");
-		if (!$status['state']){
+		if (!$status['state']) {
 
 			// warn but not if in installer to avoid install confusions
-			if (!$this->app->zlfw->environment->is('admin.com_installer'))
+			if (!$this->container->environment->is('admin.com_installer'))
 				$this->app->zlfw->dependencies->warn($status['extensions']);
 		}
 
@@ -147,9 +153,9 @@ class plgSystemZlframework extends JPlugin
 		if (!$app) return;
 
 		$group = $app->getGroup();
-		if($router = $this->app->path->path("applications:$group/router.php")){
+		if ($router = $this->app->path->path("applications:$group/router.php")) {
 			require_once $router;
-			$class = 'ZLRouter'.ucfirst($group);
+			$class = 'ZLRouter' . ucfirst($group);
 			$routerClass = new $class;
 			$routerClass->parseRoute($event);
 		}

@@ -1,8 +1,6 @@
 <?php
 
-namespace Zoolanders\Filesystem;
-
-use Zoolanders\Service;
+namespace Zoolanders\Service;
 
 class Filesystem extends Service
 {

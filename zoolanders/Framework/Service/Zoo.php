@@ -4,7 +4,6 @@ namespace Zoolanders\Service;
 
 use App;
 use Zoolanders\Container\Container;
-use Zoolanders\Service\Service;
 
 defined('_JEXEC') or die;
 

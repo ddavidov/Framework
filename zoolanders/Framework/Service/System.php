@@ -1,7 +1,6 @@
 <?php
 
 namespace Zoolanders\Service;
-use Zoolanders\Service\Service;
 
 /**
  * Class System

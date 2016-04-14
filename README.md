@@ -5,7 +5,7 @@
 ```php
 require_once JPATH_LIBRARIES . '/zoolanders/include.php';
 
-$container = Zoolanders\Container\Container::getInstance();
+$container = \Zoolanders\Container\Container::getInstance();
 ```
 
 ## Services
@@ -27,6 +27,37 @@ Also, it exposes several methods:
 - **isLoaded**: check if zoo is loaded
 - **load**: actually load zoo (if it's not already loaded)
 
+### system
+
+Deals with system-related stuff (mostly related to the platform, ie: joomla).
+It just exposes subservices.
+
+#### language
+Deals with language stuff
+
+```php
+$container->system->language->getTag();
+```
+
+#### application
+Deals with application-level stuff
+
+```php
+$container->system->application->isAdmin();
+```
+
+#### document
+An interface to JDocument
+
+```php
+$container->system->document->addScript(...);
+```
+
+Also, it exposes several methods:
+
+- **addStilesheet($path, $version)**: Add a stylesheet to the document using also path parsable variables (media:system/file.css)
+- **addScript($path, $version)**: Add a script to the document using also path parsable variables (media:system/file.js)
+
 ### db
 
 The usual database service
@@ -35,10 +66,7 @@ The usual database service
 $container->db->execute();
 ```
 
-### language
-
-Proxies the calls to the JLanguage class
-
+### zoo
 ```php
 $container->language->load(...);
 ```

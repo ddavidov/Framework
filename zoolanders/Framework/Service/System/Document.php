@@ -1,6 +1,7 @@
 <?php
 
 namespace Zoolanders\Service\System;
+
 use Zoolanders\Service\System;
 
 /**
@@ -25,9 +26,10 @@ class Document extends System
      *
      * @since 1.0.0
      */
-    public function addStylesheet($path, $version = null) {
-        if ($file = $this->app->path->url($path)) {
-            $this->app->system->document->addStylesheet($file.$this->getVersion($version));
+    public function addStylesheet($path, $version = null)
+    {
+        if ($file = $this->container->path->url($path)) {
+            $this->container->system->document->addStylesheet($file . $this->getVersion($version));
         }
     }
 
@@ -41,22 +43,23 @@ class Document extends System
      *
      * @since 1.0.0
      */
-    public function addScript($path, $version = null) {
+    public function addScript($path, $version = null)
+    {
 
         $version = $this->getVersion($version);
 
         // load jQuery, if not loaded before
-        if (!$this->app->joomla->version->isCompatible('3.0')) {
-            if (!$this->app->system->application->get('jquery')) {
-                $this->app->system->application->set('jquery', true);
-                $this->app->system->document->addScript($this->app->path->url('libraries:jquery/jquery.js').$version);
+        if (!$this->container->joomla->version->isCompatible('3.0')) {
+            if (!$this->container->system->application->get('jquery')) {
+                $this->container->system->application->set('jquery', true);
+                $this->addScript($this->container->path->url('libraries:jquery/jquery.js') . $version);
             }
         } else {
             JHtml::_('jquery.framework');
         }
 
-        if ($file = $this->app->path->url($path)) {
-            $this->app->system->document->addScript($file.$version);
+        if ($file = $this->container->path->url($path)) {
+            $this->container->system->document->addScript($file . $version);
         }
     }
 
@@ -69,16 +72,17 @@ class Document extends System
      *
      * @return string The get parameter to append
      */
-    private function getVersion($version = null) {
+    private function getVersion($version = null)
+    {
 
         if ($version === null) {
             if (empty($this->file_mod_date)) {
                 $this->file_mod_date = date("Ymd", filemtime(__FILE__));
             }
 
-            return '?ver='.$this->file_mod_date;
+            return '?ver=' . $this->file_mod_date;
         }
 
-        return empty($version) ? '' : '?ver='.$version;
+        return empty($version) ? '' : '?ver=' . $version;
     }
 }

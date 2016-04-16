@@ -1,14 +1,18 @@
 {
     "services": {
-        "zoo": "\\Zoolanders\\Service\\Zoo",
         "filesystem": "\\Zoolanders\\Service\\Filesystem",
+        "zoo": "\\Zoolanders\\Service\\Zoo",
         "system": {
             "language": "\\Zoolanders\\Service\\System\\Language",
             "application": "\\Zoolanders\\Service\\System\\Application",
             "document": "\\Zoolanders\\Service\\System\\Document"
         },
+        "joomla": "\\Zoolanders\\Service\\Joomla",
         "document": "\\Zoolanders\\Service\\System\\Document",
         "environment": "\\Zoolanders\\Service\\System\\Environment",
-        "enviroment": "\\Zoolanders\\Service\\System\\Environment"
+        "enviroment": "\\Zoolanders\\Service\\System\\Environment",
+        "installation": "\\Zoolanders\\Service\\Installation",
+        "dependencies": "\\Zoolanders\\Service\\Dependencies",
+        "path": "\\Zoolanders\\Service\\Path"
     }
 }

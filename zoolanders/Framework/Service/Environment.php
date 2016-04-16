@@ -42,7 +42,7 @@ class Environment extends Service
      */
     public function get()
     {
-        if (!$this->$environment) {
+        if (!$this->environment) {
             // init vars
             $environment = array();
             $jinput = $this->container->system->application->input;

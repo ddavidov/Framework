@@ -36,7 +36,7 @@ class Container extends Pimple
                 $tmp = new Container();
                 $tmp->loadServices($class);
                 $this[$name] = $tmp;
-                return;
+                continue;
             }
 
             // Otherwise add the service

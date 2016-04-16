@@ -2,6 +2,9 @@
 
 namespace Zoolanders\Service;
 
+use League\Flysystem\Adapter\Local;
+use Zoolanders\Container\Container;
+
 class Filesystem extends Service
 {
     /**
@@ -18,6 +21,51 @@ class Filesystem extends Service
      * Size and calculation related methods
      */
     use Filesystem\Size;
+
+    /**
+     * @var \League\Flysystem\Filesystem
+     */
+    protected $filesystem;
+
+    /**
+     * Filesystem constructor.
+     * @param Container $c
+     * @param \League\Flysystem\Filesystem|null $fs
+     */
+    public function __construct(Container $c, \League\Flysystem\Filesystem $fs = null)
+    {
+        parent::__construct($c);
+
+        if (!$fs) {
+            $adapter = new Local('/');
+            $fs = new \League\Flysystem\Filesystem($adapter);
+        }
+
+        $this->filesystem->read
+        
+        $this->filesystem = $fs;
+    }
+
+    /**
+     * Proxy to filesystem
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->filesystem, $name], $arguments);
+    }
+
+    /**
+     * Proxy to filesystem
+     * @param $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        return $this->filesystem->$name;
+    }
 
     /**
      * Output a file to the browser
@@ -129,7 +177,6 @@ class Filesystem extends Service
      */
     public function readDirectoryFiles($path, $prefix = '', $filter = false, $recursive = true)
     {
-
         $files = array();
         $ignore = array('.', '..', '.DS_Store', '.svn', '.git', '.gitignore', '.gitmodules', 'cgi-bin');
 
@@ -183,7 +230,6 @@ class Filesystem extends Service
         $ext = isset($file['extension']) ? $file['extension'] : null;
 
         if ($ext) {
-
             // check extensions content type (with dot, like tar.gz)
             if (($pos = strrpos($file['filename'], '.')) !== false) {
                 $ext2 = strtolower(substr($file['filename'], $pos + 1) . '.' . $ext);
@@ -214,21 +260,14 @@ class Filesystem extends Service
         return $this->cleanPath($a . $ds . $b, $ds);
     }
 
-    /*
-        Function: folderCreate
-            New folder base function. A wrapper for the JFolder::create function
-        Parameters:
-            $folder string The folder to create
-        Returns:
-            boolean true on success
-        Original Credits:
-            @package   	JCE
-            @copyright 	Copyright �� 2009-2011 Ryan Demmer. All rights reserved.
-            @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-    */
+    /**
+     * Alias for createDir() method
+     * @param $folder
+     * @return boolean
+     */
     public function folderCreate($folder)
     {
-        return @\JFolder::create($folder);
+        return $this->filesystem->createDir($folder);
     }
 
     /**
@@ -256,16 +295,12 @@ class Filesystem extends Service
         return $this->formatFilesize($result, 'KB');
     }
 
-    /*
-        Function: returnBytes
-            Output size in bytes
-
-        Parameters:
-            $size_str - size string
-
-        Returns:
-            String
-    */
+    /**
+     * Output size in bytes
+     *
+     * @param  string $size_str size string
+     * @return string
+     */
     public function returnBytes($size_str)
     {
         switch (substr($size_str, -1)) {

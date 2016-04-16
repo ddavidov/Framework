@@ -73,6 +73,47 @@ $container->language->load(...);
 
 ### filesystem
 
-```php
-$container->filesystem
-```
+It deals with anything filesystem related. For now it's just a Flysystem integration
+plus some old zlfw functions.
+
+In time, it will allow for different mounting points, like s3, etc.
+By default it access the local filesystem.
+
+### joomla
+
+Clone of zoo's joomla helper, removing the deprecated methods
+
+- **getVersion**: Get the joomla's current short version
+- **isVersion($version)**: Check if we're on a specific joomla version
+- **getDefaultAccess**: Get the default access level of joomla
+
+### path
+
+Extended version of the zoo's path helper
+It still uses the zoo's path helper to register the paths, since most of them
+are registered by zoo itself, but it deals with the file search and listing
+using the zoolanders framework service.
+
+Same api as the zoo's path helper
+
+### environment
+
+The old zlfw environment helper
+
+- **get**: get the current environment (site.com_zoo.item)
+- **is($environments)**: Checks if the passed environment is the current environment
+
+### installation
+
+The old methods in the zlfw plugin dealing with the installation checks
+
+- **checkInstallation**: Check if the installation was performed correctly
+- **checkDependencies**: Check if the dependecies are correctly resolved
+- **checkPluginsOrder**: Check if the plugin order is correct
+
+### dependecies
+
+The old zlfw dependecies helper
+
+- **check($file)** Check the dependecies listed in a given json file
+- **warn($extensions, $extension)**: Displays a warning about a list of not resolved extensions dependecies

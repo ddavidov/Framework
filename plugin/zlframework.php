@@ -30,10 +30,7 @@ class plgSystemZlframework extends JPlugin
 		$this->app = $this->container->zoo->getApp();
 
 		// check and perform installation tasks
-		if (!$this->checkInstallation()) return; // must go after language, elements path and helpers
-
-		// let's define the check was succesfull to speed up other plugins loading
-		if (!defined('ZLFW_DEPENDENCIES_CHECK_OK')) define('ZLFW_DEPENDENCIES_CHECK_OK', true);
+		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
 
 		// register events
 		$this->app->event->register('TypeEvent');
@@ -97,48 +94,6 @@ class plgSystemZlframework extends JPlugin
 		$config['_itemlinkpro'] = array('name' => 'Item Link Pro', 'type' => 'itemlinkpro');
 		$config['_staticcontent'] = array('name' => 'Static Content', 'type' => 'staticcontent');
 		$event->setReturnValue($config);
-	}
-
-	/**
-	 *  checkInstallation
-	 */
-	public function checkInstallation()
-	{
-		// if in admin views
-		if ($this->container->system->application->isAdmin() && $this->container->environment->is('admin.com_zoo admin.com_installer admin.com_plugins')) {
-			return $this->_checkDependencies();
-		}
-
-		return true;
-	}
-
-	/**
-	 *  _checkDependencies
-	 */
-	protected function _checkDependencies()
-	{
-		// prepare cache
-		$cache = $this->app->cache->create($this->app->path->path('cache:') . '/plg_zlframework_dependencies', true, '86400', 'apc');
-
-		// set plugins order
-		$this->app->zlfw->checkPluginOrder();
-
-		// checks if dependencies are up to date
-		$status = $this->app->zlfw->dependencies->check("zlfw:dependencies.config");
-		if (!$status['state']) {
-
-			// warn but not if in installer to avoid install confusions
-			if (!$this->container->environment->is('admin.com_installer'))
-				$this->app->zlfw->dependencies->warn($status['extensions']);
-		}
-
-		// save state to cache
-		if ($cache && $cache->check()) {
-			$cache->set('updated', $status['state']);
-			$cache->save();
-		}
-
-		return $status['state'];
 	}
 
 	/**

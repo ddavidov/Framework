@@ -3,7 +3,10 @@
 namespace Zoolanders\Container;
 
 use Pimple\Container as Pimple;
+use Zoolanders\Event\ContainerConfigurationLoaded;
+use Zoolanders\Event\ContainerServicesLoaded;
 use Zoolanders\Filesystem\Filesystem;
+use Zoolanders\Service\Event;
 use Zoolanders\Zoo\Zoo;
 use Joomla\Registry\Registry;
 
@@ -60,13 +63,12 @@ class Container extends Pimple
 
         $container = new Container($values);
 
-        // get the config file
-        $config = new Registry();
-        $config->loadFile(JPATH_SITE . '/' . self::$configFile);
-
-        // load the services classes from the config file
-        $services = $config->get('services', []);
-        $container->loadServices($services);
+        // Database Driver service
+        if (!isset($container['zoo'])) {
+            $container['zoo'] = function () use ($container) {
+                return new \Zoolanders\Service\Zoo($container);
+            };
+        }
 
         // Database Driver service
         if (!isset($container['db'])) {
@@ -74,6 +76,27 @@ class Container extends Pimple
                 return $container['zoo']->database;
             };
         }
+
+        // Event service
+        if (!isset($container['event'])) {
+            $container['event'] = function () use ($container) {
+                return new Event($container);
+            };
+        }
+
+        // get the config file
+        $config = new Registry();
+        $config->loadFile(JPATH_SITE . '/' . self::$configFile);
+
+        // trigger an even to make the configuration extendable
+        $container->event->dispatcher->trigger(new ContainerConfigurationLoaded($config));
+
+        // load the services classes from the config file
+        $services = $config->get('services', []);
+        $container->loadServices($services);
+
+        // Notify we've loaded the services
+        $container->event->dispatcher->trigger(new ContainerServicesLoaded($services));
 
         self::$container = $container;
 

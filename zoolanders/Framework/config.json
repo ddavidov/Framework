@@ -1,7 +1,6 @@
 {
     "services": {
         "filesystem": "\\Zoolanders\\Service\\Filesystem",
-        "zoo": "\\Zoolanders\\Service\\Zoo",
         "system": {
             "language": "\\Zoolanders\\Service\\System\\Language",
             "application": "\\Zoolanders\\Service\\System\\Application",
@@ -13,6 +12,7 @@
         "enviroment": "\\Zoolanders\\Service\\System\\Environment",
         "installation": "\\Zoolanders\\Service\\Installation",
         "dependencies": "\\Zoolanders\\Service\\Dependencies",
-        "path": "\\Zoolanders\\Service\\Path"
+        "path": "\\Zoolanders\\Service\\Path",
+        "route": "\\Zoolanders\\Service\\Route"
     }
 }

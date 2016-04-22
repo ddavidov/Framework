@@ -1,6 +1,7 @@
 {
     "services": {
         "filesystem": "\\Zoolanders\\Service\\Filesystem",
+        "path": "\\Zoolanders\\Service\\Path",
         "system": {
             "language": "\\Zoolanders\\Service\\System\\Language",
             "application": "\\Zoolanders\\Service\\System\\Application",
@@ -8,11 +9,16 @@
         },
         "joomla": "\\Zoolanders\\Service\\Joomla",
         "document": "\\Zoolanders\\Service\\System\\Document",
-        "environment": "\\Zoolanders\\Service\\System\\Environment",
-        "enviroment": "\\Zoolanders\\Service\\System\\Environment",
+        "environment": "\\Zoolanders\\Service\\Environment",
+        "enviroment": "\\Zoolanders\\Service\\Environment",
         "installation": "\\Zoolanders\\Service\\Installation",
         "dependencies": "\\Zoolanders\\Service\\Dependencies",
-        "path": "\\Zoolanders\\Service\\Path",
-        "route": "\\Zoolanders\\Service\\Route"
+        "route": "\\Zoolanders\\Service\\Route",
+        "crypt": "\\Zoolanders\\Service\\Crypt"
+    },
+    "events": {
+        "type:beforesave" : [
+            "\\Zoolanders\\Listener\\Type\\EncryptPasswords"
+        ]
     }
 }

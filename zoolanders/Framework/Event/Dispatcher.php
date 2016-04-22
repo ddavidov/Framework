@@ -46,9 +46,6 @@ class Dispatcher
         }
 
         $this->listeners[$name][] = $listener;
-
-        // also, bind it to the core zoo listeners to keep b/c
-        $this->container->event->zoo->connect($name, $listener);
     }
 
     /**
@@ -97,7 +94,7 @@ class Dispatcher
     public function notify(Event $event)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
-            call_user_func($listener, $event);
+            call_user_func_array($listener, [$event]);
         }
 
         return $event;
@@ -119,7 +116,7 @@ class Dispatcher
         }
 
         // Both local and zoo's
-        return ((boolean) count($this->listeners[$name]) && $this->container->event->zoo->hasListeners($name));
+        return (boolean) count($this->listeners[$name]);
     }
 
     /**
@@ -138,7 +135,7 @@ class Dispatcher
         }
 
         // merge ours with zoo's
-        return array_merge($this->listeners[$name], $this->container->event->zoo->getListeners($name));
+        return $this->listeners[$name];
     }
 
 }

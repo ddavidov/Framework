@@ -4,6 +4,7 @@ namespace Zoolanders\Service;
 
 use Zoolanders\Container\Container;
 use Zoolanders\Event\Dispatcher;
+use Zoolanders\Event\Zoo;
 
 class Event extends Service
 {
@@ -13,7 +14,7 @@ class Event extends Service
     public $dispatcher;
 
     /**
-     * @var \EventHelper
+     * @var Zoo
      */
     public $zoo;
 
@@ -30,9 +31,12 @@ class Event extends Service
     {
         parent::__construct($c);
 
+        // Load every zoolanders plugin by default
+        \JPluginHelper::importPlugin('zoolanders');
+
         // Create the various dispatchers
         $this->dispatcher = new Dispatcher($c);
         $this->joomla = \JEventDispatcher::getInstance();
-        $this->zoo = $this->container->zoo->getApp()->event;
+        $this->zoo = new Zoo($c);
     }
 }

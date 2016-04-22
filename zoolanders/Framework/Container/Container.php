@@ -27,6 +27,11 @@ class Container extends Pimple
     protected static $configFile = 'libraries/zoolanders/Framework/config.json';
 
     /**
+     * @var Registry
+     */
+    protected $config;
+
+    /**
      * Load the service into the DI Container
      * @param $services
      */
@@ -35,9 +40,11 @@ class Container extends Pimple
         // Load the services
         foreach ($services as $name => $class) {
             // it's either an array or an object,
-            if (is_object($class) || is_array($class) || $class instanceof Registry){
-                $tmp = new Container();
+            if (is_object($class) || is_array($class) || $class instanceof Registry) {
+                $tmp = new Nested();
+                $tmp->setParentContainer($this);
                 $tmp->loadServices($class);
+
                 $this[$name] = $tmp;
                 continue;
             }
@@ -80,7 +87,7 @@ class Container extends Pimple
         // Event service
         if (!isset($container['event'])) {
             $container['event'] = function () use ($container) {
-                return new Event($container);
+                return new \Zoolanders\Service\Event($container);
             };
         }
 
@@ -88,19 +95,69 @@ class Container extends Pimple
         $config = new Registry();
         $config->loadFile(JPATH_SITE . '/' . self::$configFile);
 
-        // trigger an even to make the configuration extendable
-        $container->event->dispatcher->trigger(new ContainerConfigurationLoaded($config));
+        // trigger an event to make the configuration extendable
+        // it's a joomla event since we've yet to return the container on which we
+        // could register a zoolanders core event
+        $container->event->joomla->trigger('onContainerConfigurationLoaded', array(&$config));
 
-        // load the services classes from the config file
-        $services = $config->get('services', []);
-        $container->loadServices($services);
-
-        // Notify we've loaded the services
-        $container->event->dispatcher->trigger(new ContainerServicesLoaded($services));
+        // Load the configuration file
+        $container->loadConfig($config);
 
         self::$container = $container;
 
         return self::$container;
+    }
+
+    /**
+     * Load the configuration
+     * @param Registry $config
+     */
+    public function loadConfig(Registry $config)
+    {
+        // Merge it with the current config
+        if ($this->config) {
+            $this->config->merge($config, true);
+        } else {
+            $this->config = $config;
+        }
+
+        // load the services classes from the config file
+        $services = $config->get('services', []);
+        $this->loadServices($services);
+
+        // Notify we've loaded the services
+        $this->event->joomla->trigger('onContainerServicesLoaded', array($services));
+
+        // Bind any listener for events
+        $services = $config->get('events', []);
+        $this->bindEvents($services);
+    }
+
+    /**
+     * @param $events
+     */
+    protected function bindEvents($events)
+    {
+        foreach ($events as $event => $listeners) {
+            $listeners = (array) $listeners;
+
+            foreach ($listeners as $listener) {
+                $parts = explode("@", $listener);
+
+                $method = $listener;
+
+                // we have a function to call
+                if (count($parts) == 2) {
+                    $method = $parts;
+                }
+
+                if (class_exists($listener)) {
+                    $method = [new $listener, 'handle'];
+                }
+
+                $this->event->dispatcher->connect($event, $method);
+            }
+        }
     }
 
     /**

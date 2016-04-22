@@ -55,7 +55,7 @@ class Document extends System
                 $this->addScript($this->container->path->url('libraries:jquery/jquery.js') . $version);
             }
         } else {
-            JHtml::_('jquery.framework');
+            \JHtml::_('jquery.framework');
         }
 
         if ($file = $this->container->path->url($path)) {

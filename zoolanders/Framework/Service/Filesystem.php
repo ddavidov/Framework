@@ -40,8 +40,6 @@ class Filesystem extends Service
             $adapter = new Local('/');
             $fs = new \League\Flysystem\Filesystem($adapter);
         }
-
-        $this->filesystem->read
         
         $this->filesystem = $fs;
     }

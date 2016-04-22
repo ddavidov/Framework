@@ -19,7 +19,7 @@ class Installation extends Service
 
                 return true;
             }
-            
+
             return false;
         }
 
@@ -63,7 +63,8 @@ class Installation extends Service
     {
         // init vars
         $db = $this->container->db;
-        $zf = \JPluginHelper::getPlugin('zlframework', 'system');
+        $zf = $this->getPlugin('zlframework');
+
         $order = (int)$zf->ordering;
 
         // set ZOOlingual right after zlfw
@@ -84,5 +85,22 @@ class Installation extends Service
         if (!empty($plugin)) array_push($plugins, $plugin);
         // query
         $db->setQuery("UPDATE `#__extensions` SET `ordering` = {$order} WHERE `type` = 'plugin' AND `element` in ('" . implode('\',\'', $plugins) . "')")->execute();
+    }
+
+    /**
+     * Retrieve an plugin object
+     *
+     * @param  string $name The plugin name
+     * @param  string $type The plugin type
+     *
+     * @return Object The requested plugin
+     */
+    public function getPlugin($name, $type = 'system')
+    {
+        $db = $this->container->db;
+        $query = 'SELECT * FROM #__extensions WHERE element LIKE ' . $db->Quote($name) . ' AND folder LIKE ' . $db->Quote($type) . ' LIMIT 1';
+
+        $db->setQuery($query);
+        return $db->loadObject();
     }
 }

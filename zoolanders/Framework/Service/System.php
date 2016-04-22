@@ -23,6 +23,18 @@ abstract class System extends Service
     }
 
     /**
+     * @param $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        $method = 'get' . ucfirst(strtolower($this->getName()));
+
+        // this is JFactory::get****()->$method($args)
+        return call_user_func('\JFactory::' . $method)->$name;
+    }
+
+    /**
      * Get the name of the current service
      * @return string
      */

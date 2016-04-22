@@ -32,10 +32,12 @@ class plgSystemZlframework extends JPlugin
 		// check and perform installation tasks
 		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
 
+		// setup the routers
+		$this->container->route->setupRouters();
+
 		// register events
 		$this->app->event->register('TypeEvent');
 		$this->app->event->dispatcher->connect('type:coreconfig', array($this, 'coreConfig'));
-		$this->app->event->dispatcher->connect('application:sefparseroute', array($this, 'sefParseRoute'));
 		$this->app->event->dispatcher->connect('type:beforesave', array($this, 'typeBeforeSave'));
 
 		// perform admin tasks
@@ -96,23 +98,4 @@ class plgSystemZlframework extends JPlugin
 		$event->setReturnValue($config);
 	}
 
-	/**
-	 *  sefParseRoute
-	 */
-	public function sefParseRoute($event)
-	{
-		$app_id = $this->app->request->getInt('app_id', null);
-		$app = $this->app->table->application->get($app_id);
-
-		// check if was loaded
-		if (!$app) return;
-
-		$group = $app->getGroup();
-		if ($router = $this->app->path->path("applications:$group/router.php")) {
-			require_once $router;
-			$class = 'ZLRouter' . ucfirst($group);
-			$routerClass = new $class;
-			$routerClass->parseRoute($event);
-		}
-	}
 }

@@ -31,14 +31,7 @@ class plgSystemZlframework extends JPlugin
 
 		// check and perform installation tasks
 		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
-
-		// setup the routers
-		$this->container->route->setupRouters();
-
-		// register events
-		$this->app->event->register('TypeEvent');
 		$this->app->event->dispatcher->connect('type:coreconfig', array($this, 'coreConfig'));
-		$this->app->event->dispatcher->connect('type:beforesave', array($this, 'typeBeforeSave'));
 
 		// perform admin tasks
 		if ($this->container->system->application->isAdmin()) {
@@ -61,29 +54,6 @@ class plgSystemZlframework extends JPlugin
 			$this->app->document->addStylesheet('elements:separator/assets/zlfield.css');
 			$this->app->document->addScript('elements:separator/assets/zlfield.min.js');
 			$this->app->document->addScriptDeclaration('jQuery(function($) { $("body").ZOOtoolsSeparatorZLField({ enviroment: "' . $this->app->zlfw->getTheEnviroment() . '" }) });');
-		}
-	}
-
-	/**
-	 * Actions for type:beforesave event
-	 */
-	public function typeBeforeSave($event, $arguments = array())
-	{
-		$type = $event->getSubject();
-		$elements = $type->config->get('elements');
-
-		// search for decrypted passwords and encrypt
-		array_walk_recursive($elements, 'plgSystemZlframework::_find_and_encrypt');
-
-		// save result
-		$type->config->set('elements', $elements);
-	}
-
-	protected static function _find_and_encrypt(&$item, $key)
-	{
-		$matches = array();
-		if (preg_match('/zl-decrypted\[(.*)\]/', $item, $matches)) {
-			$item = 'zl-encrypted[' . App::getInstance('zoo')->zlfw->crypt($matches[1], 'encrypt') . ']';
 		}
 	}
 

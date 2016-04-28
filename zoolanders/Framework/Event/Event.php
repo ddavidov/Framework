@@ -1,14 +1,20 @@
 <?php
 
 namespace Zoolanders\Event;
+
 use Zoolanders\Container\Container;
 
 /**
  * Class Event
  * @package Zoolanders\Event
  */
-abstract class Event
+abstract class Event implements EventInterface
 {
+    /**
+     * @var
+     */
+    protected $value;
+
     /**
      * Add a fake container property
      * @param $name
@@ -63,4 +69,15 @@ abstract class Event
 
         return $properties;
     }
+
+    public function setReturnValue($value)
+    {
+        $this->value = $value;
+    }
+
+    public function getReturnValue()
+    {
+        return $this->value;
+    }
+
 }

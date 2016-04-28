@@ -152,7 +152,7 @@ class Container extends Pimple
                 }
 
                 if (class_exists($listener)) {
-                    $method = [new $listener, 'handle'];
+                    $method = [new $listener($this), 'handle'];
                 }
 
                 $this->event->dispatcher->connect($event, $method);

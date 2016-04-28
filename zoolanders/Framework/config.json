@@ -7,6 +7,8 @@
             "application": "\\Zoolanders\\Service\\System\\Application",
             "document": "\\Zoolanders\\Service\\System\\Document"
         },
+        "request": "\\Zoolanders\\Service\\Request",
+        "input": "\\Zoolanders\\Service\\Request",
         "joomla": "\\Zoolanders\\Service\\Joomla",
         "document": "\\Zoolanders\\Service\\System\\Document",
         "environment": "\\Zoolanders\\Service\\Environment",
@@ -19,6 +21,12 @@
     "events": {
         "type:beforesave" : [
             "\\Zoolanders\\Listener\\Type\\EncryptPasswords"
+        ],
+        "type:coreconfig": [
+            "\\Zoolanders\\Listener\\Type\\AddCoreElements"
+        ],
+        "environment:init": [
+            "\\Zoolanders\\Listener\\Environment\\LoadCss"
         ]
     }
 }

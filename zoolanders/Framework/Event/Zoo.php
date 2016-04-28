@@ -37,6 +37,7 @@ class Zoo extends \Zoolanders\Service\Service
 
         // Some extra events
         $listeners['item:save'] = [];
+        $listeners['type:coreconfig'] = [];
 
         // Get the event name already registered in the zoo dispatcher
         foreach ($listeners as $eventName => $methods) {
@@ -49,7 +50,9 @@ class Zoo extends \Zoolanders\Service\Service
                     $event = $this->createEventObject($eventClass, $zooEvent);
 
                     if ($event) {
+                        $event->setReturnValue($zooEvent->getReturnValue());
                         $this->container->event->dispatcher->trigger($event);
+                        $zooEvent->setReturnValue($event->getReturnValue());
                     }
                 });
             }
@@ -86,6 +89,8 @@ class Zoo extends \Zoolanders\Service\Service
         // Create the list of the constructor arguments for the event class
         $parameters = [];
         $parameters[] = $zooEvent->getSubject();
+
+        // add any other paramenter
         $parameters = array_merge($parameters, array_values($zooEvent->getParameters()));
 
         $obj = $r->newInstanceArgs($parameters);

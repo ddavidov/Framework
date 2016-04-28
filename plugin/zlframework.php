@@ -26,17 +26,13 @@ class plgSystemZlframework extends JPlugin
 	{
 		require_once JPATH_LIBRARIES . '/zoolanders/include.php';
 		$this->container = Zoolanders\Container\Container::getInstance();
-
 		$this->app = $this->container->zoo->getApp();
 
 		// check and perform installation tasks
 		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
-		$this->app->event->dispatcher->connect('type:coreconfig', array($this, 'coreConfig'));
 
-		// perform admin tasks
-		if ($this->container->system->application->isAdmin()) {
-			$this->container->system->document->addStylesheet('zlfw:assets/css/zl_ui.css');
-		}
+		// trigger a Environment/Init event
+		$this->container->event->triggerEnvironmentEvent();
 
 		// init ZOOmailing if installed
 		if ($path = $this->app->path->path('root:plugins/acymailing/zoomailing/zoomailing')) {
@@ -55,17 +51,6 @@ class plgSystemZlframework extends JPlugin
 			$this->app->document->addScript('elements:separator/assets/zlfield.min.js');
 			$this->app->document->addScriptDeclaration('jQuery(function($) { $("body").ZOOtoolsSeparatorZLField({ enviroment: "' . $this->app->zlfw->getTheEnviroment() . '" }) });');
 		}
-	}
-
-	/**
-	 * Setting the Core Elements
-	 */
-	public function coreConfig($event, $arguments = array())
-	{
-		$config = $event->getReturnValue();
-		$config['_itemlinkpro'] = array('name' => 'Item Link Pro', 'type' => 'itemlinkpro');
-		$config['_staticcontent'] = array('name' => 'Static Content', 'type' => 'staticcontent');
-		$event->setReturnValue($config);
 	}
 
 }

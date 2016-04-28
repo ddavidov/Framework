@@ -4,6 +4,7 @@ namespace Zoolanders\Service;
 
 use Zoolanders\Container\Container;
 use Zoolanders\Event\Dispatcher;
+use Zoolanders\Event\Environment\Init;
 use Zoolanders\Event\Zoo;
 
 class Event extends Service
@@ -38,5 +39,11 @@ class Event extends Service
         $this->dispatcher = new Dispatcher($c);
         $this->joomla = \JEventDispatcher::getInstance();
         $this->zoo = new Zoo($c);
+    }
+
+    public function triggerEnvironmentEvent()
+    {
+        $event = new Init($this->container->environment->get());
+        $this->container->event->dispatcher->trigger($event);
     }
 }

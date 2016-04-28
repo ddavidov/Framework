@@ -29,7 +29,7 @@ class Document extends System
     public function addStylesheet($path, $version = null)
     {
         if ($file = $this->container->path->url($path)) {
-            $this->container->system->document->addStylesheet($file . $this->getVersion($version));
+            $this->getClass()->addStylesheet($file . $this->getVersion($version));
         }
     }
 
@@ -45,21 +45,20 @@ class Document extends System
      */
     public function addScript($path, $version = null)
     {
-
         $version = $this->getVersion($version);
 
         // load jQuery, if not loaded before
         if (!$this->container->joomla->version->isCompatible('3.0')) {
             if (!$this->container->system->application->get('jquery')) {
                 $this->container->system->application->set('jquery', true);
-                $this->addScript($this->container->path->url('libraries:jquery/jquery.js') . $version);
+                $this->getClass()->addScript($this->container->path->url('libraries:jquery/jquery.js') . $version);
             }
         } else {
             \JHtml::_('jquery.framework');
         }
 
         if ($file = $this->container->path->url($path)) {
-            $this->container->system->document->addScript($file . $version);
+            $this->getClass()->addScript($file . $version);
         }
     }
 

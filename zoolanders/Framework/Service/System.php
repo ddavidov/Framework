@@ -28,10 +28,19 @@ abstract class System extends Service
      */
     public function __get($name)
     {
+        // this is JFactory::get****()->$method($args)
+        return $this->getClass()->$name;
+    }
+
+    /**
+     * get the joomla class
+     * @return mixed
+     */
+    public function getClass()
+    {
         $method = 'get' . ucfirst(strtolower($this->getName()));
 
-        // this is JFactory::get****()->$method($args)
-        return call_user_func('\JFactory::' . $method)->$name;
+        return call_user_func('\JFactory::' . $method);
     }
 
     /**

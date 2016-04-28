@@ -2,7 +2,9 @@
 
 namespace Zoolanders\Listener\Type;
 
-class EncryptPasswords
+use Zoolanders\Listener\Listener;
+
+class EncryptPasswords extends Listener
 {
     /**
      * @param \Zoolanders\Event\Type\Beforesave $event

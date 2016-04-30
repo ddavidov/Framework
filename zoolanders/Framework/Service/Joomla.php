@@ -66,4 +66,12 @@ class Joomla extends Service
     {
         return $this->container->system->config->get('access');
     }
+
+    /**
+     * @return \JMenu
+     */
+    public function getMenu()
+    {
+        return $this->container->system->application->getMenu('site');
+    }
 }

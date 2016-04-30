@@ -16,7 +16,10 @@
         "installation": "\\Zoolanders\\Service\\Installation",
         "dependencies": "\\Zoolanders\\Service\\Dependencies",
         "route": "\\Zoolanders\\Service\\Route",
-        "crypt": "\\Zoolanders\\Service\\Crypt"
+        "crypt": "\\Zoolanders\\Service\\Crypt",
+        "data": "\\Zoolanders\\Service\\Data",
+        "link": "\\Zoolanders\\Service\\Link",
+        "params": "\\Zoolanders\\Service\\Params"
     },
     "events": {
         "type:beforesave" : [
@@ -26,7 +29,9 @@
             "\\Zoolanders\\Listener\\Type\\AddCoreElements"
         ],
         "environment:init": [
-            "\\Zoolanders\\Listener\\Environment\\LoadCss"
+            "\\Zoolanders\\Listener\\Environment\\LoadCss",
+            "\\Zoolanders\\Listener\\Environment\\LoadFieldAssets",
+            "\\Zoolanders\\Listener\\Environment\\LoadSeparatorAssets"
         ]
     }
 }

@@ -41,16 +41,6 @@ class plgSystemZlframework extends JPlugin
 			$this->app->path->register($path, 'zoomailing');
 			require_once($path . '/init.php');
 		}
-
-		// load ZL Fields, workaround for first time using ZL elements
-		if ($this->app->zlfw->isTheEnviroment('zoo-type-edit')) $this->app->zlfield->loadAssets();
-
-		// load Separator ZL Field integration
-		if ($this->app->zlfw->isTheEnviroment('zoo-type')) {
-			$this->app->document->addStylesheet('elements:separator/assets/zlfield.css');
-			$this->app->document->addScript('elements:separator/assets/zlfield.min.js');
-			$this->app->document->addScriptDeclaration('jQuery(function($) { $("body").ZOOtoolsSeparatorZLField({ enviroment: "' . $this->app->zlfw->getTheEnviroment() . '" }) });');
-		}
 	}
 
 }

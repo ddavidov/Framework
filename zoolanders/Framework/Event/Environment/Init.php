@@ -2,6 +2,10 @@
 
 namespace Zoolanders\Event\Environment;
 
+use Joomla\Input\Input;
+use Zoolanders\Service\Request;
+use Zoolanders\Service\Zoo;
+
 class Init extends \Zoolanders\Event\Event
 {
     /**
@@ -17,16 +21,101 @@ class Init extends \Zoolanders\Event\Event
     /**
      * @var string
      */
+    protected $controller;
+
+    /**
+     * @var string
+     */
     protected $view;
+
+    /**
+     * @var string
+     */
+    protected $task;
+
+    /**
+     * @var Request
+     */
+    protected $request;
 
     /**
      * Init constructor.
      *
      */
-    public function __construct($environment)
+    public function __construct($request)
     {
-        // Break into components
-        @list($this->side, $this->component, $this->view) = explode(".", $environment);
+        $this->request = $request;
+
+        $this->side = $this->container->system->application->isAdmin() ? 'admin' : 'site';
+        $this->component = str_replace('com_', '', $request->getCmd('option', ''));
+        $this->controller = $request->getCmd('controller', false);
+        $this->view = $request->getCmd('view', false);
+        $this->task = $request->getCmd('task', false);
+    }
+
+    /**
+     * @param $env
+     * @return bool
+     */
+    public function is($env)
+    {
+        return (strpos($this->get(), $env) === 0);
+    }
+
+    /**
+     * get The Enviroment
+     *
+     * @return @string An known enviroment in simple string
+     *
+     * @since 3.0.6
+     */
+    public function get()
+    {
+        // ZOO
+        if ($this->component == 'zoo') {
+            $path = 'zoo-';
+            switch ($this->task) {
+                case 'editelements':
+                case 'addelement':
+                    $path .= 'type-edit';
+                    break;
+
+                case 'assignelements':
+                    $path .= 'type-assignment';
+                    break;
+
+                case 'assignsubmission':
+                    $path .= 'type-assignment-submission';
+                    break;
+
+                case 'edit':
+                    $path .= 'item-edit';
+                    break;
+
+                case 'add':
+                    if ($this->controller == 'new' && strlen($this->group)) $path .= 'app-config';
+                    break;
+
+                default:
+                    if ($this->controller == 'configuration') $path .= 'app-config';
+                    break;
+            }
+
+            return $path;
+        }
+
+        // Modules
+        if ($this->component == 'advancedmodules' || $this->component == 'modules') {
+            return 'joomla-module';
+        }
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
@@ -56,6 +145,14 @@ class Init extends \Zoolanders\Event\Event
     /**
      * @return string
      */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @return string
+     */
     public function getSide()
     {
         return $this->side;
@@ -67,5 +164,13 @@ class Init extends \Zoolanders\Event\Event
     public function getView()
     {
         return $this->view;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTask()
+    {
+        return $this->task;
     }
 }

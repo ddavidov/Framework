@@ -43,7 +43,7 @@ class Event extends Service
 
     public function triggerEnvironmentEvent()
     {
-        $event = new Init($this->container->environment->get());
+        $event = new Init($this->container->request);
         $this->container->event->dispatcher->trigger($event);
     }
 }

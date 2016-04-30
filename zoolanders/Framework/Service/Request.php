@@ -1,6 +1,7 @@
 <?php
 
 namespace Zoolanders\Service;
+use Zoolanders\Container\Container;
 
 /**
  * Class Request

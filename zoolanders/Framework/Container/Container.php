@@ -2,6 +2,7 @@
 
 namespace Zoolanders\Container;
 
+use Auryn\Injector;
 use Pimple\Container as Pimple;
 use Zoolanders\Event\ContainerConfigurationLoaded;
 use Zoolanders\Event\ContainerServicesLoaded;
@@ -32,6 +33,32 @@ class Container extends Pimple
     protected $config;
 
     /**
+     * @var Injector
+     */
+    protected $injector;
+
+    public function __construct(array $values)
+    {
+        parent::__construct($values);
+
+        $this->injector = new Injector();
+
+        // Forcibly share the container
+        $this->injector->share($this);
+    }
+
+    /**
+     * Proxy any other call to the injector
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->injector, $name], $arguments);
+    }
+
+    /**
      * Load the service into the DI Container
      * @param $services
      */
@@ -41,7 +68,7 @@ class Container extends Pimple
         foreach ($services as $name => $class) {
             // it's either an array or an object,
             if (is_object($class) || is_array($class) || $class instanceof Registry) {
-                $tmp = new Nested();
+                $tmp = new Nested([]);
                 $tmp->setParentContainer($this);
                 $tmp->loadServices($class);
 

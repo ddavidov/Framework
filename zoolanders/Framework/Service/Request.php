@@ -1,6 +1,7 @@
 <?php
 
 namespace Zoolanders\Service;
+
 use Zoolanders\Container\Container;
 
 /**
@@ -34,5 +35,15 @@ class Request extends Service
     public function __call($name, $arguments)
     {
         return call_user_func_array([$this->input, $name], $arguments);
+    }
+
+    /**
+     * isAjax
+     *
+     * @return bool True if an ajax call is being made
+     */
+    public function isAjax()
+    {
+        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
     }
 }

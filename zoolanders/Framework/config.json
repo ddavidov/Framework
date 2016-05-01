@@ -19,7 +19,8 @@
         "crypt": "\\Zoolanders\\Service\\Crypt",
         "data": "\\Zoolanders\\Service\\Data",
         "link": "\\Zoolanders\\Service\\Link",
-        "params": "\\Zoolanders\\Service\\Params"
+        "params": "\\Zoolanders\\Service\\Params",
+        "cache": "\\Zoolanders\\Service\\Cache"
     },
     "events": {
         "type:beforesave" : [

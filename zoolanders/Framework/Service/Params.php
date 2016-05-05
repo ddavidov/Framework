@@ -2,6 +2,7 @@
 
 namespace Zoolanders\Service;
 
+use Joomla\Registry\Registry;
 use Zoolanders\Container\Container;
 
 defined('_JEXEC') or die;
@@ -9,7 +10,7 @@ defined('_JEXEC') or die;
 /**
  * A helper class to quickly get the component parameters
  */
-class Params
+class Params extends Service
 {
 
     /**
@@ -50,7 +51,7 @@ class Params
 
         $json = $db->setQuery($sql)->loadResult();
 
-        $this->params[$component] = new \Joomla\Registry\Registry($json);
+        $this->params[$component] = $this->container->data->create($json, 'parameter');
     }
 
     /**
@@ -67,7 +68,7 @@ class Params
             $this->reload($component);
         }
 
-        return $this->params[$component]->get($key, $default);
+        return $this->container->data->create($this->params[$component]->get($key, $default));
     }
 
     /**
@@ -122,7 +123,7 @@ class Params
     {
         $db = $this->container->db;
         foreach ($this->params as $component => $params) {
-            $data = $params->toString();
+            $data = (string) $params;
 
             $sql = $db->getQuery(true)
                 ->update($db->qn('#__extensions'))

@@ -31,7 +31,7 @@ class Crypt extends Service
      */
     public function encrypt($text)
     {
-        $this->crypt->encrypt($text);
+        return $this->crypt->encrypt($text);
     }
 
     /**
@@ -40,7 +40,7 @@ class Crypt extends Service
      */
     public function decrypt($text)
     {
-        $this->crypt->decrypt($text);
+        return $this->crypt->decrypt($text);
     }
 
     /**

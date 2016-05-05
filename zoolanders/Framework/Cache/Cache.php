@@ -107,7 +107,7 @@ class Cache implements CacheInterface
      */
     public function get($key)
     {
-        if ($this->_ash) {
+        if ($this->hash) {
             $key = md5($key);
         }
 
@@ -123,7 +123,7 @@ class Cache implements CacheInterface
      * @param string $key The key
      * @param mixed $value The value
      *
-     * @return AppCache $this for chaining support
+     * @return Cache $this for chaining support
      *
      * @since 2.0
      */
@@ -176,7 +176,7 @@ class Cache implements CacheInterface
     {
         if ($this->dirty) {
             $data = json_encode($this->items);
-            $this->container->write($this->file, $data);
+            $this->container->filesystem->put($this->file, $data);
         }
 
         return $this;

@@ -237,7 +237,8 @@ class Path extends Service
                         if ($filter && !preg_match($filter, $file)) {
                             continue;
                         }
-                        $files[] = $prefix . $file;
+
+                        $files[] = $prefix . $file['basename'];
                     }
 
                     // continue if not recursive

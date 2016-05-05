@@ -4,7 +4,7 @@ namespace Zoolanders\Event;
 
 trait Triggerable
 {
-    public function triggerEvent(Event $event)
+    public function triggerEvent(EventInterface $event)
     {
         $eventName = 'on' . $event->getName();
 
@@ -17,6 +17,6 @@ trait Triggerable
         $this->container->event->joomla->trigger($eventName, [&$event]);
 
         // Then trigger also the zoolanders one
-        $this->container->event->trigger($event);
+        $this->container->event->dispatcher->trigger($event);
     }
 }

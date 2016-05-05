@@ -6,7 +6,7 @@ namespace Zoolanders\Service;
  * Class System
  * @package Zoolanders\System
  */
-abstract class System extends Service
+class System extends Service
 {
     /**
      * Proxy function calls to the J* object named like this class

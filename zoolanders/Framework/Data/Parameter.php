@@ -2,7 +2,7 @@
 
 namespace Zoolanders\Data;
 
-class Parameter extends Data
+class Parameter extends Json
 {
     /**
      * Class Constructor

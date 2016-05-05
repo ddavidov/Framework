@@ -4,6 +4,7 @@ namespace Zoolanders\Container;
 
 use Auryn\Injector;
 use Pimple\Container as Pimple;
+use Zoolanders\Autoloader;
 use Zoolanders\Event\ContainerConfigurationLoaded;
 use Zoolanders\Event\ContainerServicesLoaded;
 use Zoolanders\Filesystem\Filesystem;
@@ -37,6 +38,15 @@ class Container extends Pimple
      */
     protected $injector;
 
+    /**
+     * @var Autoloader
+     */
+    public $loader;
+
+    /**
+     * Container constructor.
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         parent::__construct($values);
@@ -45,6 +55,8 @@ class Container extends Pimple
 
         // Forcibly share the container
         $this->injector->share($this);
+
+        $this->loader = Autoloader::getInstance();
     }
 
     /**
@@ -57,7 +69,7 @@ class Container extends Pimple
     {
         return call_user_func_array([$this->injector, $name], $arguments);
     }
-
+    
     /**
      * Load the service into the DI Container
      * @param $services

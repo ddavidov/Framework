@@ -5,10 +5,14 @@
         "system": {
             "language": "\\Zoolanders\\Service\\System\\Language",
             "application": "\\Zoolanders\\Service\\System\\Application",
-            "document": "\\Zoolanders\\Service\\System\\Document"
+            "document": "\\Zoolanders\\Service\\System\\Document",
+            "dbo": "\\Zoolanders\\Service\\System\\Dbo",
+            "config": "\\Zoolanders\\Service\\System\\Config"
         },
+        "db": "\\Zoolanders\\Service\\Database",
         "request": "\\Zoolanders\\Service\\Request",
         "input": "\\Zoolanders\\Service\\Request",
+        "params": "\\Zoolanders\\Service\\Params",
         "joomla": "\\Zoolanders\\Service\\Joomla",
         "document": "\\Zoolanders\\Service\\System\\Document",
         "environment": "\\Zoolanders\\Service\\Environment",
@@ -19,7 +23,6 @@
         "crypt": "\\Zoolanders\\Service\\Crypt",
         "data": "\\Zoolanders\\Service\\Data",
         "link": "\\Zoolanders\\Service\\Link",
-        "params": "\\Zoolanders\\Service\\Params",
         "cache": "\\Zoolanders\\Service\\Cache"
     },
     "events": {

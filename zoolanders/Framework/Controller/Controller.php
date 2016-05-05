@@ -136,7 +136,7 @@ class Controller
             $task = $this->defaultTask;
         }
 
-        $ret = $this->$task();
+        $ret = $this->container->execute([$this, $task]);
 
         $this->triggerEvent(new AfterExecute($this, $task));
 
@@ -177,19 +177,15 @@ class Controller
      */
     public function getView($name = null, $config = array())
     {
-        if (!empty($name)) {
-            $viewName = $name;
-        } elseif (!empty($this->viewName)) {
-            $viewName = $this->viewName;
-        } else {
-            $viewName = $this->view;
-        }
-
-
-        $viewType = $this->input->getCmd('format', 'html');
+        $viewName = '\Zoolanders\View\View';
 
         // Get the model's class name
-        return $this->container->make($viewName, $viewType, $config);
+        $view = $this->container->make($viewName);
+        
+        // set the default paths
+        $view->addTemplatePath(JPATH_COMPONENT . '/views/' . $this->getName() . '/tmpl');
+        
+        return $view;
     }
 
     /**
@@ -205,8 +201,8 @@ class Controller
     public function getName()
     {
         if (empty($this->name)) {
-            $r = null;
-            $this->name = @$r[2];
+            $pieces = explode("\\", get_class($this));
+            $this->name = array_pop($pieces);
         }
 
         return $this->name;

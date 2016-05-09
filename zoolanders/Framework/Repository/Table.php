@@ -8,7 +8,7 @@ use Zoolanders\Service\Zoo;
  * Base table repository for any repository that needs to use the old ZOO table classes
  * @package Zoolanders\Repository
  */
-abstract class TableRepository extends Repository
+abstract class Table extends Database
 {
     /**
      * @var Zoo
@@ -31,13 +31,19 @@ abstract class TableRepository extends Repository
     protected $tableName;
 
     /**
-     * TableRepository constructor.
-     * @param Zoo $app
+     * Table constructor.
+     * @param string $tableName
+     * @param string $className
      */
-    public function __construct(Zoo $app)
+    public function __construct($tableName, $className)
     {
-        $this->app = $app;
-        $this->table = $this->app->table->$name;
+        parent::__construct();
+        
+        $this->tableName = $tableName;
+        $this->className = $className;
+
+        $this->app = $this->container->zoo->getApp();
+        $this->table = $this->app->table->$tableName;
     }
 
     public function create(array $attributes)

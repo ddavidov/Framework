@@ -51,6 +51,17 @@ abstract class Remote extends Repository
         return $data;
     }
 
+    public function getRemoteUrl($data = [])
+    {
+        $host = $this->getUrl();
+        $args = array_merge($this->getQuery(), $data);
+
+        $url = new \JUri($host);
+        $url->setQuery($args);
+
+        return $url->toString();
+    }
+
     public function getUrl()
     {
         return $this->baseUrl;

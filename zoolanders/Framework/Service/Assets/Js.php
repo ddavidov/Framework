@@ -15,4 +15,9 @@ class Js extends Assets
 
         $this->filterManager->set('jsmin', new JSMinFilter());
     }
+
+    protected function loadFile($path)
+    {
+        $this->container->system->document->addScript($path);
+    }
 }

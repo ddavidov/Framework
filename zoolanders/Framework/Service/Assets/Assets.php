@@ -70,7 +70,7 @@ abstract class Assets extends Service
         $this->assets = array_unique(array_merge($this->assets, $assets));
     }
 
-    public function dump($filters = false)
+    public function load($filters = false)
     {
         if (!$filters) {
             $filters = $this->filters;
@@ -80,5 +80,11 @@ abstract class Assets extends Service
         
         $writer = new Writer($this->container, $this->container->path->path('cache:'));
         $writer->writeAsset($asset);
+
+        foreach ($writer->getPaths() as $path) {
+            $this->loadFile($path);
+        }
     }
+
+    abstract protected function loadFile($path);
 }

@@ -100,7 +100,10 @@ class Path extends Service
     {
         // init vars
         $parts = explode('?', $resource);
-        $url = str_replace(DIRECTORY_SEPARATOR, '/', $this->path($parts[0]));
+        $path = $this->path($parts[0]);
+        $path = $path ? $path : $parts[0];
+
+        $url = str_replace(DIRECTORY_SEPARATOR, '/', $path);
 
         if ($url) {
 

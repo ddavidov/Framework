@@ -32,7 +32,8 @@ class plgSystemZlframework extends JPlugin
 		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
 
 		// trigger a Environment/Init event
-		$this->container->event->triggerEnvironmentEvent();
+		$event = new \Zoolanders\Event\Environment\Init($this->container->request);
+		$this->container->event->dispatcher->trigger($event);
 
 		// init ZOOmailing if installed
 		if ($path = $this->app->path->path('root:plugins/acymailing/zoomailing/zoomailing')) {
@@ -43,4 +44,10 @@ class plgSystemZlframework extends JPlugin
 		}
 	}
 
+	public function onBeforeRender()
+	{
+		// trigger a Environment/Init event
+		$event = new \Zoolanders\Event\Environment\BeforeRender();
+		$this->container->event->dispatcher->trigger($event);
+	}
 }

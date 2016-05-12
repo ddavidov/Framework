@@ -40,6 +40,9 @@
             "\\Zoolanders\\Listener\\Environment\\LoadCss",
             "\\Zoolanders\\Listener\\Environment\\LoadFieldAssets",
             "\\Zoolanders\\Listener\\Environment\\LoadSeparatorAssets"
+        ],
+        "environment:beforerender": [
+            "\\Zoolanders\\Listener\\Environment\\IncludeAssets"
         ]
     }
 }

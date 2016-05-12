@@ -17,4 +17,9 @@ class Css extends Assets
         $this->filterManager->set('cssmin', new CssMinFilter());
         $this->filterManager->set('less', new LessphpFilter());
     }
+
+    protected function loadFile($path)
+    {
+        $this->container->system->document->addStylesheet($path);
+    }
 }

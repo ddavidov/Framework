@@ -2,7 +2,9 @@
 
 namespace Zoolanders\Service\Assets;
 
+use Assetic\Asset\AssetInterface;
 use Assetic\AssetWriter;
+use Assetic\Util\VarUtils;
 use Zoolanders\Container\Container;
 
 class Writer extends AssetWriter
@@ -10,7 +12,13 @@ class Writer extends AssetWriter
     /**
      * @var Container
      */
-    protected static $container;
+    protected $container;
+
+    protected $dir;
+
+    protected $values;
+
+    protected $paths = [];
 
     /**
      * Writer constructor.
@@ -18,22 +26,45 @@ class Writer extends AssetWriter
      * @param array $dir
      * @param array $values
      */
-    public function __construct(Container $container, $dir, array $values = [])
+    public function __construct(Container $container, $dir, $values = [])
     {
-        parent::__construct($dir, $values);
+        parent::__construct($dir);
 
-        self::$container = $container;
+        $this->values = $values;
+        $this->dir = $dir;
+
+        $this->container = $container;
     }
 
     public function writeAsset(AssetInterface $asset)
     {
+        foreach (VarUtils::getCombinations($asset->getVars(), $this->values) as $combination) {
+            $asset->setValues($combination);
 
+            $path = $this->dir . '/' . VarUtils::resolve(
+                    $asset->getTargetPath(),
+                    $asset->getVars(),
+                    $asset->getValues()
+                );
+
+            $this->writeAssetFile(
+                $path,
+                $asset->dump()
+            );
+
+            $this->paths[] = $path;
+        }
     }
 
-    protected static function write($path, $contents)
+    public function getPaths()
     {
-        if (!self::$container->filesystem->has($path)) {
-            self::$container->filesystem->write($path, $contents);
+        return array_unique($this->paths);
+    }
+
+    protected function writeAssetFile($path, $contents)
+    {
+        if (!$this->container->filesystem->has($path)) {
+            $this->container->filesystem->write($path, $contents);
         }
     }
 }

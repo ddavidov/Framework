@@ -40,10 +40,4 @@ class Event extends Service
         $this->joomla = \JEventDispatcher::getInstance();
         $this->zoo = new Zoo($c);
     }
-
-    public function triggerEnvironmentEvent()
-    {
-        $event = new Init($this->container->request);
-        $this->container->event->dispatcher->trigger($event);
-    }
 }

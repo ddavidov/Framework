@@ -11,7 +11,6 @@ class AfterDisplay extends Listener
      */
     public function handle(\Zoolanders\Event\View\AfterDisplay $event)
     {
-        $this->container->assets->css->dump();
-        $this->container->assets->js->dump();
+       
     }
 }

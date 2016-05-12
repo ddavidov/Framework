@@ -9,6 +9,10 @@
             "dbo": "\\Zoolanders\\Service\\System\\Dbo",
             "config": "\\Zoolanders\\Service\\System\\Config"
         },
+        "assets": {
+            "css": "\\Zoolanders\\Service\\Assets\\Css",
+            "js": "\\Zoolanders\\Service\\Assets\\Js"
+        },
         "db": "\\Zoolanders\\Service\\Database",
         "request": "\\Zoolanders\\Service\\Request",
         "input": "\\Zoolanders\\Service\\Request",

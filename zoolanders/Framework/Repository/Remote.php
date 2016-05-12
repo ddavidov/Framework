@@ -38,6 +38,7 @@ abstract class Remote extends Repository
             $response = $this->client->get($this->getUrl(), [
                 'query' => $data
             ]);
+
         } catch (RequestException $e) {
             $response = false;
         }

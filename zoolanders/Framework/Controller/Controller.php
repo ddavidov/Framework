@@ -131,7 +131,7 @@ class Controller
         }
 
         $this->triggerEvent(new BeforeExecute($this, $task));
-
+        
         if (!method_exists($this, $task)) {
             $task = $this->defaultTask;
         }

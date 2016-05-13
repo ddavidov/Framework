@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 class Crypt extends Service
 {

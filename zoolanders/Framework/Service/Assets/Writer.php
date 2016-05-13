@@ -1,11 +1,11 @@
 <?php
 
-namespace Zoolanders\Service\Assets;
+namespace Zoolanders\Framework\Service\Assets;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\AssetWriter;
 use Assetic\Util\VarUtils;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 class Writer extends AssetWriter
 {

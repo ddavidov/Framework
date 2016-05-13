@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Cache;
+namespace Zoolanders\Framework\Cache;
 
 interface CacheInterface
 {

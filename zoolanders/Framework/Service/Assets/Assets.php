@@ -1,13 +1,13 @@
 <?php
 
-namespace Zoolanders\Service\Assets;
+namespace Zoolanders\Framework\Service\Assets;
 
 use Assetic\AssetManager;
 use Assetic\Factory\AssetFactory;
 use Assetic\Factory\Worker\CacheBustingWorker;
 use Assetic\FilterManager;
-use Zoolanders\Container\Container;
-use Zoolanders\Service\Service;
+use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\Service;
 
 abstract class Assets extends Service
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Data;
+namespace Zoolanders\Framework\Data;
 
 class Json extends Data
 {

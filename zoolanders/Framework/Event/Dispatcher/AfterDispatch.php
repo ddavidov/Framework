@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event\Dispatcher;
+namespace Zoolanders\Framework\Event\Dispatcher;
 
 class AfterDispatch extends Dispatcher
 {

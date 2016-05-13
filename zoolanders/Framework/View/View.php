@@ -7,13 +7,13 @@
  *
  * Extended by ZOOlanders
  */
-namespace Zoolanders\View;
+namespace Zoolanders\Framework\View;
 
-use Zoolanders\Container\Container;
-use Zoolanders\Event\Triggerable;
-use Zoolanders\Event\View\AfterDisplay;
-use Zoolanders\Event\View\BeforeDisplay;
-use Zoolanders\Event\View\GetTemplatePath;
+use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Event\View\AfterDisplay;
+use Zoolanders\Framework\Event\View\BeforeDisplay;
+use Zoolanders\Framework\Event\View\GetTemplatePath;
 
 /**
  * Class View

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 class Data extends Service
 {
@@ -15,7 +15,7 @@ class Data extends Service
      * @since 1.0.0
      */
     public function create($data = array(), $format = 'json') {
-        $class = '\\Zoolanders\\Data\\' . ucfirst(strtolower($format));
+        $class = '\\Zoolanders\\Framework\\Data\\' . ucfirst(strtolower($format));
         return new $class($data);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Event\Item;
+namespace Zoolanders\Framework\Event\Item;
 
-class Save extends \Zoolanders\Event\Event
+class Save extends \Zoolanders\Framework\Event\Event
 {
     /**
      * @var \Item

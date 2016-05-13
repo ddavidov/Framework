@@ -1,7 +1,7 @@
 <?php
 
-namespace Zoolanders\Cache;
-use Zoolanders\Container\Container;
+namespace Zoolanders\Framework\Cache;
+use Zoolanders\Framework\Container\Container;
 
 
 /**

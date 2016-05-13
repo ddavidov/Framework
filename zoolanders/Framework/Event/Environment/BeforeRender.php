@@ -1,12 +1,12 @@
 <?php
 
-namespace Zoolanders\Event\Environment;
+namespace Zoolanders\Framework\Event\Environment;
 
 use Joomla\Input\Input;
-use Zoolanders\Service\Request;
-use Zoolanders\Service\Zoo;
+use Zoolanders\Framework\Service\Request;
+use Zoolanders\Framework\Service\Zoo;
 
-class BeforeRender extends \Zoolanders\Event\Event
+class BeforeRender extends \Zoolanders\Framework\Event\Event
 {
     /**
      * Init constructor.

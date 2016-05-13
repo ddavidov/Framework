@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoolanders\Service\Assets;
+namespace Zoolanders\Framework\Service\Assets;
 
 use Assetic\Filter\JSMinFilter;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 class Js extends Assets
 {

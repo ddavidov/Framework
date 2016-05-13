@@ -1,15 +1,15 @@
 <?php
 
-namespace Zoolanders\Listener\Type;
+namespace Zoolanders\Framework\Listener\Type;
 
-use Zoolanders\Listener\Listener;
+use Zoolanders\Framework\Listener\Listener;
 
 class EncryptPasswords extends Listener
 {
     /**
-     * @param \Zoolanders\Event\Type\Beforesave $event
+     * @param \Zoolanders\Framework\Event\Type\Beforesave $event
      */
-    public function handle(\Zoolanders\Event\Type\Beforesave $event)
+    public function handle(\Zoolanders\Framework\Event\Type\Beforesave $event)
     {
         $type = $event->getType();
         $elements = $type->config->get('elements');

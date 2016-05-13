@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Repository;
+namespace Zoolanders\Framework\Repository;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 abstract class Repository implements RepositoryInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoolanders\Repository;
+namespace Zoolanders\Framework\Repository;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Zoolanders\Cache\Cacheable;
+use Zoolanders\Framework\Cache\Cacheable;
 
 abstract class Remote extends Repository
 {

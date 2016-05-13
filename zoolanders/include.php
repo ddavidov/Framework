@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders;
+namespace Zoolanders\Framework;
 
 use Composer\Autoload\ClassLoader;
 
@@ -56,6 +56,6 @@ $composerAutoloader = require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 // Create autoloader and add the mapping to the framework
 $loader = Autoloader::getInstance($composerAutoloader);
-$loader->addPsr4('Zoolanders\\', dirname(__FILE__) . '/Framework');
+$loader->addPsr4('Zoolanders\\Framework\\', dirname(__FILE__) . '/Framework');
 
 return $loader;

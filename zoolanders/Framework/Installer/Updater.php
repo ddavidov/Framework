@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Installer;
+namespace Zoolanders\Framework\Installer;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 abstract class Updater
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;

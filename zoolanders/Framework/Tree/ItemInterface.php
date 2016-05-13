@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Tree;
+namespace Zoolanders\Framework\Tree;
 
 interface ItemInterface
 {

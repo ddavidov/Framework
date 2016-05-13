@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoolanders\Listener;
+namespace Zoolanders\Framework\Listener;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 interface ListenerInterface
 {
-    public function handle(\Zoolanders\Event\EventInterface $event);
+    public function handle(\Zoolanders\Framework\Event\EventInterface $event);
 }

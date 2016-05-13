@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Response;
+namespace Zoolanders\Framework\Response;
 
 use JHttpResponse;
 

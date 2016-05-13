@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Menu;
+namespace Zoolanders\Framework\Menu;
 
-use Zoolanders\Tree\Tree;
+use Zoolanders\Framework\Tree\Tree;
 
 class Menu extends Tree
 {
@@ -22,7 +22,7 @@ class Menu extends Tree
      */
     public function __construct($name, $hidden = false)
     {
-        parent::__construct('\\Zoolanders\\Menu\\Item');
+        parent::__construct('\\Zoolanders\\Framework\\Menu\\Item');
 
         $this->name = $name;
 

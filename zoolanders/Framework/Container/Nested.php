@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Container;
+namespace Zoolanders\Framework\Container;
 
 defined('_JEXEC') or die;
 

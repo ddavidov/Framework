@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event\View;
+namespace Zoolanders\Framework\Event\View;
 
 class AfterDisplay extends View
 {
@@ -12,7 +12,7 @@ class AfterDisplay extends View
      * GetTemplatePath constructor.
      * @param $view
      */
-    public function __construct(\Zoolanders\View\View $view, $tpl, &$templateResult)
+    public function __construct(\Zoolanders\Framework\View\View $view, $tpl, &$templateResult)
     {
         $this->view = $view;
         $this->tpl = $tpl;

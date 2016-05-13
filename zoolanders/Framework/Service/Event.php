@@ -1,11 +1,11 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Container\Container;
-use Zoolanders\Event\Dispatcher;
-use Zoolanders\Event\Environment\Init;
-use Zoolanders\Event\Zoo;
+use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Dispatcher;
+use Zoolanders\Framework\Event\Environment\Init;
+use Zoolanders\Framework\Event\Zoo;
 
 class Event extends Service
 {

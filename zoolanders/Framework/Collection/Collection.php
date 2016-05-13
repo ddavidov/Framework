@@ -7,7 +7,7 @@
  * Moved to the Zoolanders Package As-Is, plus the abstracting interface
  */
 
-namespace Zoolanders\Collection;
+namespace Zoolanders\Framework\Collection;
 
 use Closure;
 use ArrayIterator;

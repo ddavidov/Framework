@@ -1,7 +1,7 @@
 <?php
 
-namespace Zoolanders\Service\System;
-use Zoolanders\Service\System;
+namespace Zoolanders\Framework\Service\System;
+use Zoolanders\Framework\Service\System;
 
 class Config extends System
 {

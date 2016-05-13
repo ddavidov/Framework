@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 use League\Flysystem\Adapter\Local;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 class Filesystem extends Service
 {

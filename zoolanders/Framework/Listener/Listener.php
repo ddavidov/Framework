@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Listener;
+namespace Zoolanders\Framework\Listener;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 abstract class Listener
 {

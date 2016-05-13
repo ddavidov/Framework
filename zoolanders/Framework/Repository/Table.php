@@ -1,7 +1,7 @@
 <?php
 
-namespace Zoolanders\Repository;
-use Zoolanders\Service\Zoo;
+namespace Zoolanders\Framework\Repository;
+use Zoolanders\Framework\Service\Zoo;
 
 /**
  * Class TableRepository

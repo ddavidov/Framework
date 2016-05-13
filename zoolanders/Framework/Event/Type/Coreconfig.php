@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event\Type;
+namespace Zoolanders\Framework\Event\Type;
 
 class Coreconfig extends Type
 {

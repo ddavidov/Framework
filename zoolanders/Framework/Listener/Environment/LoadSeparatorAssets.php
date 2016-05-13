@@ -1,15 +1,15 @@
 <?php
 
-namespace Zoolanders\Listener\Environment;
+namespace Zoolanders\Framework\Listener\Environment;
 
-use Zoolanders\Listener\Listener;
+use Zoolanders\Framework\Listener\Listener;
 
 class LoadSeparatorAssets extends Listener
 {
     /**
-     * @param \Zoolanders\Event\Environment\Init $event
+     * @param \Zoolanders\Framework\Event\Environment\Init $event
      */
-    public function handle(\Zoolanders\Event\Environment\Init $event)
+    public function handle(\Zoolanders\Framework\Event\Environment\Init $event)
     {
         // perform admin tasks
         if ($event->is('zoo-type')) {

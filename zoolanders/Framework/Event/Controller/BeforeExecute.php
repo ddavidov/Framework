@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event\Controller;
+namespace Zoolanders\Framework\Event\Controller;
 
 class BeforeExecute extends Controller
 {
@@ -11,10 +11,10 @@ class BeforeExecute extends Controller
 
     /**
      * BeforeExecute constructor.
-     * @param \Zoolanders\Controller\Controller $controller
+     * @param \Zoolanders\Framework\Controller\Controller $controller
      * @param $task
      */
-    public function __construct(\Zoolanders\Controller\Controller $controller, &$task)
+    public function __construct(\Zoolanders\Framework\Controller\Controller $controller, &$task)
     {
         $this->controller = $controller;
         $this->task = &$task;

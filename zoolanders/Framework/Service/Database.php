@@ -6,8 +6,8 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Zoolanders\Service;
-use Zoolanders\Container\Container;
+namespace Zoolanders\Framework\Service;
+use Zoolanders\Framework\Container\Container;
 
 /**
  * Helper for the database operations

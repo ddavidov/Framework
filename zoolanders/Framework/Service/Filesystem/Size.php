@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Service\Filesystem;
+namespace Zoolanders\Framework\Service\Filesystem;
 
 trait Size
 {

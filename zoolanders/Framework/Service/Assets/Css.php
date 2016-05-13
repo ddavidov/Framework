@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoolanders\Service\Assets;
+namespace Zoolanders\Framework\Service\Assets;
 
 use Assetic\Filter\CssMinFilter;
 use Assetic\Filter\LessphpFilter;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 class Css extends Assets
 {

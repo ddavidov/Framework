@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Event\View;
+namespace Zoolanders\Framework\Event\View;
 
-use Zoolanders\Event\Event;
+use Zoolanders\Framework\Event\Event;
 
 class View extends Event
 {
@@ -12,13 +12,13 @@ class View extends Event
      * GetTemplatePath constructor.
      * @param $view
      */
-    public function __construct(\Zoolanders\View\View $view)
+    public function __construct(\Zoolanders\Framework\View\View $view)
     {
         $this->view = $view;
     }
 
     /**
-     * @return \Zoolanders\View\View
+     * @return \Zoolanders\Framework\View\View
      */
     public function getView()
     {

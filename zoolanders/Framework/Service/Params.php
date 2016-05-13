@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 use Joomla\Registry\Registry;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 defined('_JEXEC') or die;
 

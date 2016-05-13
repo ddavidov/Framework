@@ -1,11 +1,11 @@
 <?php
 
-namespace Zoolanders\Dispatcher;
+namespace Zoolanders\Framework\Dispatcher;
 
-use Zoolanders\Container\Container;
-use Zoolanders\Event\Dispatcher\AfterDispatch;
-use Zoolanders\Event\Dispatcher\BeforeDispatch;
-use Zoolanders\Event\Triggerable;
+use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Dispatcher\AfterDispatch;
+use Zoolanders\Framework\Event\Dispatcher\BeforeDispatch;
+use Zoolanders\Framework\Event\Triggerable;
 
 class Dispatcher
 {

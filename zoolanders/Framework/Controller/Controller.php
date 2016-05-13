@@ -1,13 +1,13 @@
 <?php
 
-namespace Zoolanders\Controller;
+namespace Zoolanders\Framework\Controller;
 
-use Zoolanders\Container\Container;
-use Zoolanders\Controller\Exception\AccessForbidden;
-use Zoolanders\Controller\Exception\TaskNotFound;
-use Zoolanders\Event\Controller\AfterExecute;
-use Zoolanders\Event\Controller\BeforeExecute;
-use Zoolanders\Event\Triggerable;
+use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Controller\Exception\AccessForbidden;
+use Zoolanders\Framework\Controller\Exception\TaskNotFound;
+use Zoolanders\Framework\Event\Controller\AfterExecute;
+use Zoolanders\Framework\Event\Controller\BeforeExecute;
+use Zoolanders\Framework\Event\Triggerable;
 
 /**
  * Class Controller
@@ -177,7 +177,7 @@ class Controller
      */
     public function getView($name = null, $config = array())
     {
-        $viewName = '\Zoolanders\View\View';
+        $viewName = '\Zoolanders\Framework\View\View';
 
         // Get the model's class name
         $view = $this->container->make($viewName);

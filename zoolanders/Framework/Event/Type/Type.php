@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Event\Type;
+namespace Zoolanders\Framework\Event\Type;
 
-class Type extends \Zoolanders\Event\Event
+class Type extends \Zoolanders\Framework\Event\Event
 {
     /**
      * @var \Type

@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoolanders\Menu;
+namespace Zoolanders\Framework\Menu;
 
 use Joomla\Utilities\ArrayHelper;
-use Zoolanders\Tree;
+use Zoolanders\Framework\Tree;
 
 /**
  * Class to represent a Menu Item

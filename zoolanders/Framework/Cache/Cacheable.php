@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Cache;
+namespace Zoolanders\Framework\Cache;
 
 use League\Flysystem\Cached\CacheInterface;
 

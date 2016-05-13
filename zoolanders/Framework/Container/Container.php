@@ -1,15 +1,15 @@
 <?php
 
-namespace Zoolanders\Container;
+namespace Zoolanders\Framework\Container;
 
 use Auryn\Injector;
 use Pimple\Container as Pimple;
-use Zoolanders\Autoloader;
-use Zoolanders\Event\ContainerConfigurationLoaded;
-use Zoolanders\Event\ContainerServicesLoaded;
-use Zoolanders\Filesystem\Filesystem;
-use Zoolanders\Service\Event;
-use Zoolanders\Zoo\Zoo;
+use Zoolanders\Framework\Autoloader;
+use Zoolanders\Framework\Event\ContainerConfigurationLoaded;
+use Zoolanders\Framework\Event\ContainerServicesLoaded;
+use Zoolanders\Framework\Filesystem\Filesystem;
+use Zoolanders\Framework\Service\Event;
+use Zoolanders\Framework\Zoo\Zoo;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
@@ -112,7 +112,7 @@ class Container extends Pimple
         // Database Driver service
         if (!isset($container['zoo'])) {
             $container['zoo'] = function () use ($container) {
-                return new \Zoolanders\Service\Zoo($container);
+                return new \Zoolanders\Framework\Service\Zoo($container);
             };
         }
 
@@ -126,7 +126,7 @@ class Container extends Pimple
         // Event service
         if (!isset($container['event'])) {
             $container['event'] = function () use ($container) {
-                return new \Zoolanders\Service\Event($container);
+                return new \Zoolanders\Framework\Service\Event($container);
             };
         }
 

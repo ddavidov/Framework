@@ -1,10 +1,10 @@
 <?php
 
-namespace Zoolanders\Event;
+namespace Zoolanders\Framework\Event;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
-class Zoo extends \Zoolanders\Service\Service
+class Zoo extends \Zoolanders\Framework\Service\Service
 {
     /**
      * @var \EventHelper
@@ -80,7 +80,7 @@ class Zoo extends \Zoolanders\Service\Service
      * Create the right Zoolanders event class instance from the zoo event
      * @param string $eventClass class to instantiate
      * @param \AppEvent $zooEvent The event itself
-     * @return \Zoolanders\Event\Event
+     * @return \Zoolanders\Framework\Event\Event
      */
     protected function createEventObject($eventClass, \AppEvent $zooEvent)
     {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Zoolanders\Listener\Type;
+namespace Zoolanders\Framework\Listener\Type;
 
-use Zoolanders\Listener\Listener;
+use Zoolanders\Framework\Listener\Listener;
 
 class AfterDisplay extends Listener
 {
     /**
-     * @param \Zoolanders\Event\View\AfterDisplay $event
+     * @param \Zoolanders\Framework\Event\View\AfterDisplay $event
      */
-    public function handle(\Zoolanders\Event\View\AfterDisplay $event)
+    public function handle(\Zoolanders\Framework\Event\View\AfterDisplay $event)
     {
        
     }

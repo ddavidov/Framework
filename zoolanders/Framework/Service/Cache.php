@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 class Cache extends Service
 {
@@ -12,7 +12,7 @@ class Cache extends Service
      * @param boolean $hash Wether the key should be hashed
      * @param int $lifetime The values lifetime
      *
-     * @return \Zoolanders\Cache\Cache
+     * @return \Zoolanders\Framework\Cache\Cache
      */
     public function create($file, $hash = true, $lifetime = null, $type = 'file')
     {

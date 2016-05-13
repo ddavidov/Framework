@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoolanders\Router;
+namespace Zoolanders\Framework\Router;
 
-use Zoolanders\Cache\CacheInterface;
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Cache\CacheInterface;
+use Zoolanders\Framework\Container\Container;
 
 defined('_JEXEC') or die();
 

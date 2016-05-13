@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event;
+namespace Zoolanders\Framework\Event;
 
 interface EventInterface
 {

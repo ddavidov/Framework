@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Utils;
+namespace Zoolanders\Framework\Utils;
 
 trait ArrayColumn
 {

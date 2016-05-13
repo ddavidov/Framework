@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Menu;
+namespace Zoolanders\Framework\Menu;
 
 /**
  * Represents a Menu Divider

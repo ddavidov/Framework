@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Service;
+namespace Zoolanders\Framework\Service;
 
 class Link extends Service
 {

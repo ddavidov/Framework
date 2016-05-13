@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Tree;
+namespace Zoolanders\Framework\Tree;
 
 /**
  * Base class to deal with tree structures

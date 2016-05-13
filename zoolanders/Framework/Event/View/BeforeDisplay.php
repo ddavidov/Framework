@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Event\View;
+namespace Zoolanders\Framework\Event\View;
 
 class BeforeDisplay extends View
 {
@@ -10,7 +10,7 @@ class BeforeDisplay extends View
      * GetTemplatePath constructor.
      * @param $view
      */
-    public function __construct(\Zoolanders\View\View $view, $tpl)
+    public function __construct(\Zoolanders\Framework\View\View $view, $tpl)
     {
         $this->view = $view;
         $this->tpl = $tpl;

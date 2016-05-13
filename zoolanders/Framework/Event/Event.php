@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Event;
+namespace Zoolanders\Framework\Event;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 /**
  * Class Event

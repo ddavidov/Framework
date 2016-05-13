@@ -16,7 +16,7 @@ class plgSystemZlframework extends JPlugin
 	public $app;
 
 	/**
-	 * @var \Zoolanders\Container\Container
+	 * @var \Zoolanders\Framework\Container\Container
 	 */
 	protected $container;
 
@@ -25,14 +25,14 @@ class plgSystemZlframework extends JPlugin
 	function onAfterInitialise()
 	{
 		require_once JPATH_LIBRARIES . '/zoolanders/include.php';
-		$this->container = Zoolanders\Container\Container::getInstance();
+		$this->container = Zoolanders\Framework\Container\Container::getInstance();
 		$this->app = $this->container->zoo->getApp();
 
 		// check and perform installation tasks
 		if (!$this->container->installation->checkInstallation()) return; // must go after language, elements path and helpers
 
 		// trigger a Environment/Init event
-		$event = new \Zoolanders\Event\Environment\Init($this->container->request);
+		$event = new \Zoolanders\Framework\Event\Environment\Init($this->container->request);
 		$this->container->event->dispatcher->trigger($event);
 
 		// init ZOOmailing if installed
@@ -47,7 +47,7 @@ class plgSystemZlframework extends JPlugin
 	public function onBeforeRender()
 	{
 		// trigger a Environment/Init event
-		$event = new \Zoolanders\Event\Environment\BeforeRender();
+		$event = new \Zoolanders\Framework\Event\Environment\BeforeRender();
 		$this->container->event->dispatcher->trigger($event);
 	}
 }

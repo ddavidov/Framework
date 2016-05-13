@@ -1,8 +1,8 @@
 <?php
 
-namespace Zoolanders\Cache;
+namespace Zoolanders\Framework\Cache;
 
-use Zoolanders\Container\Container;
+use Zoolanders\Framework\Container\Container;
 
 /**
  * The cache class.

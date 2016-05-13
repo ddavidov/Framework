@@ -1,12 +1,12 @@
 <?php
 
-namespace Zoolanders\Event\Environment;
+namespace Zoolanders\Framework\Event\Environment;
 
 use Joomla\Input\Input;
-use Zoolanders\Service\Request;
-use Zoolanders\Service\Zoo;
+use Zoolanders\Framework\Service\Request;
+use Zoolanders\Framework\Service\Zoo;
 
-class Init extends \Zoolanders\Event\Event
+class Init extends \Zoolanders\Framework\Event\Event
 {
     /**
      * @var string

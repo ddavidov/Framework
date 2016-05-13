@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Repository;
+namespace Zoolanders\Framework\Repository;
 
 abstract class Database extends Repository
 {

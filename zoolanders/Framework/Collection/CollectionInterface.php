@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Collection;
+namespace Zoolanders\Framework\Collection;
 
 use Closure;
 

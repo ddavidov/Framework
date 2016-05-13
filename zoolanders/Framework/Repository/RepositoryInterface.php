@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoolanders\Repository;
+namespace Zoolanders\Framework\Repository;
 
 interface RepositoryInterface
 {

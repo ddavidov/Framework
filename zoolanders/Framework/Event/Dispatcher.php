@@ -1,7 +1,7 @@
 <?php
 
-namespace Zoolanders\Event;
-use Zoolanders\Container\Container;
+namespace Zoolanders\Framework\Event;
+use Zoolanders\Framework\Container\Container;
 
 /**
  * Handles the dispatching of the Event events

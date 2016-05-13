@@ -1,15 +1,15 @@
 <?php
 
-namespace Zoolanders\Listener\Type;
+namespace Zoolanders\Framework\Listener\Type;
 
-use Zoolanders\Listener\Listener;
+use Zoolanders\Framework\Listener\Listener;
 
 class AddCoreElements extends Listener
 {
     /**
-     * @param \Zoolanders\Event\Type\Coreconfig $event
+     * @param \Zoolanders\Framework\Event\Type\Coreconfig $event
      */
-    public function handle(\Zoolanders\Event\Type\Coreconfig $event)
+    public function handle(\Zoolanders\Framework\Event\Type\Coreconfig $event)
     {
         $config = $event->getConfig();
 

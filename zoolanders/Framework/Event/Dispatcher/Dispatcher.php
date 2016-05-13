@@ -1,26 +1,26 @@
 <?php
 
-namespace Zoolanders\Event\Dispatcher;
+namespace Zoolanders\Framework\Event\Dispatcher;
 
-use Zoolanders\Event\Event;
+use Zoolanders\Framework\Event\Event;
 
 abstract class Dispatcher extends Event
 {
     /**
-     * @var \Zoolanders\Dispatcher\Dispatcher
+     * @var \Zoolanders\Framework\Dispatcher\Dispatcher
      */
     protected $dispatcher;
 
     /**
-     * @param \Zoolanders\Dispatcher\Dispatcher $dispatcher
+     * @param \Zoolanders\Framework\Dispatcher\Dispatcher $dispatcher
      */
-    public function __construct(\Zoolanders\Dispatcher\Dispatcher $dispatcher)
+    public function __construct(\Zoolanders\Framework\Dispatcher\Dispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @return \Zoolanders\Dispatcher\Dispatcher
+     * @return \Zoolanders\Framework\Dispatcher\Dispatcher
      */
     public function getDispatcher()
     {

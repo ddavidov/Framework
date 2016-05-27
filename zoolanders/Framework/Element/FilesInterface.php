@@ -2,7 +2,7 @@
 
 namespace Zoolanders\Framework\Element;
 
-class FileInterface
+interface FilesInterface
 {
     
 }

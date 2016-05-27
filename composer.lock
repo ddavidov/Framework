@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "710205f7ce13f573dde465d58f6e2098",
-    "content-hash": "f6d925f67a61471a8c06276eda6ac383",
+    "hash": "ec1d8015cfa1d4aee0f886174c5348b3",
+    "content-hash": "b6e16289fe19efbac56aacc205a96358",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1894,6 +1894,53 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2016-04-14 15:30:28"
+        },
+        {
+            "name": "tightenco/collect",
+            "version": "v5.2.31",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tightenco/collect.git",
+                "reference": "905d7c553ffce6c68af81c4c8565d7e45a8d0038"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tightenco/collect/zipball/905d7c553ffce6c68af81c4c8565d7e45a8d0038",
+                "reference": "905d7c553ffce6c68af81c4c8565d7e45a8d0038",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.4",
+                "phpunit/phpunit": "~4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Illuminate/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "Illuminate\\": "src/Illuminate"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "Collect - Illuminate Collections as a separate package.",
+            "keywords": [
+                "collection",
+                "laravel"
+            ],
+            "time": "2016-05-02 15:38:36"
         }
     ],
     "packages-dev": [],

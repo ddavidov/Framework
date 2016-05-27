@@ -14,20 +14,14 @@ use Zoolanders\Framework\Event\Triggerable;
 use Zoolanders\Framework\Event\View\AfterDisplay;
 use Zoolanders\Framework\Event\View\BeforeDisplay;
 use Zoolanders\Framework\Event\View\GetTemplatePath;
+use Zoolanders\Framework\Utils\NameFromClass;
 
 /**
  * Class View
  */
 class View
 {
-    use Triggerable;
-    
-    /**
-     * The name of the view
-     *
-     * @var    array
-     */
-    protected $name = null;
+    use Triggerable, NameFromClass;
 
     /**
      * Layout name
@@ -51,7 +45,7 @@ class View
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->name = $this->getName();
+        $this->getName();
     }
 
     /**
@@ -120,23 +114,6 @@ class View
             // Add to the top of the search dirs
             array_unshift($this->templatePaths, $dir);
         }
-    }
-
-    /**
-     * Method to get the view name
-     *
-     * @return  string  The name of the model
-     *
-     * @throws  \Exception
-     */
-    public function getName()
-    {
-        if (empty($this->name)) {
-            $pieces = explode("\\", get_class($this));
-            $this->name = array_pop($pieces);
-        }
-
-        return $this->name;
     }
 
     /**

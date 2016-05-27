@@ -8,6 +8,7 @@ use Zoolanders\Framework\Controller\Exception\TaskNotFound;
 use Zoolanders\Framework\Event\Controller\AfterExecute;
 use Zoolanders\Framework\Event\Controller\BeforeExecute;
 use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Utils\NameFromClass;
 
 /**
  * Class Controller
@@ -20,14 +21,7 @@ use Zoolanders\Framework\Event\Triggerable;
  */
 class Controller
 {
-    use Triggerable;
-
-    /**
-     * The name of the controller
-     *
-     * @var    array
-     */
-    protected $name = null;
+    use Triggerable, NameFromClass;
 
     /**
      * Redirect message.
@@ -186,26 +180,6 @@ class Controller
         $view->addTemplatePath(JPATH_COMPONENT . '/views/' . $this->getName() . '/tmpl');
         
         return $view;
-    }
-
-    /**
-     * Method to get the controller name
-     *
-     * The controller name is set by default parsed using the classname, or it can be set
-     * by passing a $config['name'] in the class constructor
-     *
-     * @return  string  The name of the controller
-     *
-     * @throws  CannotGetName  If it's impossible to determine the name and it's not set
-     */
-    public function getName()
-    {
-        if (empty($this->name)) {
-            $pieces = explode("\\", get_class($this));
-            $this->name = array_pop($pieces);
-        }
-
-        return $this->name;
     }
 
     /**

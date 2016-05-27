@@ -13,19 +13,13 @@ namespace Zoolanders\Framework\Model;
 use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Data\Json;
 use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Utils\NameFromClass;
 
 defined('_JEXEC') or die;
 
 class Model
 {
-    use Triggerable;
-
-    /**
-     * The model (base) name
-     *
-     * @var    string
-     */
-    protected $name;
+    use Triggerable, NameFromClass;
 
     /**
      * A state object
@@ -48,22 +42,9 @@ class Model
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->name = $this->getName();
+        $this->getName();
 
         $this->state = new Json();
-    }
-
-    /**
-     * Method to get the model name
-     * @return  string  The name of the model
-     */
-    public function getName()
-    {
-        if (empty($this->name)) {
-            $this->name = array_pop(explode("\\", get_class($this)));
-        }
-
-        return $this->name;
     }
 
     /**

@@ -8,80 +8,35 @@
 
 namespace Zoolanders\Framework\Model;
 
+use Zoolanders\Framework\Model\Database\Date;
+use Zoolanders\Framework\Model\Item\BasicFilters;
+
 defined('_JEXEC') or die();
 
-class Item extends Model
+class Item extends Database
 {
+    use BasicFilters, Date;
+
+    protected $tablePrefix = 'a';
+    protected $tableName = ZOO_TABLE_ITEM;
     protected $join_cats = false;
     protected $join_frontpage = false;
     protected $join_tags = false;
 
     /**
-     * Magic method to set states by calling a method named as the filter
-     * @param  string $name The name of the state to apply
-     * @param  array $args The list of arguments passed to the method
+     * @param string $name
+     * @param mixed $args
+     * @return $this|static
      */
     public function __call($name, $args)
     {
-        // Go for the states!
-        if (!method_exists($this, $name)) {
-
-            // if no arguments supplied, abort
-            if (!isset($args[0])) return $this;
-
-            // The state name to set is the method name
-            $state = (string)$name;
-
-            // $model->categories(array('value' => '123', 'mode' => 'AND'));
-            if (is_array($args[0]) || is_object($args[0])) {
-                $options = new JRegistry($args[0]);
-            } else {
-                // $model->element('id', $options);
-                if (isset($args[1])) {
-                    // $model->element('id', $options);
-                    if (is_array($args[1]) || is_object($args[1])) {
-                        $options = new JRegistry($args[1]);
-                    } else {
-                        // $model->element('id', 'value');
-                        $options = new JRegistry();
-                        $options->set('value', $args[1]);
-                        $options->set('id', $args[0]);
-                    }
-                } else {
-                    $options = new JRegistry;
-                    // Just the value
-
-                    $options->set('value', $args[0]);
-                }
-            }
-
-            $this->setState($state, $options);
+        // filterAt, filterPublished, filterWhatever
+        $filter = 'filter'.ucfirst($name);
+        if (method_exists($this, $filter)) {
+            call_user_func_array([$this, $filter], $args);
             return $this;
         }
 
-        // Normal method calling
-        return parent::__call($name, $args);
-    }
-
-    /**
-     * Dont' overwrite the old state if requested
-     * @param [type] $key   [description]
-     * @param [type] $value [description]
-     */
-    public function setState($key, $value = null, $overwrite = false)
-    {
-
-        if (!$overwrite) {
-            $old_value = $this->getState($key, array());
-            if (is_array($value)) {
-                $value = array_merge($old_value, $value);
-            } else {
-                $old_value[] = $value;
-                $value = $old_value;
-            }
-        }
-
-        parent::setState($key, $value);
 
         return $this;
     }

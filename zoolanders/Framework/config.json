@@ -5,6 +5,7 @@
         "system": {
             "language": "\\Zoolanders\\Framework\\Service\\System\\Language",
             "application": "\\Zoolanders\\Framework\\Service\\System\\Application",
+            "session": "\\Zoolanders\\Framework\\Service\\System\\Session",
             "document": "\\Zoolanders\\Framework\\Service\\System\\Document",
             "dbo": "\\Zoolanders\\Framework\\Service\\System\\Dbo",
             "config": "\\Zoolanders\\Framework\\Service\\System\\Config"
@@ -14,6 +15,7 @@
             "js": "\\Zoolanders\\Framework\\Service\\Assets\\Js"
         },
         "db": "\\Zoolanders\\Framework\\Service\\Database",
+        "date": "\\Zoolanders\\Framework\\Service\\Date",
         "request": "\\Zoolanders\\Framework\\Service\\Request",
         "input": "\\Zoolanders\\Framework\\Service\\Request",
         "params": "\\Zoolanders\\Framework\\Service\\Params",
@@ -27,7 +29,8 @@
         "crypt": "\\Zoolanders\\Framework\\Service\\Crypt",
         "data": "\\Zoolanders\\Framework\\Service\\Data",
         "link": "\\Zoolanders\\Framework\\Service\\Link",
-        "cache": "\\Zoolanders\\Framework\\Service\\Cache"
+        "cache": "\\Zoolanders\\Framework\\Service\\Cache",
+        "user": "\\Zoolanders\\Framework\\Service\\User"
     },
     "events": {
         "type:beforesave" : [

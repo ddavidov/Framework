@@ -124,6 +124,15 @@ trait Date
         return $this;
     }
 
+    protected function filterDateTimeTo($field, $value)
+    {
+        list($date, $from, $to) = $this->prepareDateValue($value);
+
+        $this->getQuery()->where("( ({$field} <= {$to}) OR ({$to} >= {$field}) )");
+
+        return $this;
+    }
+
     protected function filterDateBetween($field, $valueFrom, $valueTo)
     {
         list($dateFrom, $from, $toFrom) = $this->prepareDateValue($valueFrom);

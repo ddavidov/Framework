@@ -13,19 +13,19 @@ trait BasicFilters
      */
     protected function filterIds($ids)
     {
-       return $this->filterIn('id', $ids);
+        return $this->filterIn('id', $ids);
     }
 
     protected function filterSearchable($state = 1)
     {
-        $state = (int) $state;
+        $state = (int)$state;
         $this->wherePrefix('searchable = ' . $state);
         return $this;
     }
 
     protected function filterState($state = 1)
     {
-        $state = (int) $state;
+        $state = (int)$state;
         $this->wherePrefix('state = ' . $state);
         return $this;
     }
@@ -61,90 +61,116 @@ trait BasicFilters
         $this->query->where('f.category_id  = 0');
     }
 
+    /**
+     * Created - related date search
+     */
+    protected function filterCreated($value)
+    {
+        $this->filterDateTime($this->getQuery()->qn('a.created'), $value);
+    }
 
-    protected function otherFilters() {
-        // Created
-        if ($date = $this->getState('created', array())) {
-            $date = array_shift($date);
+    protected function filterCreatedTo($value)
+    {
+        $this->filterDateTimeTo($this->getQuery()->qn('a.created'), $value);
+    }
 
-            $sql_value = "a.created";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
+    protected function filterCreatedFrom($value)
+    {
+        $this->filterDateTimeFrom($this->getQuery()->qn('a.created'), $value);
+    }
 
-            $this->query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-        }
+    protected function filterCreatedBetween($from, $to)
+    {
+        $this->filterDateTimeBetween($this->getQuery()->qn('a.created'), $from, $to);
+    }
 
-        // Modified
-        if ($date = $this->getState('modified', array())) {
-            $date = array_shift($date);
+    protected function filterCreatedWithinInterval($interval, $unit)
+    {
+        $this->filterDateWithinInterval($this->getQuery()->qn('a.created'), $interval, $unit);
+    }
 
-            $sql_value = "a.modified";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
+    /**
+     * Modified - related date search
+     */
+    protected function filterModified($value)
+    {
+        $this->filterDateTime($this->getQuery()->qn('a.modified'), $value);
+    }
 
-            $this->query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-        }
+    protected function filterModifiedTo($value)
+    {
+        $this->filterDateTimeTo($this->getQuery()->qn('a.modified'), $value);
+    }
 
-        // Published up
-        if ($date = $this->getState('published', array())) {
-            $date = array_shift($date);
+    protected function filterModifiedFrom($value)
+    {
+        $this->filterDateTimeFrom($this->getQuery()->qn('a.modified'), $value);
+    }
 
-            $sql_value = "a.publish_up";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
+    protected function filterModifiedBetween($from, $to)
+    {
+        $this->filterDateTimeBetween($this->getQuery()->qn('a.modified'), $from, $to);
+    }
 
-            $this->query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
+    protected function filterModifiedWithinInterval($interval, $unit)
+    {
+        $this->filterDateWithinInterval($this->getQuery()->qn('a.modified'), $interval, $unit);
+    }
 
-            // default
-        } elseif (!$this->getState('created') && !$this->getState('modified')) {
-            $where = array();
-            $where[] = 'a.publish_up = ' . $null;
-            $where[] = 'a.publish_up <= ' . $now;
-            $this->query->where('(' . implode(' OR ', $where) . ')');
-        }
+    /**
+     * Publish Up - related date search
+     */
+    protected function filterPublishedUp($value)
+    {
+        $this->filterDateTime($this->getQuery()->qn('a.publish_up'), $value);
+    }
 
-        // Published down
-        if ($date = $this->getState('published_down', array())) {
-            $date = array_shift($date);
+    protected function filterPublishedUpTo($value)
+    {
+        $this->filterDateTimeTo($this->getQuery()->qn('a.publish_up'), $value);
+    }
 
-            $sql_value = "a.publish_down";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
+    protected function filterPublishedUpFrom($value)
+    {
+        $this->filterDateTimeFrom($this->getQuery()->qn('a.publish_up'), $value);
+    }
 
-            $this->query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
+    protected function filterPublishedUpBetween($from, $to)
+    {
+        $this->filterDateTimeBetween($this->getQuery()->qn('a.publish_up'), $from, $to);
+    }
 
-            // default
-        } else if (!$this->getState('published_down')) {
-            $where = array();
-            $where[] = 'a.publish_down = ' . $null;
-            $where[] = 'a.publish_down >= ' . $now;
-            $this->query->where('(' . implode(' OR ', $where) . ')');
-        }
-        
+    protected function filterPublishedUpWithinInterval($interval, $unit)
+    {
+        $this->filterDateWithinInterval($this->getQuery()->qn('a.publish_up'), $interval, $unit);
+    }
+
+    /**
+     * Publish Down - related date search
+     */
+    protected function filterPublishedDown($value)
+    {
+        $this->filterDateTime($this->getQuery()->qn('a.publish_down'), $value);
+    }
+
+    protected function filterPublishedDownTo($value)
+    {
+        $this->filterDateTimeTo($this->getQuery()->qn('a.publish_down'), $value);
+    }
+
+    protected function filterPublishedDownFrom($value)
+    {
+        $this->filterDateTimeFrom($this->getQuery()->qn('a.publish_down'), $value);
+    }
+
+    protected function filterPublishedDownBetween($from, $to)
+    {
+        $this->filterDateTimeBetween($this->getQuery()->qn('a.publish_down'), $from, $to);
+    }
+
+    protected function filterPublishedDownWithinInterval($interval, $unit)
+    {
+        $this->filterDateWithinInterval($this->getQuery()->qn('a.publish_down'), $interval, $unit);
     }
 
     /**
@@ -161,16 +187,16 @@ trait BasicFilters
         // within the published dates
         $where = [
             $this->query->qn('a.publish_down') . ' = ' . $this->query->q($null),
-            $this->query->qn('a.publish_down'). ' >= ' . $this->query->q($now)
+            $this->query->qn('a.publish_down') . ' >= ' . $this->query->q($now)
         ];
 
-        $this->query->where('( '. implode(" OR ", $where) . ')');
+        $this->query->where('( ' . implode(" OR ", $where) . ')');
 
         $where = [
             $this->query->qn('a.publish_up') . ' = ' . $this->query->q($null),
-            $this->query->qn('a.publish_up'). ' <= ' . $this->query->q($now)
+            $this->query->qn('a.publish_up') . ' <= ' . $this->query->q($now)
         ];
 
-        $this->query->where('( '. implode(" OR ", $where) . ')');
+        $this->query->where('( ' . implode(" OR ", $where) . ')');
     }
 }

@@ -9,13 +9,15 @@
 namespace Zoolanders\Framework\Model;
 
 use Zoolanders\Framework\Model\Database\Date;
-use Zoolanders\Framework\Model\Item\BasicFilters;
+use Zoolanders\Framework\Model\Item\Basics;
+use Zoolanders\Framework\Model\Item\Categories;
+use Zoolanders\Framework\Model\Item\Tags;
 
 defined('_JEXEC') or die();
 
 class Item extends Database
 {
-    use BasicFilters, Date;
+    use Basics, Date, Tags, Categories;
 
     protected $tablePrefix = 'a';
     protected $tableName = ZOO_TABLE_ITEM;
@@ -114,151 +116,6 @@ class Item extends Database
         // custom order
         if ($this->getState('order_by') && isset($this->orderby)) {
             $query->order($this->orderby);
-        }
-    }
-
-    /**
-     * Apply general filters like searchable, publicated, etc
-     */
-    protected function basicFilters(&$query)
-    {
-        // init vars
-        $date = JFactory::getDate();
-        $now = $this->_db->Quote($date->toSql());
-        $null = $this->_db->Quote($this->_db->getNullDate());
-
-        // Items id
-        if ($ids = $this->getState('id', false)) {
-            $where = array();
-            foreach ($ids as $id) {
-                $where[] = 'a.id IN (' . implode(',', $id->toArray()) . ')';
-            }
-            $query->where('(' . implode(' OR ', $where) . ')');
-        }
-
-        // Searchable state
-        $searchable = $this->getState('searchable');
-        if (isset($searchable[0]) && !empty($searchable[0])) {
-            $query->where('a.searchable = 1');
-        }
-
-        // Published state
-        $state = $this->getState('state');
-        if (isset($state[0])) $query->where('a.state = ' . (int)$state[0]->get('value', 1));
-
-        // Accessible
-        $user = $this->getState('user');
-        $user = isset($user[0]) ? $this->app->user->get($this->_db->escape($user[0])) : null;
-
-        $query->where('a.' . $this->app->user->getDBAccessString($user));
-
-        // Created_by
-        if ($authors = $this->getState('created_by', array())) {
-            $ids = array();
-            foreach ($authors as $author) $ids[] = $author->get('value');
-
-            // set query
-            $query->where("a.created_by IN (" . implode(',', $ids) . ")");
-        }
-
-        // Modified_by
-        if ($editors = $this->getState('modified_by', array())) {
-            $ids = array();
-            foreach ($editors as $editor) $ids[] = $editor->get('value');
-
-            // set query
-            $query->where("a.modified_by IN (" . implode(',', $ids) . ")");
-        }
-
-        // Created
-        if ($date = $this->getState('created', array())) {
-            $date = array_shift($date);
-
-            $sql_value = "a.created";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
-
-            $query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-        }
-
-        // Modified
-        if ($date = $this->getState('modified', array())) {
-            $date = array_shift($date);
-
-            $sql_value = "a.modified";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
-
-            $query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-        }
-
-        // Published up
-        if ($date = $this->getState('published', array())) {
-            $date = array_shift($date);
-
-            $sql_value = "a.publish_up";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
-
-            $query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-
-            // default
-        } elseif (!$this->getState('created') && !$this->getState('modified')) {
-            $where = array();
-            $where[] = 'a.publish_up = ' . $null;
-            $where[] = 'a.publish_up <= ' . $now;
-            $query->where('(' . implode(' OR ', $where) . ')');
-        }
-
-        // Published down
-        if ($date = $this->getState('published_down', array())) {
-            $date = array_shift($date);
-
-            $sql_value = "a.publish_down";
-            $value = $date->get('value', '');
-            $value_from = !empty($value) ? $value : '';
-            $value_to = $date->get('value_to', '');
-            $search_type = $date->get('type', false);
-            $period_mode = $date->get('period_mode', 'static');
-            $interval = $date->get('interval', 0);
-            $interval_unit = $date->get('interval_unit', '');
-            $datetime = $date->get('datetime', false);
-
-            $query->where($this->getDateSearch(compact('sql_value', 'value', 'value_from', 'value_to', 'search_type', 'period_mode', 'interval', 'interval_unit', 'datetime')));
-
-            // default
-        } else if (!$this->getState('published_down')) {
-            $where = array();
-            $where[] = 'a.publish_down = ' . $null;
-            $where[] = 'a.publish_down >= ' . $now;
-            $query->where('(' . implode(' OR ', $where) . ')');
-        }
-
-        // Frontpage
-        $frontpage = $this->getState('frontpage', null);
-        if ($frontpage !== null) {
-            if ($frontpage) {
-                $this->join_frontpage = true;
-                $query->where('f.category_id  = 0');
-            }
         }
     }
 

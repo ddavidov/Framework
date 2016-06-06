@@ -9,7 +9,7 @@ trait Access
      * @param null $user
      * @return $this
      */
-    protected function filterAccessible( &$query, $user = null)
+    protected function filterAccessible($user = null)
     {
         if (is_null($user)) {
             $user = \JFactory::getUser();
@@ -20,7 +20,7 @@ trait Access
 
         $groups = implode(',', array_unique($user->getAuthorisedViewLevels()));
 
-        $query->where($db->qn($field) . ' IN ' . $db->q($groups));
+        $this->where($db->qn($field) . ' IN ' . $db->q($groups));
 
         return $this;
     }

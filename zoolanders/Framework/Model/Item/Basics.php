@@ -4,16 +4,31 @@ namespace Zoolanders\Framework\Model\Item;
 
 use Zoolanders\Framework\Model\Database\Access;
 
-trait BasicFilters
+trait Basics
 {
     use Access;
 
     /**
-     * Apply general filters like searchable, publicated, etc
+     * Apply general filters like searchable, published, etc
      */
     protected function filterIds($ids)
     {
         return $this->filterIn('id', $ids);
+    }
+
+    protected function filterName($names)
+    {
+        return $this->filterIn('name', $names);
+    }
+
+    protected function filterApplication($applications)
+    {
+        return $this->filterIn('application_id', $applications);
+    }
+
+    protected function filterType($types)
+    {
+        return $this->filterIn('type', $types);
     }
 
     protected function filterSearchable($state = 1)
@@ -40,25 +55,10 @@ trait BasicFilters
         return $this->filterIn('modified_by', $ids);
     }
 
-    /**
-     * @param $ids
-     * @return $this
-     */
-    protected function filterIn($field, $ids)
-    {
-        settype($ids, 'array');
-
-        if (count($ids)) {
-            $this->wherePrefix($this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
-        }
-
-        return $this;
-    }
-
     protected function filterFrontpage()
     {
-        $this->query->join('LEFT', ZOO_TABLE_CATEGORY_ITEM . " AS f ON {$this->query->qn($this->tablePrefix)}.id = f.item_id");
-        $this->query->where('f.category_id  = 0');
+        $this->join(ZOO_TABLE_CATEGORY_ITEM, "{$this->getQuery()->qn($this->tablePrefix)}.id = f.item_id", "f");
+        $this->whereRaw('f.category_id = 0');
     }
 
     /**

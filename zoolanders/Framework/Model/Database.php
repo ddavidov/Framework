@@ -24,6 +24,30 @@ abstract class Database extends Model
      */
     protected $query;
 
+    /**
+     * List of where clauses to be build into an AND clause
+     * @var array
+     */
+    protected $wheres = [];
+
+    /**
+     * List of where clauses to build into an OR clause
+     * @var array
+     */
+    protected $orWheres = [];
+
+    /**
+     * List of tables to join (grouped by join type) with their desired aliases, if needed
+     * @var array
+     */
+    protected $joins = [
+
+    ];
+
+    /**
+     * Database constructor.
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         parent::__construct($container);
@@ -65,15 +89,87 @@ abstract class Database extends Model
     }
 
     /**
+     * @return \JDatabaseQuery
+     */
+    public function buildQuery()
+    {
+        $query = $this->getQuery();
+
+        // Join stuff
+        if (count($this->joins)) {
+            foreach ($this->joins as $type => $tables) {
+                foreach ($tables as $sql) {
+                    $query->join($type, $sql);
+                }
+            }
+        }
+
+        // At the end, merge ORs
+        if (count($this->orWheres)) {
+            $query->where('(' . implode(' OR ', $this->orWheres) . ')');
+        }
+
+        // and the ANDs
+        foreach ($this->wheres as $where) {
+            $query->where($where);
+        }
+
+        return $query;
+    }
+
+    /**
      * Execute the query as a "select" statement.
      * @return Collection
      */
     public function get()
     {
-        $query = $this->getQuery();
+        $query = $this->buildQuery();
         $models = $this->container->db->queryObjectList($query);
 
         return new Collection($models);
+    }
+
+    /**
+     * @param $fieldOrCallable
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
+    public function where($fieldOrCallable, $operator, $value)
+    {
+        if (is_callable($fieldOrCallable)) {
+            call_user_func_array($fieldOrCallable, [&$this->query]);
+            return $this;
+        }
+
+        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        return $this;
+    }
+
+    public function whereRaw($sql)
+    {
+        $this->wheres[] = $sql;
+        return $this;
+    }
+
+    public function orWhereRaw($sql)
+    {
+        $this->orWheres[] = $sql;
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function orWhere($fieldOrCallable, $operator, $value)
+    {
+        if (is_callable($fieldOrCallable)) {
+            call_user_func_array($fieldOrCallable, [&$this->query]);
+            return $this;
+        }
+
+        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        return $this;
     }
 
     /**
@@ -82,8 +178,55 @@ abstract class Database extends Model
      */
     public function wherePrefix($sql)
     {
-        $prefix = (isset($this->tablePrefix) && strlen($this->tablePrefix) > 0) ? $this->query->qn($this->tablePrefix) . '.' : '';
-        $this->query->where($prefix . $sql);
+        $this->wheres[] = $this->getPrefix() . $sql;
+    }
+
+    public function orWherePrefix($sql)
+    {
+        $this->orWheres[] = $this->getPrefix() . $sql;
+    }
+
+    /**
+     * Join a table with a defined alias
+     * @param $table
+     * @param bool $alias
+     * @param $type
+     */
+    public function join($table, $condition, $alias = false, $type = 'LEFT')
+    {
+        $type = strtoupper($type);
+
+        if (!$type) {
+            $type = 'LEFT';
+        }
+
+        if (!isset($this->joins[$type])) {
+            $this->joins[$type] = [];
+        }
+
+        $query = $this->getQuery();
+        $table = $query->qn($table);
+
+        if ($alias) {
+            $table .= ' AS ' . $query->qn($alias);
+        }
+
+        $this->joins[$type][] = $table . ' ON ' . $condition;
+    }
+
+    /**
+     * @param $ids
+     * @return $this
+     */
+    public function filterIn($field, $ids)
+    {
+        settype($ids, 'array');
+
+        if (count($ids)) {
+            $this->wherePrefix($this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
+        }
+
+        return $this;
     }
 
     /**
@@ -107,5 +250,14 @@ abstract class Database extends Model
         // Autoperform FROM statement
         $this->query->clear('from');
         $this->query->from($this->query->qn($this->tableName) . $prefix);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPrefix()
+    {
+        $prefix = (isset($this->tablePrefix) && strlen($this->tablePrefix) > 0) ? $this->query->qn($this->tablePrefix) . '.' : '';
+        return $prefix;
     }
 }

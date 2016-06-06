@@ -30,6 +30,6 @@ trait Categories
         settype($categories, 'array');
 
         $this->join(ZOO_TABLE_CATEGORY_ITEM , $this->getTablePrefix() . '.id = c.item_id', "c");
-        $this->whereRaw("c.category_id IN (" . implode(',', $this->getQuery()->q($categories) . ")"));
+        $this->whereRaw("c.category_id IN (" . implode(',', $this->getQuery()->q($categories)) . ")");
     }
 }

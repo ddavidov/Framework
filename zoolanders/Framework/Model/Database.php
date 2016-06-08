@@ -4,11 +4,14 @@ namespace Zoolanders\Framework\Model;
 
 use Illuminate\Support\Collection;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Model\Database\Date;
 
 defined('_JEXEC') or die;
 
 abstract class Database extends Model
 {
+    use Date;
+    
     /**
      * @var string
      */
@@ -146,20 +149,11 @@ abstract class Database extends Model
         return $this;
     }
 
-    public function whereRaw($sql)
-    {
-        $this->wheres[] = $sql;
-        return $this;
-    }
-
-    public function orWhereRaw($sql)
-    {
-        $this->orWheres[] = $sql;
-        return $this;
-    }
-
     /**
-     *
+     * @param $fieldOrCallable
+     * @param $operator
+     * @param $value
+     * @return $this
      */
     public function orWhere($fieldOrCallable, $operator, $value)
     {
@@ -173,6 +167,26 @@ abstract class Database extends Model
     }
 
     /**
+     * @param $sql
+     * @return $this
+     */
+    public function whereRaw($sql)
+    {
+        $this->wheres[] = $sql;
+        return $this;
+    }
+
+    /**
+     * @param $sql
+     * @return $this
+     */
+    public function orWhereRaw($sql)
+    {
+        $this->orWheres[] = $sql;
+        return $this;
+    }
+
+    /**
      * Add prefix to the where statement given
      * @param $sql
      */
@@ -181,6 +195,9 @@ abstract class Database extends Model
         $this->wheres[] = $this->getPrefix() . $sql;
     }
 
+    /**
+     * @param $sql
+     */
     public function orWherePrefix($sql)
     {
         $this->orWheres[] = $this->getPrefix() . $sql;

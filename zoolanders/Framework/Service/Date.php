@@ -11,8 +11,13 @@
 
 namespace Zoolanders\Framework\Service;
 
+use Zoolanders\Framework\Utils\IsString;
+
 class Date extends Service
 {
+
+    use IsString;
+
     /**
      * Create a JDate object
      *
@@ -163,5 +168,86 @@ class Date extends Service
     {
         $user = $user == null ? $this->container->user->get() : $user;
         return $user->getParam('timezone', $this->container->system->config->get('offset'));
+    }
+
+    /**
+     * @param $dateTime
+     * @return \JDate
+     */
+    public function getDateOnly($dateTime)
+    {
+        // replace placeholders
+        $value = $this->getFromPlaceholder($dateTime);
+        $tzoffset = $this->getOffset();
+
+        return $this->create($value, $tzoffset)->setTime(0, 0, 0);
+    }
+
+    /**
+     * @param $dateTime
+     * @return \JDate
+     */
+    public function getDateTime($dateTime)
+    {
+        // replace placeholders
+        $value = $this->getFromPlaceholder($dateTime);
+        $tzoffset = $this->getOffset();
+
+        return $this->create($value, $tzoffset);
+    }
+
+    /**
+     * Replace placeholders (if string and present) [yesterday] , [today] , [tomorrow] with a date
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    public function getFromPlaceholder($value)
+    {
+        if ($this->isString($value)) {
+            // init vars
+            $tzoffset = $this->getOffset();
+
+            switch (trim($value)) {
+                case '[yesterday]':
+                    $value = $this->create('yesterday', $tzoffset);
+                    $value->setTime(0, 0, 0);
+                    break;
+                case '[today]':
+                    $value = $this->create('today', $tzoffset);
+                    $value->setTime(0, 0, 0);
+                    break;
+                case '[tomorrow]':
+                    $value = $this->create('tomorrow', $tzoffset);
+                    $value->setTime(0, 0, 0);
+                    break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @return array
+     */
+    public function getDayStart($value)
+    {
+        $date = $this->getDateOnly($value);
+        $date->setTime(0, 0, 0);
+
+        return $date;
+    }
+
+    /**
+     * @param $value
+     * @return array
+     */
+    public function getDayEnd($value)
+    {
+        $date = $this->getDateOnly($value);
+        $date->setTime(23, 59, 59);
+
+        return $date;
     }
 }

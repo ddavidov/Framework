@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
 
 class Item extends Database
 {
-    use Basics, Date, Tags, Categories;
+    use Basics, Tags, Categories;
 
     protected $tablePrefix = 'a';
     protected $tableName = ZOO_TABLE_ITEM;

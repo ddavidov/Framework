@@ -5,12 +5,13 @@ namespace Zoolanders\Framework\Model;
 use Illuminate\Support\Collection;
 use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Model\Database\Date;
+use Zoolanders\Framework\Utils\IsString;
 
 defined('_JEXEC') or die;
 
 abstract class Database extends Model
 {
-    use Date;
+    use Date, IsString;
     
     /**
      * @var string
@@ -145,7 +146,9 @@ abstract class Database extends Model
             return $this;
         }
 
-        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        $this->setupOperatorAndValue($operator, $value);
+
+        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $value;
         return $this;
     }
 
@@ -163,6 +166,80 @@ abstract class Database extends Model
         }
 
         $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param $from
+     * @param $to
+     * @return $this
+     */
+    public function whereBetween($field, $from, $to)
+    {
+        $this->wheres[] = $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param $from
+     * @param $to
+     * @return $this
+     */
+    public function orWhereBetween($field, $from, $to)
+    {
+        $this->orWheres[] = $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
+    public function whereAny($field, $operator, $value)
+    {
+        if ($this->isString($value)) {
+            $value = explode(" ", $value);
+        }
+
+        settype($value, 'array');
+
+        $wheres = [];
+        foreach ($value as $v) {
+            $this->setupOperatorAndValue($operator, $v);
+            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $value;
+        }
+
+        $this->wheres[] = '(' . implode(" OR ", $wheres) . ')';
+
+        return $this;
+    }
+
+    /**
+     * @param $field
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
+    public function orWhereAny($field, $operator, $value)
+    {
+        if ($this->isString($value)) {
+            $value = explode(" ", $value);
+        }
+
+        settype($value, 'array');
+
+        $wheres = [];
+        foreach ($value as $v) {
+            $this->setupOperatorAndValue($operator, $v);
+            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $value;
+        }
+
+        $this->orWheres[] = '(' . implode(" OR ", $wheres) . ')';
+
         return $this;
     }
 
@@ -276,5 +353,22 @@ abstract class Database extends Model
     {
         $prefix = (isset($this->tablePrefix) && strlen($this->tablePrefix) > 0) ? $this->query->qn($this->tablePrefix) . '.' : '';
         return $prefix;
+    }
+
+    /**
+     * @param $operator
+     * @param $value
+     */
+    protected function setupOperatorAndValue(&$operator, &$value)
+    {
+        $value = $this->query->q($value);
+
+        switch (strtolower($operator))
+        {
+            case 'in':
+                settype($value, 'array');
+                $value = '(' . implode(",", $value) . ')';
+                break;
+        }
     }
 }

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -119,7 +114,7 @@ class zlfwHelperHTML extends AppHelper {
 		$cats = $this->app->tree->buildList($root_cat, $application->getCategoryTree(true, null, false), array(), $prefix, $spacer, '', 0, $maxLevel);
 
 		// remove empty categories
-		if ($hide_empty) 
+		if ($hide_empty)
 			$cats = array_filter($cats, create_function('$category', 'return $category->totalItemCount();'));
 
 		return $cats;

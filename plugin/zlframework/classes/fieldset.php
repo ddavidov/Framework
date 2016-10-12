@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -147,7 +141,7 @@ abstract class Fieldset {
 
 		// find layout in element root
 		if ($path = $this->app->path->path("fieldsets:{$type}/{$layout}")) {
-			return $path;	
+			return $path;
 		}
 	}
 
@@ -164,7 +158,7 @@ abstract class Fieldset {
 	public function hasValue($params = array())
 	{
 		$value = $this->get('value');
-		
+
 		return !empty($value);
 	}
 

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -23,13 +18,13 @@ class ZLModelItem extends ZLModel
 	{
 		// Go for the states!
 		if (!method_exists($this, $name)) {
-			
+
 			// if no arguments supplied, abort
 			if (!isset($args[0])) return $this;
 
 			// The state name to set is the method name
 			$state = (string) $name;
-			
+
 			// $model->categories(array('value' => '123', 'mode' => 'AND'));
 			if (is_array($args[0]) || is_object($args[0])) {
 				$options = new JRegistry($args[0]);
@@ -48,7 +43,7 @@ class ZLModelItem extends ZLModel
 				} else {
 					$options = new JRegistry;
 					// Just the value
-					
+
 					$options->set('value', $args[0]);
 				}
 			}
@@ -56,7 +51,7 @@ class ZLModelItem extends ZLModel
 			$this->setState($state, $options);
 			return $this;
 		}
-		
+
 		// Normal method calling
 		return parent::__call($name, $args);
 	}
@@ -67,7 +62,7 @@ class ZLModelItem extends ZLModel
 	 * @param [type] $value [description]
 	 */
 	public function setState($key, $value = null, $overwrite = false) {
-		
+
 		if (!$overwrite) {
 			$old_value = $this->getState($key, array());
 			if (is_array($value)) {
@@ -116,7 +111,7 @@ class ZLModelItem extends ZLModel
 
 			// save order for order query
 			$this->orderby = $order;
-			
+
 			// join
 			if($join){ // don't use escape() here
 				$query->leftJoin($join);
@@ -132,7 +127,7 @@ class ZLModelItem extends ZLModel
 	{
 		// Apply basic filters
 		$this->basicFilters($query);
-		
+
 		// Element filters
 		$this->elementFilters($query);
 	}
@@ -185,7 +180,7 @@ class ZLModelItem extends ZLModel
 		if (isset($searchable[0]) && !empty($searchable[0])) {
 			$query->where('a.searchable = 1');
 		}
-		
+
 		// Published state
 		$state = $this->getState('state');
 		if (isset($state[0])) $query->where('a.state = ' . (int)$state[0]->get('value', 1));
@@ -200,7 +195,7 @@ class ZLModelItem extends ZLModel
 		if ($authors = $this->getState('created_by', array())) {
 			$ids = array();
 			foreach ($authors as $author) $ids[] = $author->get('value');
-			
+
 			// set query
 			$query->where("a.created_by IN (" . implode(',', $ids) . ")");
 		}
@@ -209,7 +204,7 @@ class ZLModelItem extends ZLModel
 		if ($editors = $this->getState('modified_by', array())) {
 			$ids = array();
 			foreach ($editors as $editor) $ids[] = $editor->get('value');
-			
+
 			// set query
 			$query->where("a.modified_by IN (" . implode(',', $ids) . ")");
 		}
@@ -341,7 +336,7 @@ class ZLModelItem extends ZLModel
 		// create a nested array with all app/type/elements filtering data
 		$filters = array();
 		foreach($apps as $app) {
-			
+
 			$filters[$app->id] = array();
 			foreach ($app->getTypes() as $type) {
 
@@ -393,21 +388,21 @@ class ZLModelItem extends ZLModel
 				$wheres[$logic][] = 'a.name LIKE ' . $this->getQuotedValue( $name );
 			}
 		}
-		
+
 		// Category filtering
 		$categories = $this->getState('categories', array());
 		if ($categories) {
 			$j = 0;
 			foreach ( $categories as $cats ) {
 				if ($value = $cats->get('value', array())) {
-					$logic = $cats->get('logic', 'AND'); 
+					$logic = $cats->get('logic', 'AND');
 					// build the where for ORs
 					if ( strtoupper($cats->get('mode', 'OR')) == 'OR' ){
 						$wheres[$logic][] = "c$j.category_id IN (".implode(',', $value).")";
 
 						// set the join only on the OR, since AND has a subquery
 						$query->join('LEFT', ZOO_TABLE_CATEGORY_ITEM." AS c$j ON a.id = c$j.item_id");
-					} 
+					}
 					else {
 						// it's heavy query but the only way for AND mode
 						foreach ($value as $id) {
@@ -429,7 +424,7 @@ class ZLModelItem extends ZLModel
 		if ($allTags) {
 			foreach ( $allTags as $tags ) {
 				if ($values = $tags->get('value', array())) {
-					$logic = $tags->get('logic', 'AND'); 
+					$logic = $tags->get('logic', 'AND');
 
 					// quote the values
 					foreach ($values as &$val) {
@@ -442,7 +437,7 @@ class ZLModelItem extends ZLModel
 
 						// set the join only on the OR, since AND has a subquery
 						$this->join_tags = true;
-					} 
+					}
 					else {
 						// it's heavy query but the only way for AND mode
 						foreach ($values as $val) {
@@ -457,7 +452,7 @@ class ZLModelItem extends ZLModel
 				}
 			}
 		}
-		
+
 		// Elements filtering
 		$k = 0;
 
@@ -471,7 +466,7 @@ class ZLModelItem extends ZLModel
 			// iterate over types
 			$types_queries = array();
 			foreach ($types as $type => &$type_elements) {
-				
+
 				// init vars
 				$elements_where = array('AND' => array(), 'OR' => array());
 
@@ -521,12 +516,12 @@ class ZLModelItem extends ZLModel
 		if( count( $wheres['OR'] ) ) {
 			$query->where('(' . implode(' OR ', $wheres['OR']) . ')');
 		}
-		
+
 		// and the ANDs
 		foreach ($wheres['AND'] as $where) {
 			$query->where($where);
 		}
-		
+
 		// Add repeatable joins
 		$this->addRepeatableJoins($query, $k, $join_info);
 	}
@@ -538,7 +533,7 @@ class ZLModelItem extends ZLModel
 	{
 		// abort if no value is set
 		if (!$element->get('value')) return;
-		
+
 		// Options!
 		$id         = $element->get('id');
 		$value      = $element->get('value');
@@ -610,7 +605,7 @@ class ZLModelItem extends ZLModel
 	 * Get the range search sql
 	 */
 	protected function getElementRangeSearch($identifier, $from, $to, $type, $convert, $k)
-	{	
+	{
 		// basic check
 		if (!isset($from) || !isset($to)) return;
 
@@ -622,7 +617,7 @@ class ZLModelItem extends ZLModel
 		}
 
 		// Decimal conversion fix
-		if ($convert == 'DECIMAL') 
+		if ($convert == 'DECIMAL')
 			$convert = 'DECIMAL(10,2)';
 
 		// Defaults
@@ -636,11 +631,11 @@ class ZLModelItem extends ZLModel
 				$value = $from;
 				$symbol = ">";
 				break;
-			case "to": 
+			case "to":
 				$value = $to;
 				$symbol = "<";
 				break;
-			case "range": 
+			case "range":
 				if ($from) {
 					$new_type = $is_equal ? 'fromequal' : 'from';
 					$sql[] = $this->getElementRangeSearch($identifier, $from, $to, $new_type, $convert, $k);
@@ -729,7 +724,7 @@ class ZLModelItem extends ZLModel
 		$search_type = $search_type == 'range' ? 'period' : $search_type; // workaround
 
 		// search_type = to:from:default
-		if (!empty($value) && $search_type != 'period') { 
+		if (!empty($value) && $search_type != 'period') {
 
 			if($datetime) {
 				$from = $to = $value;
@@ -755,7 +750,7 @@ class ZLModelItem extends ZLModel
 		// set offset if valid date format
 		$from = preg_match($regex, $from) ? $this->app->date->create($from, $tzoffset)->toSQL() : $from;
 		$to = preg_match($regex, $to) ? $this->app->date->create($to, $tzoffset)->toSQL() : $to;
-		
+
 		// set quotes
 		$from = $this->_db->Quote($this->_db->escape($from));
 		$to   = $this->_db->Quote($this->_db->escape($to));
@@ -782,13 +777,13 @@ class ZLModelItem extends ZLModel
 				break;
 
 			case 'period':
-				if ($period_mode == 'static') 
+				if ($period_mode == 'static')
 				{
 					if($datetime)
 					$el_where = "( ($from BETWEEN $sql_value AND $sql_value) OR ($to BETWEEN $sql_value AND $sql_value) OR ($sql_value BETWEEN $from AND $to) OR ($sql_value BETWEEN $from AND $to) )";
-					else 
+					else
 					$el_where = "( ($from BETWEEN SUBSTR($sql_value, 1, 19) AND SUBSTR($sql_value, -19)) OR ($to BETWEEN SUBSTR($sql_value, 1, 19) AND SUBSTR($sql_value, -19)) OR (SUBSTR($sql_value, 1, 19) BETWEEN $from AND $to) OR (SUBSTR($sql_value, -19) BETWEEN $from AND $to) )";
-				} 
+				}
 				else // dynamic
 				{
 					$interval_unit = strtoupper($interval_unit);
@@ -819,23 +814,23 @@ class ZLModelItem extends ZLModel
 
 		// wrapper the query if necesary
 		$el_where = $wrapper ? preg_replace('/{query}/', $el_where, $wrapper) : $el_where;
-		
+
 		// return with extra space
 		return $el_where.' ';
 	}
-	
+
 	/**
 	 * Get the multiple values search sql
 	 */
 	protected function getElementMultipleSearch($identifier, $values, $mode, $k, $is_select = true)
 	{
-		$el_where = "b$k.element_id = " . $this->_db->Quote($identifier);               
+		$el_where = "b$k.element_id = " . $this->_db->Quote($identifier);
 
 		// lets be sure mode is set
 		$mode = $mode ? $mode : "AND";
-		
+
 		$multiples = array();
-		
+
 		// Normal selects / radio / etc (ElementOption)
 		if($is_select)
 		{
@@ -847,9 +842,9 @@ class ZLModelItem extends ZLModel
 				$multiple .= "TRIM(b$k.value) LIKE ".$this->_db->Quote(trim("%\n".$this->_db->escape($value)."\n%"));
 				$multiples[] = "(".$multiple.")";
 			}
-		} 
+		}
 		// This covers country element too
-		else 
+		else
 		{
 			foreach($values as $value)
 			{
@@ -860,9 +855,9 @@ class ZLModelItem extends ZLModel
 				$multiples[] = "(".$multiple.")";
 			}
 		}
-		
+
 		$el_where .= " AND (".implode(" ".$mode. " ", $multiples).")";
-		
+
 		return $el_where;
 	}
 
@@ -961,7 +956,7 @@ class ZLModelItem extends ZLModel
 			$query->leftJoin(ZOO_TABLE_SEARCH . " AS b$i ON a.id = b$i.item_id AND b$i.element_id=".$this->_db->quote($join_info[$i]));
 		}
 	}
-	
+
 	/**
 	 * Get the value quoted and with %% if needed
 	 */
@@ -972,7 +967,7 @@ class ZLModelItem extends ZLModel
 
 		// backward compatibility
 		if($type == 'partial') $type = 'exact_phrase';
-			
+
 		switch($type) {
 			case 'exact_phrase':
 				$value = '%' . $name->get('value', '') . '%';
@@ -1005,7 +1000,7 @@ class ZLModelItem extends ZLModel
 		if($quote) {
 			return $this->_db->Quote( $value );
 		}
-		
+
 		return $value;
 	}
 }

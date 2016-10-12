@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -19,7 +14,7 @@ class ZlModelHelper extends AppHelper {
 
 	/* models */
 	protected $_models = array();
-    
+
 	/*
 		Function: __construct
 			Class Constructor.
@@ -43,17 +38,17 @@ class ZlModelHelper extends AppHelper {
 			Mixed
 	*/
 	public function get($name, $prefix = null) {
-		
+
 		// set prefix
 		if ($prefix == null) {
 			$prefix = $this->_prefix;
 		}
-		
+
 		// load class
 		$class = $prefix . $name;
-		
+
 		$this->app->loader->register($class, 'models:'.strtolower($name).'.php');
-		
+
 		// add model, if not exists
 		if (!isset($this->_models[$name])) {
 			$this->_models[$name] = ZLModel::getInstance($name, $prefix);
@@ -86,7 +81,7 @@ class ZlModelHelper extends AppHelper {
 
 		return ZLModel::getInstance($name, $prefix);
 	}
-	
+
 	/*
 		Function: __get
 			Retrieve a model
@@ -100,5 +95,5 @@ class ZlModelHelper extends AppHelper {
 	public function __get($name) {
 		return $this->get($name);
 	}
-	
+
 }

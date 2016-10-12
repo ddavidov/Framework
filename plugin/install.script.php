@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -126,16 +120,16 @@ class plgSystemZlframeworkInstallerScript
 		}
 
 		// don't overide layouts EXAMPLE
-		/* 
+		/*
 		 * when updating we don't wont to override renderer/item folder,
 		 * so let's delete the temp folder before install only if it already exists
 		 */
 		// if($type == 'update'){
-		// 	JFolder::exists($this->_target.'/renderer/item') && 
+		// 	JFolder::exists($this->_target.'/renderer/item') &&
 		// 	JFolder::delete($this->_src.'/renderer/item');
 		// }
-		
-		
+
+
 		if($type == 'update'){
 
 			/* warn about update requirements only once */
@@ -283,7 +277,7 @@ class plgSystemZlframeworkInstallerScript
 		$dependencies = $parent->get( "manifest" )->dependencies->attributes();
 
 		// check Joomla
-		if ($min_v = (string)$dependencies->joomla) 
+		if ($min_v = (string)$dependencies->joomla)
 		{
 			// if up to date
 			$joomla_release = new JVersion();
@@ -295,7 +289,7 @@ class plgSystemZlframeworkInstallerScript
 		}
 
 		// check ZOO
-		if ($min_v = (string)$dependencies->zoo) 
+		if ($min_v = (string)$dependencies->zoo)
 		{
 			// if installed and enabled
 			if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php')
@@ -314,7 +308,7 @@ class plgSystemZlframeworkInstallerScript
 		}
 
 		// check ZLFW
-		if ($min_v = (string)$dependencies->zlfw) 
+		if ($min_v = (string)$dependencies->zlfw)
 		{
 			// if installed and enabled
 			if (!JPluginHelper::getPlugin('system', 'zlframework')) {
@@ -370,7 +364,7 @@ class plgSystemZlframeworkInstallerScript
 			$javascript = "document.getElementById('install_directory').value = '{$path}';Joomla.submitbutton3();return false;";
 			$this->_error = JText::sprintf('PLG_ZLFRAMEWORK_SYS_OUTDATED_EXTENSIONS', $this->_ext_version, implode(', ', $outdated_ext), $javascript);
 		}
-		
+
 		return $status['state'];
 	}
 
@@ -401,21 +395,21 @@ class plgSystemZlframeworkInstallerScript
 					// if plugin disable, skip it
 					if (empty($plugin)) continue;
 				}
-				
+
 				$version  = $dependency->version;
 				$manifest = $this->app->path->path('root:'.$dependency->manifest);
 				if ($version && is_file($manifest) && is_readable($manifest) && $xml = simplexml_load_file($manifest)) {
-						
+
 					// check if the extension is outdated
 					if (version_compare($version, (string) $xml->version, 'g')) {
 						$status['state'] = false;
 						$status['extensions'][] = array('dependency' => $dependency, 'installed' => $xml);
 					}
-					
+
 				}
 			}
 		}
-		
+
 		return $status;
 	}
 }

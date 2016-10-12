@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -29,7 +23,7 @@ class ZlfieldHelper extends AppHelper {
 		// get joomla and application table
 		$this->joomla   = $this->app->system->application;
 		$this->appTable = $this->app->table->application;
-		
+
 		// set data shortcut
 		$this->data = $this->app->data;
 
@@ -91,7 +85,7 @@ class ZlfieldHelper extends AppHelper {
 				$this->mode = 'appconfig';
 			}
 		}
-		
+
 		// get params
 		if($this->app->zlfw->environment->is('admin.com_widgetkit'))
 			$this->initWidgetkitMode();
@@ -111,7 +105,7 @@ class ZlfieldHelper extends AppHelper {
 
 		// set cache var
 		$this->cache = $this->data->create(array());
-		
+
 		// load assets
 		$this->loadAssets();
 
@@ -138,7 +132,7 @@ class ZlfieldHelper extends AppHelper {
 		// init config
 		$this->initConfigMode();
 	}
-	
+
 	protected function initConfigMode()
 	{
 		$this->config = array();
@@ -153,7 +147,7 @@ class ZlfieldHelper extends AppHelper {
 		else if($this->controller == 'addresses' && $this->type == 'address')
 		{
 			$zoocart = JPluginHelper::getPlugin('system','zoocart');
-			if(!empty($zoocart) && JPluginHelper::isEnabled('system','zoocart') 
+			if(!empty($zoocart) && JPluginHelper::isEnabled('system','zoocart')
 				&& $this->application->getParams()->get('global.zoocart.enable_cart'))
 			{
 				// register and load the Address Type
@@ -166,7 +160,7 @@ class ZlfieldHelper extends AppHelper {
 				}
 			}
 		}
-		
+
 		// wrap the data with data object
 		$this->config = $this->data->create($this->config);
 
@@ -301,8 +295,8 @@ class ZlfieldHelper extends AppHelper {
 		else if(!$toggle)
 		{
 			$html[] = $parsedFields;
-		} 
-		else 
+		}
+		else
 		{
 			$hidden = $toggle == 'starthidden' ? true : false;
 			$html[] = '<div class="zl-toggle '.($hidden ? '' : 'open').'" data-layout="params">';
@@ -316,10 +310,10 @@ class ZlfieldHelper extends AppHelper {
 
 		return implode("\n", $html);
 	}
-	
+
 	/*
 		Function: parseJSON - Returns result html string from fields declared in json string/arrat format
-		Params: 
+		Params:
 			$json String		- path to json file or a json formated string
 			$ctrl String 		- control
 			$psv Array			- All Parent Fields Values
@@ -357,7 +351,7 @@ class ZlfieldHelper extends AppHelper {
 
 		// convert to array
 		settype($json, 'array');
-		
+
 		// if paths provided retrieve json and convert to array
 		if (isset($json['paths'])){
 			foreach (array_map('trim', explode(',', $json['paths'])) as $pt) if ($path = $this->app->path->path($pt)) // php files only
@@ -381,14 +375,14 @@ class ZlfieldHelper extends AppHelper {
 
 		// process fields if any
 		if (isset($json['fields']))
-		{			
+		{
 			$ctrl = $ctrl.(isset($json['control']) ? "[".$json['control']."]" : ''); // ctrl could grow on each iterate
-			
+
 			// iterate fields
 			$result = $this->_parseFields($json['fields'], $ctrl, $psv, $pid, false, $arguments);
 
 			return $returnArray ? $result : implode("\n", $result);
-		} 
+		}
 		else if($json && false)
 		{
 			JFactory::getApplication()->enqueueMessage( JText::_('JSON string with bad format or file not found - ') . implode(' | ', $json) );
@@ -396,7 +390,7 @@ class ZlfieldHelper extends AppHelper {
 
 		return null;
 	}
-	
+
 	// $fields, $control, $parentsValue, $parentID
 	private function _parseFields($fields, $ctrl, $psv, $pid, $returnArray, $arguments)
 	{
@@ -440,7 +434,7 @@ class ZlfieldHelper extends AppHelper {
 
 					// get content
 					$content = array_filter($this->parseJSON(json_encode(array('fields' => $fld->get('fields'))), $final_ctrl, $psv, $pid, true, $arguments));
-					
+
 					// abort if no minimum fields reached
 					if (count($content) == 0 || count($content) < $fld->get('min_count', 0)) continue;
 
@@ -464,7 +458,7 @@ class ZlfieldHelper extends AppHelper {
 
 						$result[] = $this->app->zlfw->renderLayout($layout, compact('id', 'content', 'fld'));
 					}
-					
+
 					break;
 				case 'subfield':
 					// get parent fields data
@@ -543,10 +537,10 @@ class ZlfieldHelper extends AppHelper {
 							$value = $this->req->get($fld->find('request_value.param'), $fld->find('request_value.type'), $fld->find('request_value.default'));
 						}
 					}
-					
+
 					// set specific
 					$specific = $fld->get('specific', array()); /**/ if ($psv) $specific['parents_val'] = $psv;
-					
+
 
 					// prepare row params
 					$params = array(
@@ -578,16 +572,16 @@ class ZlfieldHelper extends AppHelper {
 						$pid = $id;
 
 						// add current value to parents array, if empty calculate it
-						$psv[$id] = $value ? $value : $this->field($params, $value, true); 
+						$psv[$id] = $value ? $value : $this->field($params, $value, true);
 
 						$p_task = $this->req->getVar('parent_task') ? $this->req->getVar('parent_task') : $this->req->getVar('task'); // parent task necesary if double field load ex: layout / sublayout
 						$url = $this->app->link(array('controller' => 'zlframework', 'format' => 'raw', 'type' => $this->type, 'layout' => $this->layout, 'group' => $this->group, 'path' => $this->req->getVar('path'), 'parent_task' => $p_task, 'zlfieldmode' => $this->mode), false);
 
 						// rely options to be used by JS later on
 						$json = $fld->find('childs.loadfields.subfield', '') ? array('paths' => $fld->find('childs.loadfields.subfield.path')) : array('fields' => $childs);
-						
+
 						$pr_opts = json_encode(array('id' => $id, 'url' => $url, 'psv' => $psv, 'json' => json_encode($json)));
-						
+
 						// all options are stored as data on DOM so can be used from JS
 						$loaded_fields = $this->parseJSON(array('fields' => $childs), $final_ctrl, $psv, $pid, false, $arguments);
 						$result[] = '<div class="placeholder" data-relieson-type="'.$field_type.'"'.($pr_opts ? " data-relieson='{$pr_opts}'" : '').' data-control="'.$final_ctrl.'" >';
@@ -598,7 +592,7 @@ class ZlfieldHelper extends AppHelper {
 		}
 		return $result;
 	}
-	
+
 	/*
 		Function: getFieldValue - retrieves the field stored value from the $params
 		$params, $fieldID, $fieldControl, $defaultValue
@@ -644,7 +638,7 @@ class ZlfieldHelper extends AppHelper {
 		}
 
 		// return result
-		return $value; 
+		return $value;
 	}
 
 	/*
@@ -671,7 +665,7 @@ class ZlfieldHelper extends AppHelper {
 					// parse all subfiels and set as params
 					$result = $this->parseArray($childs, true, $arguments);
 					$params = $this->app->data->create($result);
-					
+
 					// remove the {} from json string and proceede
 					$fields[] = preg_replace('(^{|}$)', '', include($json));
 				} else {
@@ -699,7 +693,7 @@ class ZlfieldHelper extends AppHelper {
 	}
 
 	/*
-		Function: renderIf 
+		Function: renderIf
 			Render or not depending if specified extension is instaled and enabled
 		Params
 			$extensions - array, Ex: [com_widgetkit, 0]
@@ -717,14 +711,14 @@ class ZlfieldHelper extends AppHelper {
 		}
 		return $render; // if nothing to check, render as usual
 	}
-	
+
 	/*
 		Function: replaceVars - Returns html string with all variables replaced
 	*/
 	public function replaceVars($vars, $string)
 	{
 		$vars = is_string($vars) ? explode(',', trim($vars, ' ')) : $vars;
-		
+
 		$pattern = $replace = array(); $i=1;
 		foreach((array)$vars as $var){
 			$pattern[] = "/%s$i/"; $i++;
@@ -896,7 +890,7 @@ class ZlfieldHelper extends AppHelper {
 		{
 			// get apps
 			$apps = $this->app->table->application->all(array('order' => 'name'));
-			
+
 			// prepare types and filter app group
 			$types = array();
 			foreach ($apps as $app){
@@ -904,7 +898,7 @@ class ZlfieldHelper extends AppHelper {
 					$types = array_merge($types, $app->getTypes());
 				}
 			}
-			
+
 			// filter types
 			if (count($filter_types) && !empty($filter_types[0])){
 				$filtered_types = array();
@@ -915,15 +909,15 @@ class ZlfieldHelper extends AppHelper {
 				}
 				$types = $filtered_types;
 			}
-			
+
 			// get all elements
 			$elements = array();
 			foreach($types as $type){
 				$elements = array_merge( $elements, $type->getElements() );
 			}
-			
+
 			// create options
-			$options = array();			
+			$options = array();
 			foreach ($elements as $element) {
 				// include only desired element type
 				if (empty($elements_filter) || in_array($element->getElementType(), $elements_filter)) {

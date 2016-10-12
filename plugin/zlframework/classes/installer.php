@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -162,10 +156,10 @@ abstract class zlInstallerScript
 	protected function checkDependencies($parent)
 	{
 		// init vars
-		$dependencies = $parent->get( "manifest" )->dependencies->attributes();	
+		$dependencies = $parent->get( "manifest" )->dependencies->attributes();
 
 		// check Joomla
-		if ($min_v = (string)$dependencies->joomla) 
+		if ($min_v = (string)$dependencies->joomla)
 		{
 			// if up to date
 			$joomla_release = new JVersion();
@@ -177,7 +171,7 @@ abstract class zlInstallerScript
 		}
 
 		// check ZOO
-		if ($min_v = (string)$dependencies->zoo) 
+		if ($min_v = (string)$dependencies->zoo)
 		{
 			// if installed and enabled
 			if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php')
@@ -196,7 +190,7 @@ abstract class zlInstallerScript
 		}
 
 		// check ZL
-		if ($min_v = (string)$dependencies->zl) 
+		if ($min_v = (string)$dependencies->zl)
 		{
 			// if installed and enabled
 			if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_zoolanders/zoolanders.php')
@@ -215,7 +209,7 @@ abstract class zlInstallerScript
 		}
 
 		// check ZLFW
-		if ($min_v = (string)$dependencies->zlfw) 
+		if ($min_v = (string)$dependencies->zlfw)
 		{
 			// if installed and enabled
 			if (!JPluginHelper::getPlugin('system', 'zlframework')) {
@@ -254,7 +248,7 @@ abstract class zlInstallerScript
 	{
 		if(!$this->_ext_id) {
 			$this->db->setQuery("SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$this->_ext}'");
-			if ($plg = $this->db->loadObject()) 
+			if ($plg = $this->db->loadObject())
 				$this->_ext_id = (int)$plg->extension_id;
 		}
 
@@ -357,7 +351,7 @@ abstract class zlInstallerScript
 				}
 
 				if (class_exists($class)) {
-					
+
 					// make sure class implemnts zlUpdate interface
 					$r = new ReflectionClass($class);
 					if ($r->isSubclassOf('zlUpdate') && !$r->isAbstract()) {
@@ -426,7 +420,7 @@ abstract class zlUpdate {
 	public function removeObsolete()
 	{
 		// Remove files
-		if(isset($this->_obsolete['files']) && !empty($this->_obsolete['files'])) 
+		if(isset($this->_obsolete['files']) && !empty($this->_obsolete['files']))
 			foreach($this->_obsolete['files'] as $file) {
 				$f = JPATH_ROOT.'/'.$file;
 				if(!JFile::exists($f)) continue;

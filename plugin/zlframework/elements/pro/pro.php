@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -28,11 +23,11 @@ abstract class ElementPro extends Element {
 		// set callbacks
 		$this->registerCallback('returndata');
 
-		// load default and current language 
+		// load default and current language
 		$this->app->system->language->load('plg_system_zoo_zlelements_'.$this->getElementType(), JPATH_ADMINISTRATOR, 'en-GB');
 		$this->app->system->language->load('plg_system_zoo_zlelements_'.$this->getElementType(), JPATH_ADMINISTRATOR);
 	}
-	
+
 	/*
 		Function: setType
 			Set related type object.
@@ -48,22 +43,22 @@ abstract class ElementPro extends Element {
 	*/
 	public function setType($type) {
 		parent::setType($type);
-		
+
 		$this->checkInstallation();
 	}
-	
+
 	/*
 		Function: checkInstallation
 			Allow for extra steps of checkin installation
-	 		on advanced elements. 
+	 		on advanced elements.
 
 		Returns:
 			Void
 	*/
 	protected function checkInstallation(){
-		
+
 	}
-	
+
 	/*
 		Function: getLayout
 			Get element layout path and use override if exists.
@@ -83,13 +78,13 @@ abstract class ElementPro extends Element {
 
 		// find layout
 		if ($path = $this->app->path->path("elements:{$type}/tmpl/{$layout}")){
-			return $path;	
+			return $path;
 		}
-		
+
 		// if layout not found, search on pro element
 		return $this->app->path->path("elements:pro/tmpl/{$layout}");
 	}
-	
+
 	/*
 		Function: returnData
 			Renders the element data - use for ajax requests
@@ -99,7 +94,7 @@ abstract class ElementPro extends Element {
 		$params = compact('layout', 'separator', 'filter', 'specific');
 		return $this->render($params);
 	}
-	
+
 	/*
 		Function: render
 			Renders the element.
@@ -112,11 +107,11 @@ abstract class ElementPro extends Element {
 	*/
 	public function render($params = array()) {
 		$params = $this->app->data->create($params);
-		
+
 		// render layout
 		if ($layout = $this->getLayout('render/'.$params->find('layout._layout', 'default.php'))) {
 			return $this->renderLayout($layout, compact('params'));
 		}
 	}
-    
+
 }

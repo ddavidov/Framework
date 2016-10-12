@@ -1,15 +1,10 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
 	// return json string
-	return 
+	return
 	'{"fields": {
 		"dates_wrapper":{
 			"type":"wrapper",
@@ -37,7 +32,7 @@ defined('_JEXEC') or die();
 									"type":"subfield",
 									"path":"zlfield:json/itemfilter/_date.json.php"
 								}
-								
+
 							}
 						}
 					}
@@ -65,7 +60,7 @@ defined('_JEXEC') or die();
 									"type":"subfield",
 									"path":"zlfield:json/itemfilter/_date.json.php"
 								}
-								
+
 							}
 						}
 					}
@@ -93,7 +88,7 @@ defined('_JEXEC') or die();
 									"type":"subfield",
 									"path":"zlfield:json/itemfilter/_date.json.php"
 								}
-								
+
 							}
 						}
 					}
@@ -121,12 +116,12 @@ defined('_JEXEC') or die();
 									"type":"subfield",
 									"path":"zlfield:json/itemfilter/_date.json.php"
 								}
-								
+
 							}
 						}
 					}
 				}
-			
+
 			},
 			"control":"dates",
 			"layout":"fieldset",

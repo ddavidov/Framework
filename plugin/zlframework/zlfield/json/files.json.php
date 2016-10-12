@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -55,7 +50,7 @@ defined('_JEXEC') or die();
 		}': '').'
 		'/* Image Resizing client side */.'
 		'.(isset($params['resize']) ? ',
-		
+
 		"_resize":{
 			"type": "checkbox",
 			"label": "PLG_ZLFRAMEWORK_FLS_IMG_RESIZE",
@@ -94,10 +89,10 @@ defined('_JEXEC') or die();
 				}
 			}
 		}' : '').'
-		
+
 		'/* Amazon Integration */.'
 		'.(isset($params['s3']) ? ',
-		
+
 		"_s3":{
 			"type": "checkbox",
 			"label": "PLG_ZLFRAMEWORK_FLS_S3_INTEGRATION",

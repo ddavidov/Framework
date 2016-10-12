@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -54,9 +49,9 @@ defined('_JEXEC') or die();
 <div class="yoo-wk wk-gallery wk-gallery-wall clearfix <?php echo $css_classes; ?>">
 
 	<?php foreach ($images as $key => $image) : ?>
-	
+
 		<?php
-	
+
 			$lightbox  = '';
 			$spotlight = '';
 			$overlay   = '';
@@ -87,7 +82,7 @@ defined('_JEXEC') or die();
 				} if($settings->get('lightbox_caption') == 2 && $title = $settings->get('_lightbox_custom_title')){
 					$lbc = $title;
 				}
-	
+
 				if (strlen($lbc)) $lightbox .= ' title="'.$lbc.'"';
 			}
 
@@ -118,9 +113,9 @@ defined('_JEXEC') or die();
 			$rel  = $this->config->find('specific._custom_link') ? '' : 'rel="nofollow" ';
 			$link = $this->config->find('specific._custom_link') && $image['link'] ? $image['link'] : $image['bigimg']['fileurl'];
 			$link = 'href="'.$link.'"'.($image['target'] ? ' target="_blank"' : '');
-			
+
 			/* Prepare Image */
-			$content = '<img src="'.$image['fileurl'].'" width="'.$image['width'].'" height="'.$image['height'].'" alt="'.$image['filename'].'" />'.$overlay;	
+			$content = '<img src="'.$image['fileurl'].'" width="'.$image['width'].'" height="'.$image['height'].'" alt="'.$image['filename'].'" />'.$overlay;
 			$content = ($settings->get('effect') == 'polaroid') ? '<div>'.$content.'</div>' : $content ;
 
 			/* Separator - if separator tag present wrap each item */
@@ -129,15 +124,15 @@ defined('_JEXEC') or die();
 			}
 
 		?>
-	
+
 		<?php if ($settings->get('lightbox') || $image['link']) : ?>
 			<a <?php echo $rel ?>class="" <?php echo $link; ?> <?php echo $lightbox; ?> <?php echo $spotlight; ?>><?php echo $content; ?></a>
 		<?php elseif ($settings->get('effect') == 'spotlight') : ?>
 			<div <?php echo $spotlight; ?>><?php echo $content; ?></div>
-		<?php else : ?>		
+		<?php else : ?>
 			<?php echo $content; ?>
 		<?php endif; ?>
-		
+
 	<?php endforeach; ?>
 
 </div>

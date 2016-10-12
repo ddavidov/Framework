@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -24,14 +19,14 @@ if(!class_exists('ZLWorksAroundJoomlaToGetAModel')) {
 class ZLModel extends ZLWorksAroundJoomlaToGetAModel
 {
     protected $app = null;
-    
+
     function __construct($config = array())
     {
         parent::__construct($config);
-        
+
         $this->app = App::getInstance('zoo');
     }
-    
+
     /**
      * Empties the state
      *
@@ -105,11 +100,11 @@ class ZLModel extends ZLWorksAroundJoomlaToGetAModel
     function getList()
     {
         //echo str_replace('#__', 'oo1dl_', $this->getQuery());die();
-        
+
         if (empty( $this->_list ))
         {
             $query = $this->getQuery();
-            
+
             // Limits
             $offset = $this->_db->escape( $this->getState('offset'));
             $limitstart = $this->_db->escape( $this->getState('limitstart') );
@@ -119,31 +114,31 @@ class ZLModel extends ZLWorksAroundJoomlaToGetAModel
                 $offset = $limitstart;
             }
 
-            
+
             $this->_db->setQuery($query, $offset, $limit);
             $result = $this->_db->execute();
-    
+
             // fetch objects and execute init callback
             $objects = array();
-            while ($object = $this->app->database->fetchObject($result, 'Item')) 
+            while ($object = $this->app->database->fetchObject($result, 'Item'))
             {
                 $objects[$object->id] = $this->initObject($object);
             }
-    
+
             $this->app->database->freeResult($result);
             $this->_list = $objects;
         }
-        
+
         return $this->_list;
     }
-    
+
     protected function initObject($object)
     {
         // add reference to related app instance
         if (property_exists($object, 'app')) {
             $object->app = $this->app;
         }
-        
+
         // workaround for php bug, which calls constructor before filling values
         if (is_string($object->params) || is_null($object->params)) {
             // decorate data as object
@@ -188,11 +183,11 @@ class ZLModel extends ZLWorksAroundJoomlaToGetAModel
         }
         return $this->_total;
     }
-    
+
     /**
      * Retrieves the result from the query
      * Useful on SUM and COUNT queries
-     * 
+     *
      * @return array Array of objects containing the data from the database
      */
     function getResult( $refresh=false )
@@ -205,7 +200,7 @@ class ZLModel extends ZLWorksAroundJoomlaToGetAModel
         }
         return $this->_result;
     }
-    
+
     /**
      * Builds a generic SELECT query
      *

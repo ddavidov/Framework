@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -20,7 +15,7 @@ class zlHelper extends AppHelper {
 
 	/* models */
 	protected $_helpers = array();
-	
+
 	/**
 	 * Class Constructor
 	 */
@@ -40,16 +35,16 @@ class zlHelper extends AppHelper {
 	 * @return mixed
 	 */
 	public function get($name, $prefix = null)
-	{	
+	{
 		// set prefix
 		if ($prefix == null) {
 			$prefix = $this->_prefix;
 		}
-		
+
 		// load class
 		$class = $prefix . $name;
 		$this->app->loader->register($class, 'helpers:zl/'.strtolower($name).'.php');
-		
+
 		// add helper, if not exists
 		if (!isset($this->_helpers[$name])) {
 			$this->_helpers[$name] = class_exists($class) ? new $class($this->app) : new AppHelper($this->app, $prefix.$name);

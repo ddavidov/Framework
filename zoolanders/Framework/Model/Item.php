@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 namespace Zoolanders\Framework\Model;
 
@@ -186,7 +181,7 @@ class Item extends Database
 
         return $filters;
     }
-    
+
     /**
      * Get the multiple values search sql
      */

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -45,7 +40,7 @@ class JFormFieldZlux extends JFormField {
 		$ctrl = count($node->children()) > 1 ? $this->name : $this->formControl.'['.$this->group.']';
 
 		// allow additional control
-		if ($node->attributes()->addcontrol) $ctrl .= "[".$node->attributes()->addcontrol.']'; 
+		if ($node->attributes()->addcontrol) $ctrl .= "[".$node->attributes()->addcontrol.']';
 
 		// set control
 		$engine->setControl($ctrl);

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -106,7 +101,7 @@ class ZlframeworkController extends AppController {
 		echo json_encode( array('result' => $this->app->zlfield->parseJSON((array)$json, $ctrl, $psv, $pid, false, $args)) );
 		return;
 	}
-	
+
 	/*
 		Function: renderView
 			Renders an Item View
@@ -114,7 +109,7 @@ class ZlframeworkController extends AppController {
 	   Parameters:
             $item - the Item Object
 			$layoutName - the Item layout
-			
+
 		Returns:
 			String - html
 
@@ -123,11 +118,11 @@ class ZlframeworkController extends AppController {
 	{
 		$item 	= $this->app->request->get('item_id', 'string', '');
 		$layout = $this->app->request->get('item_layout', 'string', 'full');
-		
+
 		echo $this->app->zlfw->renderView($item, $layout);
 		return;
 	}
-	
+
 	/*
 		Function: callElement
 			CallElement for AJAX requests
@@ -218,7 +213,7 @@ class ZlframeworkController extends AppController {
 			$size = $this->app->zlfw->filesystem->getSourceSize($path);
 			$items[] = array('name' => basename($file), 'type' => 'file', 'path' => $path, 'size' => $size);
 		}
-		
+
 		echo json_encode($items);
 	}
 

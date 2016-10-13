@@ -15,8 +15,6 @@ class DispatcherTest extends ZFTestCase
      */
     public function testDispatcher(){
 
-        //print_r($this->container);
-
         $this->assertTrue(true);
     }
 }

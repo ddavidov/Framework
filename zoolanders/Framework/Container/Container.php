@@ -64,7 +64,7 @@ class Container extends Pimple
     {
         return call_user_func_array([$this->injector, $name], $arguments);
     }
-    
+
     /**
      * Load the service into the DI Container
      * @param $services

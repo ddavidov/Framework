@@ -49,7 +49,7 @@ abstract class Router
         if ($this->container->params->get('cache_routes', false)) {
             // get route cache
             // refreshes after one hour automatically
-            $this->cache = $container->cache->create($this->container->path->path('cache:') . '/routes', true, 3600, 'apc');
+            $this->cache = $this->container->cache->create($this->container->path->path('cache:') . '/routes', true, 3600, 'apc');
 
             if (!$this->cache || !$this->cache->check()) {
                 $this->cache = null;

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */ 
+
 
 defined('_JEXEC') or die();
 
@@ -12,7 +7,7 @@ defined('_JEXEC') or die();
 	$settings  = $widget->settings;
 	$sets      = array();
 	$nav       = array();
-	
+
 	// ZL integration
 	$items = $this->getRenderedValues($params, $widget->mode);
 	$items = $items['result'];
@@ -26,13 +21,13 @@ defined('_JEXEC') or die();
 
 	unset($item);
 	if (is_numeric($settings['items_per_set'])) {
-		
+
 		$sets = array_chunk($items, $settings['items_per_set']);
 
 	} else {
-	
+
 		foreach ($items as $key => $item) {
-			
+
 			if (!isset($sets[$item['set']])) {
 				$sets[$item['set']] = array();
 			}
@@ -53,7 +48,7 @@ defined('_JEXEC') or die();
 			<?php $i = 0; foreach ($sets as $set => $items) : ?>
 				<ul class="set">
 					<?php foreach ($items as &$item) : ?>
-					<?php 
+					<?php
 						/* Lazy Loading */
 						$item["content"] = ($i==$settings['index']) ? $item["content"] : $widgetkit['image']->prepareLazyload($item["content"]);
 					?>

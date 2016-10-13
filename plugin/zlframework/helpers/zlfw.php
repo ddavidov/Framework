@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -39,7 +34,7 @@ class zlfwHelper extends AppHelper {
 
 	/* models */
 	protected $_helpers = array();
-    
+
 	/*
 		Function: __construct
 			Class Constructor.
@@ -63,17 +58,17 @@ class zlfwHelper extends AppHelper {
 			Mixed
 	*/
 	public function get($name, $prefix = null) {
-		
+
 		// set prefix
 		if ($prefix == null) {
 			$prefix = $this->_prefix;
 		}
-		
+
 		// load class
 		$class = $prefix . $name;
-		
+
 		$this->app->loader->register($class, 'zlfw:helpers/zlfw/'.strtolower($name).'.php');
-		
+
 		// add helper, if not exists
 		if (!isset($this->_helpers[$name])) {
 			$this->_helpers[$name] = class_exists($class) ? new $class($this->app) : new AppHelper($this->app, $prefix.$name);
@@ -81,7 +76,7 @@ class zlfwHelper extends AppHelper {
 
 		return $this->_helpers[$name];
 	}
-	
+
 	/*
 		Function: __get
 			Retrieve a helper
@@ -132,7 +127,7 @@ class zlfwHelper extends AppHelper {
 	 * @since 3.0.6
 	 */
 	public function getTheEnviroment()
-	{	
+	{
 		// init vars
 		$env = $this->getEnviroment();
 
@@ -221,7 +216,7 @@ class zlfwHelper extends AppHelper {
 	{
 		$db = JFactory::getDBO();
 		$query = 'SELECT * FROM #__extensions WHERE element LIKE ' . $db->Quote($name) . ' AND folder LIKE ' . $db->Quote($type) . ' LIMIT 1';
-		
+
 		$db->setQuery($query);
 		return $db->loadObject();
 	}
@@ -235,14 +230,14 @@ class zlfwHelper extends AppHelper {
 		$db = JFactory::getDBO();
 		$zf = $this->app->zlfw->getPlugin('zlframework', 'system');
 		$order = (int)$zf->ordering;
-		
+
 		// set ZOOlingual right after zlfw
 		$order++;
 		$db->setQuery("UPDATE `#__extensions` SET `ordering` = {$order} WHERE `type` = 'plugin' AND `element` = 'zoolingual'")->execute();
 
 		// set ZOOtools and ZL Elements right after ZOOlingual
 		$order++;
-		$db->setQuery("UPDATE `#__extensions` SET `ordering` = {$order} WHERE `type` = 'plugin' AND `element` in 
+		$db->setQuery("UPDATE `#__extensions` SET `ordering` = {$order} WHERE `type` = 'plugin' AND `element` in
 			('zootools', 'zoo_zlelements')
 		")->execute();
 
@@ -278,7 +273,7 @@ class zlfwHelper extends AppHelper {
 		{
 			$name = str_replace('plg_', '', $ext);
 			$plugin = JPluginHelper::getPlugin('system', strtolower($name));
-			
+
 			return !empty($plugin);
 		}
 
@@ -293,9 +288,9 @@ class zlfwHelper extends AppHelper {
 	public function checkToken($force_get = false)
 	{
 		if($force_get || $this->app->zlfw->request->isAjax()) {
-			$this->app->session->checkToken('get') or jexit('Invalid Token');		
+			$this->app->session->checkToken('get') or jexit('Invalid Token');
 		} else {
-			$this->app->session->checkToken() or jexit('Invalid Token');		
+			$this->app->session->checkToken() or jexit('Invalid Token');
 		}
 	}
 
@@ -323,7 +318,7 @@ class zlfwHelper extends AppHelper {
 			if ($app && $app = $table->get($app))
 			{
 				// filter by App group
-				if (empty($groups) || in_array($app->getGroup(), $groups)) {	
+				if (empty($groups) || in_array($app->getGroup(), $groups)) {
 					$result[] = $app;
 				}
 			}
@@ -334,7 +329,7 @@ class zlfwHelper extends AppHelper {
 			foreach ($table->all(array('order' => 'name')) as $app)
 			{
 				// filter by App group
-				if (empty($groups) || in_array($app->getGroup(), $groups)) {	
+				if (empty($groups) || in_array($app->getGroup(), $groups)) {
 					$result[] = $app;
 				}
 			}
@@ -508,7 +503,7 @@ class zlfwHelper extends AppHelper {
 		$secret = $this->app->system->config->get('secret');
 		$key 	= new JCryptKey('simple', $secret, $secret);
 		$crypt 	= new JCrypt(null, $key);
-		
+
 		return $crypt->$action( $text );
 	}
 
@@ -527,11 +522,11 @@ class zlfwHelper extends AppHelper {
 		if (preg_match('/zl-encrypted\[(.*)\]/', $pass, $matches)) {
 			return $this->crypt($matches[1], 'decrypt');
 		}
-		
+
 		// if no valid pass to decrypt, return orig pass
 		return $pass;
 	}
-	
+
 
 	/*
 	 Function: resizeImage
@@ -717,21 +712,21 @@ class zlfwHelper extends AppHelper {
 	/*
 		Function: getCurrentLanguage
 			retrieves the current language
-			
+
 		Return :
 			string - the current language in en-GB format or en
 	*/
 	public static function getCurrentLanguage($url_safe=false)
 	{
 		$zoo = App::getInstance( 'zoo' );
-	
+
 		$current_lang = '';
 		if ($zoo->joomla->isVersion('1.5')) {
 			$current_lang = JFactory::getLanguage()->_lang;
 		} else {
 			$current_lang = JFactory::getLanguage()->get('tag');
 		}
-	
+
 		if ($url_safe) {
 			return substr($current_lang, 0, 2);
 		}
@@ -757,11 +752,11 @@ class zlfwHelper extends AppHelper {
 	/*
 		Function: replaceShortCode
 			replace the short codes with the appropiate result
-			
+
 		Variables:
 			$string - string with shortcodes
 			$args - arguments needed for the shortcode execution
-			
+
 		Return :
 			string
 	*/
@@ -776,7 +771,7 @@ class zlfwHelper extends AppHelper {
 
 		foreach($matches as $match)
 		{
-			$string = preg_replace("|$match[0]|", $this->shortCode($match[0], $args), $string, 1);			
+			$string = preg_replace("|$match[0]|", $this->shortCode($match[0], $args), $string, 1);
 		}
 
 		return $string;
@@ -787,12 +782,12 @@ class zlfwHelper extends AppHelper {
 
 		Variables:
 			$shortcode - ex {PHP_MAX_UPLOAD} the length of the output string
-			
+
 		Return :
 			string
 	*/
 	public function shortCode($shortcode, $args=array())
-	{	
+	{
 		// extract the arguments
 		extract($args, EXTR_OVERWRITE);
 
@@ -812,7 +807,7 @@ class zlfwHelper extends AppHelper {
 			case '{ITEM-ALIAS}':
 				return isset($item) ? $item->alias : '';
 				break;
-			
+
 			default:
 				return $shortcode;
 				break;
@@ -895,7 +890,7 @@ class zlfwHelper extends AppHelper {
 	/*
 		Function: getCountryOptions
 			Returns well formated Countries options
-		
+
 		Parameters:
 			$selectable_countries - Element Chosen Countries
 	*/

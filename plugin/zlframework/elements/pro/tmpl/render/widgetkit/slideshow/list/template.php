@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */ 
+
 
 defined('_JEXEC') or die();
 
@@ -12,7 +7,7 @@ defined('_JEXEC') or die();
 	$settings  = $widget->settings;
 	$content   = array();
 	$nav       = ($settings['navigation']) ? 'nav-'.$settings['navigation'] : '';
-	
+
 	// ZL integration
 	$items = $this->getRenderedValues($params, $widget->mode);
 	$items = $items['result'];
@@ -28,7 +23,7 @@ defined('_JEXEC') or die();
 
 <div id="slideshow-<?php echo $widget_id; ?>" class="yoo-wk wk-slideshow wk-slideshow-list" data-widgetkit="slideshow" data-options='<?php echo json_encode($settings); ?>'>
 	<div>
-	
+
 		<ul class="nav <?php echo $nav; ?> clearfix">
 			<?php foreach ($items as $key => $item) : ?>
 			<?php $content[] = '<li><article class="wk-content clearfix">'.$item['content'].'</article></li>'; ?>
@@ -37,8 +32,8 @@ defined('_JEXEC') or die();
 			</li>
 			<?php endforeach; ?>
 		</ul>
-		
+
 		<div class="slides-container"><?php echo (count($content)) ? '<ul class="slides">'.implode('', $content).'</ul>' : '';?></div>
-		
+
 	</div>
 </div>

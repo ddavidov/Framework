@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -26,7 +21,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 	 * @package   	JCE
 	 * @copyright 	Copyright �� 2009-2011 Ryan Demmer. All rights reserved.
 	 * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-	 * 
+	 *
 	 * Adapted to ZOO (ZOOlanders.com)
 	 * Copyright 2011, ZOOlanders.com
 	 */
@@ -40,23 +35,23 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 
 		switch ($mode) {
 			default:
-			case 'utf-8':    
+			case 'utf-8':
 				$search[] = '#[^a-zA-Z0-9_\.\-~\p{L}\p{N}\s ]#u';
 				$mode = 'utf-8';
 				break;
 			case 'ascii':
-				$subject = $this->utf8_latin_to_ascii($subject);  
-				$subject = $this->utf8_cyrillic_to_ascii($subject);  
+				$subject = $this->utf8_latin_to_ascii($subject);
+				$subject = $this->utf8_cyrillic_to_ascii($subject);
 				$search[] = '#[^a-zA-Z0-9_\.\-~\s ]#';
 				break;
 		}
-		
+
 		// remove multiple . characters
 		$search[] = '#(\.){2,}#';
 
 		// strip leading period
 		$search[] = '#^\.#';
-		
+
 		// strip trailing period
 		$search[] = '#\.$#';
 
@@ -65,15 +60,15 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 
 		// only for utf-8 to avoid PCRE errors - PCRE must be at least version 5
 		if ($mode == 'utf-8') {
-			try {                
-				$result = preg_replace($search, '', $subject);                
+			try {
+				$result = preg_replace($search, '', $subject);
 			} catch (Exception $e) {
 				// try ascii
 				return $this->makeSafe($subject, 'ascii');
 			}
-			
+
 			// try ascii
-			if (is_null($result) || $result === false) {                
+			if (is_null($result) || $result === false) {
 				return $this->makeSafe($subject, 'ascii');
 			}
 
@@ -82,7 +77,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 
 		return preg_replace($search, '', $subject);
 	}
-	
+
 	private function utf8_latin_to_ascii($subject) {
 
 		static $CHARS = NULL;
@@ -126,21 +121,21 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 
 		return str_replace(array_keys($CHARS), array_values($CHARS), $subject);
 	}
-	
+
 	public function cleanPath($path, $ds = DIRECTORY_SEPARATOR, $prefix = '') {
 		$path = trim(urldecode($path));
-		
+
 		// check for UNC path on IIS and set prefix
 		if ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\') {
 			$prefix = "\\";
 		}
 		// clean path, removing double slashes, replacing back/forward slashes with DIRECTORY_SEPARATOR
 		$path = preg_replace('#[/\\\\]+#', $ds, $path);
-		
+
 		// return path with prefix if any
 		return $prefix . $path;
 	}
-	
+
 	/**
 	 * Concat two paths together. Basically $a + $b
 	 * @param string $a path one
@@ -151,7 +146,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 	public function makePath($a, $b, $ds = DIRECTORY_SEPARATOR) {
 		return $this->cleanPath($a . $ds . $b, $ds);
 	}
-	
+
 	/*
 		Function: folderCreate
 			New folder base function. A wrapper for the JFolder::create function
@@ -174,31 +169,31 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Original Credits:
 	 * @package   	JCE
 	 * @copyright 	Copyright �� 2009-2011 Ryan Demmer. All rights reserved.
 	 * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-	 * 
+	 *
 	 * Adapted to ZOO by ZOOlanders
 	 * Copyright 2011, ZOOlanders.com
 	 */
 	public function getUploadValue() {
 		$upload = trim(ini_get('upload_max_filesize'));
-		$post 	= trim(ini_get('post_max_size'));	
-			
+		$post 	= trim(ini_get('post_max_size'));
+
 		$upload = $this->returnBytes($upload);
 		$post 	= $this->returnBytes($post);
-		
+
 		$result = $post;
 		if (intval($upload) <= intval($post)) {
 			$result = $upload;
 		}
-		
+
 		return $this->formatFilesize($result, 'KB');
 	}
-	
+
 	/*
 		Function: returnBytes
 			Output size in bytes
@@ -217,7 +212,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 			default: return $size_str;
 		}
 	}
-	
+
 	/*
 		Function: formatFilesize
 			Output filesize with suffix.
@@ -231,7 +226,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 			String - Filesize
 	*/
 	public function formatFilesize($bytes, $format = false, $precision = 2)
-	{  
+	{
 		$kilobyte = 1024;
 		$megabyte = $kilobyte * 1024;
 		$gigabyte = $megabyte * 1024;
@@ -272,19 +267,19 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 		// init vars
 		$sourcepath = $this->app->path->path('root:'.$source);
 		$size = '';
-		
+
 		if (strpos($source, 'http') === 0) // external source
 		{
-			$ch = curl_init(); 
-			curl_setopt($ch, CURLOPT_HEADER, true); 
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_HEADER, true);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_URL, $source); //specify the url
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$head = curl_exec($ch);
-			
+
 			$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-		} 
+		}
 		if (is_file($sourcepath))
 		{
 			$size = filesize($sourcepath);
@@ -295,7 +290,7 @@ class zlfwHelperFileSystem extends FilesystemHelper {
 
 		// value check
 		if (!$size) return 0;
-		
+
 		// return size
 		return $format ? $this->formatFilesize($size) : $size;
 	}

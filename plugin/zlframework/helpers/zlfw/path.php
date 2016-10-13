@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -32,7 +27,7 @@ class zlfwHelperPath extends PathHelper {
 		$paths = (array) $this->app->path->paths($resource);
 		$parts = explode(':', $resource, 2);
 		$file  = ltrim($parts[1], "\\/");
-		
+
 		$return = array();
 		foreach ($paths as $path) {
 			if (($fullpath = realpath("$path/$file")) && is_readable($fullpath)) {
@@ -111,7 +106,7 @@ class zlfwHelperPath extends PathHelper {
 	 * @package   	JCE
 	 * @copyright 	Copyright © 2009-2011 Ryan Demmer. All rights reserved.
 	 * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-	 * 
+	 *
 	 * Extended and adapted:
 	 * by JOOlanders (zoolanders.com)
 	 * Copyright 2011, JOOlanders SL
@@ -129,7 +124,7 @@ class zlfwHelperPath extends PathHelper {
 		$root = preg_replace('/[\\\\]+/', '/', $root);
 		// Remove first leading slash
 		$root = ltrim($root, '/');
-		
+
 		// Split in parts to better manage
 		$parts = explode('/', $root);
 
@@ -142,10 +137,10 @@ class zlfwHelperPath extends PathHelper {
 		if (!$allowroot && in_array(strtolower($parts[0]), $restricted)) {
 			return false;
 		}
-		
+
 		// join back
 		$root = implode('/', $parts);
-		
+
 		// set path variables
 		jimport('joomla.user.helper');
 
@@ -154,10 +149,10 @@ class zlfwHelperPath extends PathHelper {
 		$groups = array_keys($groups);
 		// get the first group
 		$usergroupid = array_shift($groups);
-		// usergroup table				
+		// usergroup table
 		$group = JTable::getInstance('Usergroup', 'JTable');
 		$group->load($usergroupid);
-		// usertype	
+		// usertype
 		$usergroup = $group->title;
 
 		// Replace any path variables
@@ -169,7 +164,7 @@ class zlfwHelperPath extends PathHelper {
 			$user->id, $user->username, $usergroup, $usergroupid,
 			date('d'), date('m'), date('Y')
 		);
-		
+
 		$root = preg_replace($pattern, $replace, $root);
 
 		// split into path parts to preserve /
@@ -178,7 +173,7 @@ class zlfwHelperPath extends PathHelper {
 		$parts = $this->app->zlfw->filesystem->makeSafe($parts, 'utf-8');
 		// join path parts
 		$root = implode('/', $parts);
-		
+
 		return $root;
 	}
 

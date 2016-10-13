@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -166,7 +160,7 @@ class ZluxController extends AppController {
 					$aaCats[] = array('name' => $category->treename, 'id' => $category->id);
 
 				// set the filtering
-				if (in_array($category->id, $g_cats)) 
+				if (in_array($category->id, $g_cats))
 					$model->categories(array('value' => array($category->id)));
 			}
 
@@ -236,7 +230,7 @@ class ZluxController extends AppController {
 							'value' => trim( $str ),
 							'logic' => 'AND'
 						);
-						
+
 						$model->name($name);
 					}
 				}
@@ -394,7 +388,7 @@ class ZluxController extends AppController {
 					$aaCats[] = array('name' => $category->treename, 'id' => $category->id);
 
 				// set the filtering
-				if (in_array($category->id, $g_cats)) 
+				if (in_array($category->id, $g_cats))
 					$model->categories(array('value' => array($category->id)));
 			}
 
@@ -464,7 +458,7 @@ class ZluxController extends AppController {
 							'value' => trim( $_POST['sSearch'] ),
 							'logic' => 'AND'
 						);
-						
+
 						$model->name($name);
 					}
 				}
@@ -547,7 +541,7 @@ class ZluxController extends AppController {
 				$accesskey 	= urldecode($this->app->request->get('accesskey', 'string'));
 				$secretkey 	= $this->app->zlfw->crypt(urldecode($this->app->request->get('key', 'string')), 'decrypt');
 				$storage = new ZLStorage('AmazonS3', array('secretkey' => $secretkey, 'accesskey' => $accesskey, 'bucket' => $bucket));
-				
+
 				// get root
 				$root = $this->app->zlfw->path->getDirectory($root, true);
 				break;
@@ -587,7 +581,7 @@ class ZluxController extends AppController {
 	/*
 		Function: deleteObject
 			Delete the Object
-			
+
 		Request parameters:
 			$path: the relative path to the object
 			$storage: the storage related information
@@ -625,7 +619,7 @@ class ZluxController extends AppController {
 	/*
 		Function: moveObject
 			Move the Object
-			
+
 		Request parameters:
 			$src: the relative path to the source object
 			$dest: the relative path to the destination object
@@ -678,11 +672,11 @@ class ZluxController extends AppController {
 
 		echo json_encode(compact('result', 'errors', 'name'));
 	}
-	
+
 	/*
 		Function: newfolder
 			Create new Folder
-			
+
 		Parameters:
 			$path: parent folder path
 	*/
@@ -733,7 +727,7 @@ class ZluxController extends AppController {
 	/*
 		Function: validateObjectName
 			Validate the name for uploading
-			
+
 		Parameters:
 			$name: file name
 	*/
@@ -742,7 +736,7 @@ class ZluxController extends AppController {
 		// init vars
 		$name = $this->app->request->get('name', 'string', '');
 
-		// convert to ASCII		
+		// convert to ASCII
 		$result = $this->app->zlfw->filesystem->makeSafe($name, 'ascii');
 
 		// lowercase the extension
@@ -759,7 +753,7 @@ class ZluxController extends AppController {
 	 * Copyright 2009, Moxiecode Systems AB
 	 * Released under GPL License.
 	 * License: http://www.plupload.com/license
-	 * 
+	 *
 	 * Adapted to ZOO by ZOOlanders.com
 	 * Copyright (C) JOOlanders, SL
 	 */
@@ -802,7 +796,7 @@ class ZluxController extends AppController {
 		// get chunking
 		$chunking = isset($_REQUEST["offset"]) && isset($_REQUEST["total"]);
 
-		// Remove old temp files	
+		// Remove old temp files
 		if ($cleanupTargetDir) {
 			if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
@@ -838,7 +832,7 @@ class ZluxController extends AppController {
 			if (!$in = @fopen($_FILES['file']['tmp_name'], "rb")) {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 			}
-		} else {	
+		} else {
 			if (!$in = @fopen("php://input", "rb")) {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 			}
@@ -860,7 +854,7 @@ class ZluxController extends AppController {
 
 		// Check if file has been uploaded
 		if (!$chunking || filesize("{$filePath}.part") >= $_REQUEST["total"]) {
-			// Strip the temp .part suffix off 
+			// Strip the temp .part suffix off
 			$result = $storage->move("{$filePath_rel}.part", $filePath_rel);
 		}
 

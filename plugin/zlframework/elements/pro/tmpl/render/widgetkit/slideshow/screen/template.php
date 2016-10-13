@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */ 
+
 
 defined('_JEXEC') or die();
 
@@ -38,7 +33,7 @@ unset($item);
 			<?php
 				$navigation[] = '<li><span></span></li>';
 				$captions[]   = '<li>'.(isset($item['caption']) ? $item['caption']:"").'</li>';
-			
+
 				/* Lazy Loading */
 				$item["content"] = ($i==$settings['index']) ? $item["content"] : $widgetkit['image']->prepareLazyload($item["content"]);
 			?>

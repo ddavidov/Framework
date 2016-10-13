@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -47,7 +42,7 @@ defined('_JEXEC') or die();
 			"specific":{
 				"mode":"'.$mode.'",
 				"path":'.$path.',
-				"regex":'.json_encode($regex).', 
+				"regex":'.json_encode($regex).',
 				"options":'.json_encode($static_main_layouts).'
 			},
 			"childs":{

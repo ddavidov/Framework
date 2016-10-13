@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -16,14 +11,14 @@ class zlfwHelperZlux extends AppHelper {
 
 	/**
 	 * The list of loaded zlux classes
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_classes = array();
 
 	/**
 	 * Class Constructor
-	 * 
+	 *
 	 * @param App $app A reference to the global App object
 	 */
 	public function __construct($app) {
@@ -35,18 +30,18 @@ class zlfwHelperZlux extends AppHelper {
 
 	/**
 	 * Get a zlux class
-	 * 
+	 *
 	 * @param string $name The name of the class to retrieve
-	 * 
+	 *
 	 * @return object The zlux class
 	 */
 	public function get($name)
-	{	
+	{
 		// load zlux class
 		$name = strtolower($name);
 		$class = 'zlux'.ucfirst($name);
 		$this->app->loader->register($class, 'zlfw:zlux/manager'.strtolower($name).'/class.php');
-		
+
 		// add class, if not exists
 		if (!isset($this->_classes[$name])) {
 			$this->_classes[$name] = new $class($this->app);
@@ -54,12 +49,12 @@ class zlfwHelperZlux extends AppHelper {
 
 		return $this->_classes[$name];
 	}
-	
+
 	/**
 	 * Magic method to get a zlux class
-	 * 
+	 *
 	 * @param string $name The name of the class
-	 * 
+	 *
 	 * @return object The class object
 	 */
 	public function __get($name) {
@@ -124,7 +119,7 @@ class zlfwHelperZlux extends AppHelper {
 
 		// j3
 		} else {
-			
+
 			// load the BS assets
 			JHtml::_('bootstrap.framework');
 
@@ -180,7 +175,7 @@ class zlfwHelperZlux extends AppHelper {
 			'ROUTE' => 'PLG_ZLFRAMEWORK_ROUTE',
 			'ROOT' => 'PLG_ZLFRAMEWORK_ROOT',
 			'SOMETHING_WENT_WRONG' => 'PLG_ZLFRAMEWORK_ZLUX_SOMETHING_WENT_WRONG',
-			
+
 			// ZLUX FilesManager
 			'STORAGE_PARAM_MISSING' => 'PLG_ZLFRAMEWORK_ZLUX_FM_STORAGE_PARAM_MISSING',
 			'INPUT_THE_NEW_NAME' => 'PLG_ZLFRAMEWORK_ZLUX_FM_INPUT_THE_NEW_NAME',
@@ -196,9 +191,9 @@ class zlfwHelperZlux extends AppHelper {
 				'NEW_FOLDER' => 'PLG_ZLFRAMEWORK_ZLUX_FM_NEW_FOLDER',
 				'UPLOAD_FILES' => 'PLG_ZLFRAMEWORK_ZLUX_FM_UPLOAD_FILES',
 				'DROP_FILES' => 'PLG_ZLFRAMEWORK_ZLUX_FM_DROP_FILES',
-				
+
 				// Errors
-				'FILE_EXT_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_FILE_EXT', 
+				'FILE_EXT_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_FILE_EXT',
 				'FILE_SIZE_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_FILE_SIZE',
 				'RUNTIME_MEMORY_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_RUNTIME_MEMORY',
 				'S3_BUCKET_PERIOD_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_S3_BUCKET_PERIOD',
@@ -206,7 +201,7 @@ class zlfwHelperZlux extends AppHelper {
 				'UPLOAD_URL_ERROR' => 'PLG_ZLFRAMEWORK_ZLUX_FM_ERR_UPLOAD_URL',
 
 				// plupload core strings
-				'File extension error.' => 'PLG_ZLFRAMEWORK_FLP_FILE_EXTENSION_ERROR', 
+				'File extension error.' => 'PLG_ZLFRAMEWORK_FLP_FILE_EXTENSION_ERROR',
 				'File size error.' => 'PLG_ZLFRAMEWORK_FLP_FILE_SIZE_ERROR',
 				'File count error.' => 'PLG_ZLFRAMEWORK_FLP_FILE_COUNT_ERROR',
 
@@ -241,21 +236,21 @@ class zlfwHelperZlux extends AppHelper {
 		// prepare policy
 		$policy = base64_encode(json_encode(array(
 			// ISO 8601 - date('c'); generates uncompatible date, so better do it manually
-			'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),  
+			'expiration' => date('Y-m-d\TH:i:s.000\Z', strtotime('+1 day')),
 			'conditions' => array(
 				array('bucket' => $bucket),
 				array('acl' => 'public-read'),
 				array('starts-with', '$key', ''),
-				// "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body. 
+				// "Some versions of the Adobe Flash Player do not properly handle HTTP responses that have an empty body.
 				// To configure POST to return a response that does not have an empty body, set success_action_status to 201.
-				// When set, Amazon S3 returns an XML document with a 201 status code." 
+				// When set, Amazon S3 returns an XML document with a 201 status code."
 				// http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
 				array('success_action_status' => '201'),
 				// Plupload internally adds name field, so we need to mention it here
-				array('starts-with', '$name', ''), 	
+				array('starts-with', '$name', ''),
 				// One more field to take into account: Filename - gets silently sent by FileReference.upload() in Flash
 				// http://docs.amazonwebservices.com/AmazonS3/latest/dev/HTTPPOSTFlash.html
-				array('starts-with', '$Filename', ''), 
+				array('starts-with', '$Filename', ''),
 			)
 		)));
 
@@ -268,9 +263,9 @@ class zlfwHelperZlux extends AppHelper {
 
 	/**
 	 * Convert an Item ZOO Object to ZLUX one
-	 * 
+	 *
 	 * @param array $items List of ZOO Items Objects
-	 * 
+	 *
 	 * @return array List of ZLUX Items Objects
 	 */
 	public function getItemObject($items)
@@ -296,7 +291,7 @@ class zlfwHelperZlux extends AppHelper {
 				'name' => $item->name,
 				'_itemname' => $item->name, // necesary
 				'application' => array(
-					'name' => $item->getApplication()->name, 
+					'name' => $item->getApplication()->name,
 					'id' => $item->getApplication()->id
 				),
 				'type' => array(

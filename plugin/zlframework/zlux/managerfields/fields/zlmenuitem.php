@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -26,7 +21,7 @@ jQuery(document).ready(function($){
 
 		// reset all params
 		$('.zx-zoolanders-menu-params [data-zx-viewpath]').hide().find('[name]').attr('name', '');
-		
+
 		// enable selected view params
 		$('.zx-zoolanders-menu-params [data-zx-viewpath=\"'+sel.val()+'\"]').show().find('[name]').each(function(){
 			this.name = $(this).data('zx-ctrl');
@@ -46,7 +41,7 @@ if (!empty($exts)) {
 			$selectedView = $view;
 		}
 	}
-	
+
 	echo '<div class="zx-zoolanders-menu-params">';
 
 	// set the view options

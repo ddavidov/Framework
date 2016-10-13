@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -16,16 +11,16 @@ class JElementQtip extends JElement {
 	var $_name = 'Qtip';
 
 	function fetchElement($name, $value, $node, $control_name) {
-		
+
 		// get app
 		// $app = App::getInstance('zoo');
 		// $params = $app->data->create($value);
-		
+
 		// $styles = array('Cream' => '', 'Light' => 'light', 'Dark' => 'dark', 'Red' => 'red', 'Green' => 'green', 'Blue' => 'blue', 'YouTube' => 'youtube', 'jTools' => 'jtools', 'ClueTip' => 'cluetip', 'Tipped' => 'tipped', 'Tipsy' => 'tipsy');
-		
+
 		// $html = array();
 		// $html[] = '<div class="zl-fields qtip-options placeholder">';
-		
+
 		// $json = '{"fields": {
 		// 			"_style":{
 		// 				"type": "select",
@@ -50,12 +45,12 @@ class JElementQtip extends JElement {
 		// 			}
 		// 		},
 		// 		"control": "qtip"}';
-		
+
 		// 	$html[] = $app->zlfwhtml->JSONtoFields($json, $control_name.'[qtip]', null, '', '');
 		// $html[] = '</div>';
-		
+
 		//return implode("\n", $html);
 		return 'Depricated feature: will be removed soon';
-	
+
 	}
 }

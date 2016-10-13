@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -35,9 +29,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function exists($file) {
@@ -46,10 +40,10 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true){
@@ -58,9 +52,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string file The filename (or path)
-	 * 
+	 *
 	 * @return mixed The content of the file
 	 */
 	public function read($file) {
@@ -94,10 +88,10 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Moves an uploaded file to a destination folder
-	 * 
+	 *
 	 * @param string $file The name of the php (temporary) uploaded file
 	 * @param string $dest The path (including filename) to move the uploaded file to
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function upload($file, $dest)
@@ -107,9 +101,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Deletes an asset from the filesystem selected
-	 * 
+	 *
 	 * @param string $path The path to the asset
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($path)
@@ -119,9 +113,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Get a Folder/File tree list
-	 * 
+	 *
 	 * @param string $root The path to the root folder
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getTree($root, $legalExt)
@@ -131,9 +125,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Get Object related information
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The object info
 	 */
 	public function getObjectInfo($path)
@@ -155,9 +149,9 @@ class ZLStorageAdapterURI extends ZLStorageAdapterBase implements ZLStorageAdapt
 
 	/**
 	 * Get valid resources, a list of readable files from a folder or individually
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The resources
 	 */
 	public function getValidResources($path, $legalExt)

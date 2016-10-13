@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -66,7 +61,7 @@ defined('_JEXEC') or die();
 	{
 		/* add core elements */
 		$elements = $this->app->object->create('Type', array('_core', $applications[0]))->getCoreElements();
-		
+
 		// filter orderable elements
 		$elements = array_filter($elements, create_function('$element', 'return $element->getMetaData("orderable") == "true";'));
 
@@ -76,7 +71,7 @@ defined('_JEXEC') or die();
 		if ($node->get('add_default')) {
 			$options[''] = JText::_('default');
 		}
-		
+
 		foreach ($elements as $element) {
 			$options[$element->config->name ? $element->config->name : $element->getMetaData('name')] = $element->identifier;
 		}
@@ -105,7 +100,7 @@ defined('_JEXEC') or die();
 				$element_json = array();
 				$elements = $type->getElements();
 				$options = array('- '.JText::_('PLG_ZLFRAMEWORK_SELECT_ELEMENT').' -' => false);
-				
+
 				// filter orderable elements
 				$elements = array_filter($elements, create_function('$element', 'return $element->getMetaData("orderable") == "true";'));
 
@@ -158,13 +153,13 @@ defined('_JEXEC') or die();
 					}
 				}
 			}
-		}';	
+		}';
 	}
 
 	// JSON
-	return 
+	return
 	'{"fields": {
-		
+
 		'. /* random */ '
 		"_random":{
 			"type":"checkbox",

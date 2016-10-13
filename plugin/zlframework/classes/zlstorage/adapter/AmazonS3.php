@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -57,19 +51,19 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function exists($file) {}
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true){
@@ -77,9 +71,9 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string file The filename (or path)
-	 * 
+	 *
 	 * @return mixed The content of the file
 	 */
 	public function read($file) {}
@@ -107,7 +101,7 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 		// propagate S3 object errors to storage object
 		$this->s3->propagateToObject($this);
-		
+
 		// if something went wrong, report
 		if ($result !== true) {
 			$result = false;
@@ -175,10 +169,10 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Moves an uploaded file to a destination folder
-	 * 
+	 *
 	 * @param string $file The name of the php (temporary) uploaded file
 	 * @param string $dest The path (including filename) to move the uploaded file to
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function upload($file, $dest)
@@ -204,9 +198,9 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Deletes an asset from the filesystem selected
-	 * 
+	 *
 	 * @param string $path The path to the asset
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($path)
@@ -249,9 +243,9 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Get a Folder/File tree list
-	 * 
+	 *
 	 * @param string $root The path to the root folder
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getTree($root, $legalExt)
@@ -267,7 +261,7 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 		settype($objects, 'array');
 
 		// folders
-		foreach ($objects as $name => $obj) 
+		foreach ($objects as $name => $obj)
 		{
 			// skip root folder
 			if(!isset($obj['prefix']) && $obj['size'] == 0) {
@@ -289,7 +283,7 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 		}
 
 		// files, only left
-		foreach ($objects as $name => $obj) 
+		foreach ($objects as $name => $obj)
 		{
 			$row = array('type' => 'file');
 			$row['name'] = basename($name);
@@ -305,16 +299,16 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 		// propagate S3 object errors to storage object
 		$this->s3->propagateToObject($this);
-		
+
 		// return list
 		return compact('root', 'rows');
 	}
 
 	/**
 	 * Get Object related information
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The object info
 	 */
 	public function getObjectInfo($path)
@@ -362,9 +356,9 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 
 	/**
 	 * Get valid resources, a list of readable files from a folder or individually
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The resources
 	 */
 	public function getValidResources($path, $legalExt)
@@ -385,11 +379,11 @@ class ZLStorageAdapterAmazonS3 extends ZLStorageAdapterBase implements ZLStorage
 			$objects = $this->s3->getBucket($this->bucket, $path, null, null, '/', true);
 
 			// folders
-			foreach ($objects as $name => $obj) 
+			foreach ($objects as $name => $obj)
 			{
 				// skip root folder
 				if (!isset($obj['prefix']) && $obj['size'] == 0) continue;
-				
+
 				// skip folders
 				if (isset($obj['prefix'])) continue;
 

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -72,9 +67,9 @@ class ZLStorage {
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function exists($file) {
@@ -83,10 +78,10 @@ class ZLStorage {
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true) {
@@ -95,9 +90,9 @@ class ZLStorage {
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string file The filename (or path)
-	 * 
+	 *
 	 * @return mixed The content of the file
 	 */
 	public function read($file) {
@@ -130,10 +125,10 @@ class ZLStorage {
 
 	/**
 	 * Moves an uploaded file to a destination folder
-	 * 
+	 *
 	 * @param string $file The name of the php (temporary) uploaded file
 	 * @param string $dest The path (including filename) to move the uploaded file to
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function upload($file, $dest) {
@@ -142,9 +137,9 @@ class ZLStorage {
 
 	/**
 	 * Deletes an asset from the filesystem selected
-	 * 
+	 *
 	 * @param string $path The path to the asset
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($path)
@@ -157,10 +152,10 @@ class ZLStorage {
 
 	/**
 	 * Get a Folder/File tree list
-	 * 
+	 *
 	 * @param string $root The path to the root folder
 	 * @param string $legalExt The allowed file extensions comma separated
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getTree($root, $legalExt = '') {
@@ -169,9 +164,9 @@ class ZLStorage {
 
 	/**
 	 * Get Object related information
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The object info
 	 */
 	public function getObjectInfo($path)
@@ -184,10 +179,10 @@ class ZLStorage {
 
 	/**
 	 * Get valid resources, a list of readable files from a folder or individually
-	 * 
+	 *
 	 * @param string $path The object path
 	 * @param string $legalExt The allowed file extensions comma separated
-	 * 
+	 *
 	 * @return array The resources
 	 */
 	public function getValidResources($path, $legalExt = '')
@@ -215,7 +210,7 @@ class ZLStorage {
 
 	/**
 	 * Add an error message
-	 * 
+	 *
 	 * @param string $error The error message
 	 */
 	public function setError($error) {
@@ -224,9 +219,9 @@ class ZLStorage {
 
 	/**
 	 * Get the reported errors
-	 * 
+	 *
 	 * @param string $root The path to the root folder
-	 * 
+	 *
 	 * @return array A list of errors
 	 */
 	public function getErrors() {
@@ -235,9 +230,9 @@ class ZLStorage {
 
 	/**
 	 * Get the reported warnings
-	 * 
+	 *
 	 * @param string $root The path to the root folder
-	 * 
+	 *
 	 * @return array A list of warnings
 	 */
 	public function getWarnings() {
@@ -246,11 +241,11 @@ class ZLStorage {
 
 	/**
 	 * Populate the Adapters list
-	 * 
+	 *
 	 * @return Adapters array The populated array of valid Adapters
 	 */
 	public function getAdapters() {
-		
+
 		if (!$this->adapters) {
 			foreach ($this->app->path->files('classes:zlstorage/adapter', false, '/^.*(php)$/i') as $adapter) {
 				$this->adapters[] = substr($adapter, 0, strrpos($adapter, '.'));
@@ -265,47 +260,47 @@ interface ZLStorageAdapter {
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function exists($file);
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
 	 * @param boolean $overwrite If we have to overwrite the file (default: true)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true);
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return mixed The content of the file
 	 */
 	public function read($file);
 
 	/**
 	 * Deletes a file from the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function move($src, $dest);
 
 	/**
 	 * Deletes a file from the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($file);

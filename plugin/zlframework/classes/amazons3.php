@@ -1,10 +1,6 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
+defined('_JEXEC') or die();
 
 /**
 * Original Credits
@@ -16,10 +12,8 @@
 * @package		akeebaengine
 *
 * It is a subset of S3.php, written by Donovan Schonknecht and available
-* at http://undesigned.org.za/2007/10/22/amazon-s3-php-class under a BSD-like license. 
+* at http://undesigned.org.za/2007/10/22/amazon-s3-php-class under a BSD-like license.
 */
-
-defined('_JEXEC') or die();
 
 // register necesary classes
 App::getInstance('zoo')->loader->register('ZLErrorHandlerAbstractObject', 'classes:errorhandler.php');
@@ -994,7 +988,7 @@ final class AEUtilsS3Request
 	 * Deal with curl issues when open_basedir or safe mode is set
 	 */
 	protected function curl(&$curl, $verb = 'GET'){
-		
+
 		//follow on location problems
 		if ((@ini_get('open_basedir') == '' && @ini_get('safe_mode' == 'Off')) || !in_array($verb, array('GET', 'POST', 'PUT'))){
 			@curl_setopt ($curl, CURLOPT_FOLLOWLOCATION,true);
@@ -1032,13 +1026,13 @@ final class AEUtilsS3Request
 			$matches = array();
 			preg_match('/Location:(.*?)\n/', $header, $matches);
 			$url = @parse_url(trim(array_pop($matches)));
-			
+
 			if (!$url) {
 				//couldn't process the url to redirect to
 				$this->curl_loops = 0;
 				return $data;
 			}
-			
+
 			$last_url = parse_url(curl_getinfo($ch, CURLINFO_EFFECTIVE_URL));
 
 			if (!$url['scheme']) {

@@ -152,6 +152,13 @@ class Model
      */
     public function __call($name, $arguments)
     {
+        // filterAt, filterPublished, filterWhatever
+        $filter = 'filter'.ucfirst($name);
+        if (method_exists($this, $filter)) {
+            call_user_func_array([$this, $filter], $args);
+            return $this;
+        }
+
         $arg1 = array_shift($arguments);
         $this->setState($name, $arg1);
 

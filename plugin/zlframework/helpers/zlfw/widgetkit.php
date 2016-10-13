@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -41,7 +36,7 @@ class zlfwHelperWidgetkit extends AppHelper {
 					}
 					break;
 			}
-			
+
 			// prepare the JSON array
 			$json = json_encode(array((string)$setting->attributes()->name => array(
 				'type' => $type,

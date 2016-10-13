@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -16,7 +11,7 @@ class zlfwHelperXml extends AppHelper {
 
 	/**
 	 * This method adds parmeters to the elements on the fly, reading them from an xml file
-	 * 
+	 *
 	 * @param	$config 	AppXmlElement	The xml config of the element
 	 * @param	$file		array			The file where the extra params are stored (absolute path)
 	 * @param	$group		string			The group we wonna edit
@@ -64,7 +59,7 @@ class zlfwHelperXml extends AppHelper {
 
 	/**
 	 * This method adds parmeters to the elements on the fly, reading them from an xml file
-	 * 
+	 *
 	 * @param	$config 	AppXmlElement	The xml config of the element
 	 * @param	$file		array			The file where the extra params are stored (absolute path)
 	 * @param	$group		string			The group we wonna edit
@@ -75,7 +70,7 @@ class zlfwHelperXml extends AppHelper {
 		if(!empty($files))
 		{
 			$zoo = App::getInstance('zoo');
-			
+
 			// save current parameters
 			$old_params = $config->getXML('render') ? $config->getXML('render') : array();
 
@@ -108,7 +103,7 @@ class zlfwHelperXml extends AppHelper {
 	 * Convert XML node to array data
 	*/
 	public function XMLtoArray($node, $isOption=false)
-	{ 
+	{
 		$fields = array(); $i = 0;
 		if(count($node->children())) foreach($node->children() as $child)
 		{

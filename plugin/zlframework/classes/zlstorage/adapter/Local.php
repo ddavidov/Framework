@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -36,9 +30,9 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function exists($path) {
@@ -47,10 +41,10 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true){
@@ -59,9 +53,9 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string file The filename (or path)
-	 * 
+	 *
 	 * @return mixed The content of the file
 	 */
 	public function read($file) {
@@ -150,10 +144,10 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Moves an uploaded file to a destination folder
-	 * 
+	 *
 	 * @param string $file The name of the php (temporary) uploaded file
 	 * @param string $dest The path (including filename) to move the uploaded file to
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function upload($file, $dest)
@@ -172,7 +166,7 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 			$count = 1;
 			while ($this->exists("{$targetDir}/{$basename}_{$count}.{$ext}"))
 				$count++;
-		
+
 			$fileName = "{$basename}_{$count}.{$ext}";
 		}
 
@@ -199,9 +193,9 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Deletes an asset from the filesystem selected
-	 * 
+	 *
 	 * @param string $path The path to the asset
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($path)
@@ -229,10 +223,10 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Get a Folder/File tree list
-	 * 
+	 *
 	 * @param string $root The path to the root folder
 	 * @param string $legalExt The allowed file extensions comma separated
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getTree($root, $legalExt)
@@ -260,9 +254,9 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Get Object related information
-	 * 
+	 *
 	 * @param string $path The object path
-	 * 
+	 *
 	 * @return array The object info
 	 */
 	public function getObjectInfo($path)
@@ -288,7 +282,7 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 			$obj['size']['display'] = $this->app->zlfw->filesystem->formatFilesize($obj['size']['value'], 'KB');
 
 			// if image
-			if (strpos($obj['content_type'], 'image/') !== false 
+			if (strpos($obj['content_type'], 'image/') !== false
 					&& $obj['size']['value'] != 0) {
 				$imageinfo = getimagesize($fullpath);
 				$obj['resolution'] = $imageinfo[0].'x'.$imageinfo[1].'px';
@@ -324,10 +318,10 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Get valid resources, a list of readable files from a folder or individually
-	 * 
+	 *
 	 * @param string $path The object path
 	 * @param string $legalExt The allowed file extensions comma separated
-	 * 
+	 *
 	 * @return array The resources
 	 */
 	public function getValidResources($path, $legalExt)
@@ -354,7 +348,7 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 		// if folder
 		} else if (is_dir($fullpath)){
-			
+
 			// retrieve all valid files
 			foreach ($this->app->path->files("root:$path", false, '/^.*('.$legalExt.')$/i') as $filename) {
 				$filepath = "$fullpath/$filename";
@@ -391,10 +385,10 @@ class ZLStorageAdapterLocal extends ZLStorageAdapterBase implements ZLStorageAda
 
 	/**
 	 * Get the given directory size
-	 * 
+	 *
 	 * @param string $root The path to the root folder
 	 * @param string $recursive If the search should be recursive (default: true)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getDirectorySize($root, $recursive = true)

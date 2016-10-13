@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -93,7 +88,7 @@ defined('_JEXEC') or die();
 				}
 			}
 		},
-		
+
 		'./* info - custom raw text for simple messages */'
 		"_id":{
 			"type":"info",
@@ -130,7 +125,7 @@ defined('_JEXEC') or die();
 		"_id":{
 			"type":"password"
 		},
-		
+
 		'./* checkbox - html checkbox input */'
 		"_id":{
 			"type":"checkbox",
@@ -149,7 +144,7 @@ defined('_JEXEC') or die();
 				}
 			}
 		},
-		
+
 		'./* select - html select input */'
 		"_id":{
 			"type":"select",
@@ -260,7 +255,7 @@ defined('_JEXEC') or die();
 				"regex":'.json_encode('^([_A-Za-z0-9]*)\.php$').',
 				"minimum_options":"2"
 			},
-			"childs":{						
+			"childs":{
 				"loadfields": {
 					"layout_wrapper":{
 						"type": "fieldset",

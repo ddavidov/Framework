@@ -1,17 +1,12 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
 // load config
-require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');	
-	
-	return 
+require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
+
+	return
 	'{"fields": {
 		"layout_wrapper":{
 			"type": "fieldset",
@@ -29,10 +24,10 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 							"type": "subfield",
 							"path":"zlfw:elements\/pro\/tmpl\/render\/qtip\/qtip_options.php"
 						}
-						
+
 					}
 				},
-				
+
 				"qtip_layout":{
 					"type": "wrapper",
 					"fields": {
@@ -41,7 +36,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 							"text": "PLG_ZLFRAMEWORK_QTIP_LAYOUT",
 							"big":"true"
 						},
-						
+
 						"sep_filter":{
 							"type": "separator",
 							"text": "PLG_ZLFRAMEWORK_FILTER"
@@ -51,7 +46,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 							"path":"zlfield:json\/filter.json.php",
 							"control":"filter"
 						},
-						
+
 						"sep_separator":{
 							"type": "separator",
 							"text": "PLG_ZLFRAMEWORK_SP_SEPARATOR"
@@ -68,4 +63,3 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 		}
 	},
 	"control": "qtip"}';
-		

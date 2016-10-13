@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -39,7 +34,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		if(stripos('default.php', $b) === 0) return 1;
 		return ($a < $b) ? -1 : 1;
 	}
-	
+
 	/*
 		Function: trslValues - Returns parent values array
 			Used to translate the value_map to real values
@@ -54,7 +49,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		}
 		return $pvs;
 	}
-	
+
 	/**
 	 * Return an HTML string
 	 *
@@ -75,7 +70,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		unset($info[0]);
 		return '<div class="info">'.$this->app->zlfield->replaceVars($info, $text).'</div>';
 	}
-	
+
 	/*
 		Function: text - Returns text input html string
 	*/
@@ -90,7 +85,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 	public function textareaField($id, $name, $value, $spec, $attrs, $returnRawValue){
 		return '<textarea '.$attrs.' name="'.$name.'" >'.$value.'</textarea>';
 	}
-	
+
 	/*
 		Function: hidden - Returns hidden input html string
 	*/
@@ -106,7 +101,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		return $this->app->html->_('control.text', $name, (string)$value, 'size="60" maxlength="255"'.$attrs);
 	}
 
-	
+
 	/*
 		Function: password - Returns password input html string
 	*/
@@ -114,7 +109,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		$value = $this->app->zlfw->decryptPassword($value);
 		return '<input type="password" '.$attrs.' name="'.$name.'" value="'.$value.'">';
 	}
-	
+
 	/*
 		Function: checkbox - Returns checkbox input html string
 	*/
@@ -124,7 +119,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		$attrs = !empty($attrs) ? implode(' ', $attrs) : '';
 		return '<input type="checkbox" '.$attrs.' name="'.$name.'" '.($value ? 'checked="checked"' : '').' value="'.$input_value.'" />'.($extra_label ? '<span>'.JText::_($extra_label).'</span>' : '');
 	}
-	
+
 	/*
 		Function: radio - Returns radio select html string
 	*/
@@ -142,7 +137,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		if ($value) try {
 			$value = $this->app->html->_('date', $value, $this->app->date->format('%Y-%m-%d %H:%M:%S'), $this->app->date->getOffset());
 		} catch (Exception $e) {}
-		
+
 		return $this->app->html->_('zoo.calendar', $value, $name, $name, '', $time);
 	}
 
@@ -159,7 +154,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		if (!array_key_exists($hash, $this->_select_options))
 		{
 			$hidden_opts = $spec->get('hidden_opts', 0) ? explode('|', $spec->get('hidden_opts', '')) : '';
-			
+
 			// options file
 			$opt_file = str_replace('{value}', @(string)$value, $spec->get('opt_file'));
 
@@ -168,7 +163,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 			{	// get options from json file
 				$preoptions = $preoptions + json_decode(file_get_contents($path), true);
 			}
-			
+
 			$options = array(); // prepare options
 			foreach ($preoptions as $text => $val) {
 				if (empty($hidden_opts) || !in_array($val, $hidden_opts)) {
@@ -188,7 +183,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 			$option = array_shift($options);
 			return $spec->get('multi') ? '' : $option->value;
 		}
-		
+
 		// abort if minimal options not reached
 		if (empty($options) || $spec->get('min_opts') && count($options) < $spec->get('min_opts', 0)) return;
 
@@ -203,7 +198,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 	public function listField($id, $name, $value, $spec, $attrs, $returnRawValue) {
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
-	
+
 	/*
 		Function: layout - Returns select html string
 			It list the files or folder of specified path as options
@@ -258,13 +253,13 @@ class ZLFieldHTMLHelper extends AppHelper {
 					$options[ucwords($basename)] = $tmpl;
 				}
 			}
-			
+
 			// sort letting default.php the first
 			uasort($options, array($this, 'cmp'));
 
 			// merge with current options
 			$options = $spec->get('options', array()) + $options;
-			
+
 			// save the options
 			$this->_layout_options[$hash] = $options;
 		}
@@ -309,19 +304,19 @@ class ZLFieldHTMLHelper extends AppHelper {
 		$group   = $spec->get('group', ''); // filter Types with app groups
 		$apps    = (array)$spec->get('apps', $pv->get('apps', array())); // get static or parent app value
 		$ft	     = (array)$spec->get('types', array()); // filterTypes
-		
+
 		// if is child and no filter provided, don't render
 		if ($spec->find('value_map.apps') && empty($apps)) return;
 
 		// get apps
 		$apps = $this->app->zlfw->getApplications($apps, true, $group); // if empty will return All apps
- 		
+
 		// prepare submissions avoiding duplicates
 		$submissions = array();
 		foreach ($apps as $app){
 			$submissions = array_merge($submissions, $app->getSubmissions());
 		}
-		
+
 		// create options
 		$options = array();
 		foreach ($submissions as $submission) {
@@ -333,10 +328,10 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 		// set options for select
 		$spec->set('options', $options);
-		
+
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
-	
+
 	/*
 		Function: types - Returns zoo types html string
 	*/
@@ -358,7 +353,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 		// get apps
 		$apps = $this->app->zlfw->getApplications($apps, true, $group); // if empty will return All apps
- 		
+
 		// prepare types avoiding duplicates
 		$types = array();
 		foreach ($apps as $app){
@@ -389,7 +384,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 				}
 			}
 		}
-		
+
 		// create options
 		$options = array();
 		foreach ($types as $type) {
@@ -403,7 +398,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 		// set options for select
 		$spec->set('options', $options);
-		
+
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
 
@@ -432,10 +427,10 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 		// elements
 		$element_type = explode(' ', $spec->get('elements', ''));
-		
+
 		// get elements list
 		$options = $this->app->zlfield->elementsList($apps, $element_type, $types);
-		
+
 		if(empty($options)){
 			// set text
 			$spec->set('text', JText::_('PLG_ZLFRAMEWORK_APP_NO_ELEMENTS'));
@@ -445,11 +440,11 @@ class ZLFieldHTMLHelper extends AppHelper {
 			// merge with current options
 			$options = $spec->get('options', array()) + $options;
 
-			$spec->set('options', $options);			
+			$spec->set('options', $options);
 			return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 		}
 	}
-	
+
 	/*
 		Function: cats - Returns zoo cats html string
 	*/
@@ -479,7 +474,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		// merge with current options
 		$options = $spec->get('options', array()) + $options;
 
-		$spec->set('options', $options);		
+		$spec->set('options', $options);
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
 
@@ -498,7 +493,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 			$options[] = $this->app->html->_('select.option', $tag->name, $tag->name);
 		}
 
-		$spec->set('options', $options);		
+		$spec->set('options', $options);
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
 
@@ -564,7 +559,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 	public function modulelistField($id, $name, $value, $specific=array(), $attribs='') {
 		return $this->app->html->_('zoo.modulelist', array(), $name, null, 'value', 'text', $value);
 	}
-	
+
 	/*
 		Function: separatedBy - Returns separated options for repeatable elements
 	*/
@@ -573,7 +568,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 		// init vars
 		$constraint = $spec->get('constraint', ''); // filter layouts by metadata
 		$options    = (array)$spec->get('options', array());
-		
+
 		$options['None'] 							= '';
 		$options['Space'] 							= 'separator=[ ]';
 		$options['Span'] 							= 'tag=[<span>%s</span>]';
@@ -615,13 +610,13 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 		$html[] = '<div class="zlux-field-options">';
 			$html[] = '<ul>';
-	
+
 				// render current options
 				foreach ($value as $opt) {
 					$html[] = '<li class="zlux-x-option">' . $this->_optionsFieldOption($name, $num, $opt) . '</li>';
 					$num++;
 				}
-	
+
 				$html[] = '<li class="zlux-x-option hidden">';
 						$html[] = $this->_optionsFieldOption($name, $num, '');
 				$html[] = '</li>';
@@ -655,7 +650,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 				$html[] = '</div>';
 			$html[] = '</div>';
 		$html[] = '</div>';
-	
+
 		$html[] = '<div class="zlux-x-tools">';
 			$html[] = '<i class="zlux-x-delete icon-remove-circle" title="' .JText::_('Delete option'). '"></i>';
 			$html[] = '<i class="zlux-x-sort icon-move" title="' .JText::_('Sort option'). '"></i>';
@@ -706,7 +701,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 
 				$html[] = '<div>Name <input type="text" name="' . $name.'['.$key.'][name]' . '" value="' . @$val['name'] . '" /></div>';
 				$html[] = '<div>Value <input type="text" name="' . $name.'['.$key.'][value]' . '" value="' . @$val['value'] . '" /></div>';
-					
+
 
 				$html[] = '<div>Options<ul>';
 
@@ -754,7 +749,7 @@ class ZLFieldHTMLHelper extends AppHelper {
 				$html[] = '</div>';
 			$html[] = '</div>';
 		$html[] = '</div>';
-	
+
 		$html[] = '<div class="zlux-x-tools">';
 			$html[] = '<i class="zlux-x-delete icon-remove-circle" title="' .JText::_('Delete option'). '"></i>';
 			$html[] = '<i class="zlux-x-sort icon-move" title="' .JText::_('Sort option'). '"></i>';
@@ -778,7 +773,7 @@ class ZLFieldHTMLHelper extends AppHelper {
         $app->trigger('init.admin', array($app));
 
         if (!isset($app['plugins']['content/zoopro']) || !isset($app['plugins']['content/zoo'])) {
-        	return '<input type="hidden" name="'.$name.'" value="'.$value.'">' . JText::_('PLG_ZLFRAMEWORK_WK2_ZLPLUGIN_MISSING');	
+        	return '<input type="hidden" name="'.$name.'" value="'.$value.'">' . JText::_('PLG_ZLFRAMEWORK_WK2_ZLPLUGIN_MISSING');
         }
 
         return <<<EOT
@@ -790,7 +785,7 @@ EOT;
 
 	/* HTML Fields Helpers
 	--------------------------------------------------------------------------------------------------------------------------------------------*/
-	
+
 	/*
 		Function: itemLayoutList - Returns related layouts list
 	*/
@@ -800,25 +795,25 @@ EOT;
 		$constraint = $spec->get('constraint', ''); // filter layouts by metadata
 		$options    = (array)$spec->get('options', array());
 		$typeFilter = $spec->get('typefilter') ? explode(',', 'event') : null;
-		
+
 		// pass trough all apps
-		$layouts = array();	
+		$layouts = array();
 		foreach($this->app->table->application->all(array('order' => 'name')) as $application) if ($template = $application->getTemplate())
-		{	
+		{
 			$layout_path = str_replace("\\", "/", $template->getPath());
-			
+
 			// get renderer
 			$renderer = $this->app->renderer->create('item')->addPath($layout_path);
-			
+
 			// get all types
-			$folders = array();			
+			$folders = array();
 			foreach (JFolder::folders($layout_path.'/'.$renderer->getFolder().'/item') as $folder) {
 				$folders[] = $folder;
 			}
-			
+
 			// Check for root folder, in case app doesn't have type related layouts
 			$layouts = array_merge($layouts, $this->_getLayouts(null, $constraint, $renderer));
-			
+
 			// Now in subfolders
 			foreach ($folders as $type){
 				if (empty($typeFilter) || in_array($type, $typeFilter)) {
@@ -826,7 +821,7 @@ EOT;
 				}
 			}
 		}
-		
+
 		// create layout options
 		foreach ($layouts as $layout) $options[$layout['name']] = $layout['layout'];
 
@@ -836,7 +831,7 @@ EOT;
 		$spec->set('options', $options);
 		return $this->selectField($id, $name, $value, $spec, $attrs, $returnRawValue);
 	}
-	
+
 	protected function _getLayouts($type = null, $constraint = null, $renderer = null)
 	{
 		$path   = 'item';
@@ -845,12 +840,12 @@ EOT;
 			$path   .= DIRECTORY_SEPARATOR.$type;
 			$prefix .= $type.'.';
 		}
-		
+
 		$layouts = array();
 		foreach ($renderer->getLayouts($path) as $layout) {
-	
+
 			$metadata = $renderer->getLayoutMetaData($prefix.$layout);
-			
+
 			if (empty($constraint) || $metadata->get('type') == $constraint) {
 				$name = $metadata->get('name') ? $metadata->get('name') : ucfirst($layout);
 				$layouts[$layout] = array('name' => $name, 'layout' => $layout);

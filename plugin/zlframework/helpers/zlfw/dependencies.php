@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -52,21 +47,21 @@ class zlfwHelperDependencies extends AppHelper {
 					// if plugin disable, skip it
 					if (empty($plugin)) continue;
 				}
-				
+
 				$version  = $dependency->version;
 				$manifest = $this->app->path->path('root:'.$dependency->manifest);
 				if ($version && is_file($manifest) && is_readable($manifest) && $xml = simplexml_load_file($manifest)) {
-						
+
 					// check if the extension is outdated
 					if (version_compare($version, (string) $xml->version, 'g')) {
 						$status['state'] = false;
 						$status['extensions'][] = array('dependency' => $dependency, 'installed' => $xml);
 					}
-					
+
 				}
 			}
 		}
-		
+
 		return $status;
 	}
 

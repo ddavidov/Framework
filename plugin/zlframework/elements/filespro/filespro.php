@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -39,7 +33,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		// set defaults
 		$params = JComponentHelper::getParams('com_media');
 		$this->config->set('files', array('_source_dir' => $params->get('file_path'), '_extensions' => $this->_extensions, '_max_upload_size' => '1024'));
-		
+
 		// set joomla file path
 		$this->_joomla_file_path = $params->get('file_path') ? $params->get('file_path') : 'images';
 
@@ -90,7 +84,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		if (!$this->_uniqid && $this->_item->id == 0) {
 			$this->_uniqid = $this->get('uniqid') ? $this->get('uniqid') : uniqid();
 		}
-		
+
 		return $this->_uniqid;
 	}
 
@@ -107,7 +101,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		if ($this->_storage == null)
 		{
 			// if source is an URI
-			if (strpos($this->get('file'), 'http') === 0) 
+			if (strpos($this->get('file'), 'http') === 0)
 			{
 				$this->_storage = new ZLStorage('URI');
 			}
@@ -120,7 +114,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 				$secretkey = trim($this->app->zlfw->decryptPassword($this->config->find('files._awssecretkey')));
 
 				$this->_storage = new ZLStorage('AmazonS3', array('secretkey' => $secretkey, 'accesskey' => $accesskey, 'bucket' => $bucket));
-			} 
+			}
 
 			// local
 			else
@@ -147,7 +141,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 			return parent::get($key, $default);
 		}
 	}
-	
+
 	/*
 		DEPICATED since 3.0.15, still needed for old FilesPro elements
 	*/
@@ -157,7 +151,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		{
 			$bucket	   = $this->config->find('files._s3bucket');
 			$accesskey = trim($this->app->zlfw->decryptPassword($this->config->find('files._awsaccesskey')));
-			$secretkey = trim($this->app->zlfw->decryptPassword($this->config->find('files._awssecretkey')));			
+			$secretkey = trim($this->app->zlfw->decryptPassword($this->config->find('files._awssecretkey')));
 
 			// register s3 class
 			$this->app->loader->register('AEUtilAmazons3', 'classes:amazons3.php');
@@ -241,7 +235,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 			// get the valid resources from the path
 			$this->_valid_resources[$path] = $this->storage()->getValidResources($path, $this->getLegalExtensions());
 		}
-		
+
 		return $this->_valid_resources[$path];
 	}
 
@@ -283,11 +277,11 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 	/*
 		Function: getFileDetails
 			Return file info
-			
+
 		Parameters:
 			$file - source file
 			$json - boolean, format
-			
+
 		Returns:
 			JSON or Array
 	*/
@@ -305,14 +299,14 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 
 		return false;
 	}
-	
+
 	/*
 		Function: getFileDetailsDom
 			Return file details dom
-			
+
 		Parameters:
 			$file - source file
-			
+
 		Returns:
 			HTML
 	*/
@@ -326,7 +320,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		{
 			$bucket = trim($this->config->find('files._s3bucket'));
 
-			// decrypt the ZLField password 
+			// decrypt the ZLField password
 			$accesskey = $this->app->zlfw->decryptPassword(trim($this->config->find('files._awsaccesskey')));
 			$secretkey = $this->app->zlfw->decryptPassword(trim($this->config->find('files._awssecretkey')));
 
@@ -364,7 +358,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 
 		return $html;
 	}
-	
+
 	/*
 	   Function: getLegalExtensions
 		   Get the legal extensions string
@@ -398,14 +392,14 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 
 			// Restricted Joomla! folders
 			$restricted = explode(',', 'administrator,cache,components,includes,language,libraries,logs,media,modules,plugins,templates,xmlrpc');
-			
+
 			// Remove whitespace
 			$root = trim($root);
 			// Convert slashes / Strip double slashes
 			$root = preg_replace('/[\\\\]+/', '/', $root);
 			// Remove first leading slash
 			$root = ltrim($root, '/');
-			
+
 			// Split in parts to better manage
 			$parts = explode('/', $root);
 
@@ -418,7 +412,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 			if (!$allowroot && in_array(strtolower($parts[0]), $restricted)) {
 				return false;
 			}
-			
+
 			// join back
 			$root = implode('/', $parts);
 
@@ -431,7 +425,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 			$parts = $this->app->zlfw->filesystem->makeSafe($parts, 'ascii');
 			// join path parts
 			$root = implode('/', $parts);
-			
+
 			// return the result
 			$this->_directory = $root;
 		}
@@ -495,7 +489,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 	}
 
 /* SUBMISSIONS ------------------------------------------------------------------------------------------------------------------------  */
-	
+
 	/*
 		Function: _renderSubmission
 			Renders the element in submission.
@@ -517,14 +511,14 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 				return $this->_edit();
 			else
 				$layout = 'default.php';
-		} 
-		
+		}
+
 		if ($layout = $this->getLayout("submission/$layout"))
 		{
 			return $this->renderLayout($layout, compact('params', 'trusted_mode'));
 		}
 	}
-	
+
 	/*
 		Function: validateSubmission
 			Validates the submitted element
@@ -573,7 +567,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 		foreach($value as $key => &$single_value)
 		{
 			if (isset($userfiles[$key]))
-			{	
+			{
 				$single_value = array('old_file' => (isset($old_files) ? $old_files : ''), 'userfile' => $userfiles[$key], 'values' => $single_value);
 			} else {
 				$single_value = array('values' => $single_value);
@@ -590,14 +584,14 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 				}
 			}
 		}
-		
+
 		if ($params->get('required') && !count($result)) {
 			if (isset($e)) {
 				throw $e;
 			}
 			throw new AppValidatorException('This field is required');
 		}
-		
+
 		// connect to submission beforesave event
 		$this->params = $params;
 		$this->app->event->dispatcher->connect('submission:beforesave', array($this, 'submissionBeforeSave'));
@@ -607,7 +601,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 
 		return $result;
 	}
-	
+
 	/*
 		Function: submissionBeforeSave
 			Callback before item submission is saved
@@ -627,7 +621,7 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 				}
 			}
 		}
-		
+
 		$files = array();
 		// now for the real upload
 		foreach($userfiles as $userfile)
@@ -651,14 +645,14 @@ abstract class ElementFilesPro extends ElementRepeatablePro {
 					$count = 1;
 					while (JFile::exists("{$targetDir}/{$basename}_{$count}.{$ext}"))
 						$count++;
-				
+
 					$fileName = "{$basename}_{$count}.{$ext}";
 				}
 
 				// Create target dir
 				if (!JFolder::exists($targetDir))
 					JFolder::create($targetDir);
-				
+
 				// upload the file
 				if (!JFile::upload($userfile['tmp_name'], "$targetDir/$fileName")) {
 					throw new AppException('Unable to upload file.');
@@ -796,7 +790,7 @@ class FilesProSplFileInfo extends SplFileInfo
 	 * @since 3.0.5
 	 */
 	public $app;
-	
+
 	/**
 	 * Class constructor. Creates a new ZLSplFileInfo object for the file_path specified.
 	 * The file does not need to exist, or be readable
@@ -810,7 +804,7 @@ class FilesProSplFileInfo extends SplFileInfo
 
 		// set application
 		$this->app = App::getInstance('zoo');
-		
+
 		// set element
 		$this->element = $element;
 	}

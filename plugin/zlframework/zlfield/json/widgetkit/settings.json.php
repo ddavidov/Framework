@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -19,7 +14,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 	$widget_xml = simplexml_load_file($this->app->path->path("media:widgetkit/widgets/$type/$type.xml"));
 	$style_xml = simplexml_load_file($this->app->path->path("media:widgetkit/widgets/$type/styles/$style/config.xml"));
 
-	return 
+	return
 	'{"fields": {
 
 		"widget_separator":{

@@ -1,16 +1,11 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */ 
+
 
 defined('_JEXEC') or die();
 
 	$widget_id = $widget->id.'-'.uniqid();
 	$settings  = $widget->settings;
-	
+
 	$items = $this->getRenderedValues($params, $widget->mode);
 	$items = $items['result'];
 	$sets  = array_chunk($items, $settings['items_per_set']);
@@ -37,7 +32,7 @@ defined('_JEXEC') or die();
 		<div class="slides-container">
 			<ul class="slides">
 				<?php $i = 0; foreach ($items as $key => &$item) : ?>
-				<?php  
+				<?php
 					/* Lazy Loading */
 					$item["content"] = ($i==$settings['index']) ? $item["content"] : $widgetkit['image']->prepareLazyload($item["content"]);
 				?>
@@ -67,5 +62,5 @@ defined('_JEXEC') or die();
 			<?php if ($settings->get('slideset_buttons') && count($sets) > 1): ?><div class="next"></div><div class="prev"></div><?php endif; ?>
 		</div>
 	</div>
-	
+
 </div>

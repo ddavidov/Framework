@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -12,7 +7,7 @@ defined('_JEXEC') or die();
 require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 
 	$positions = array('Top left' => 'top left', 'Top center' => 'top center', 'Top right' => 'top right', 'Right top' => 'right top', 'Right center' => 'right center', 'Right bottom' => 'right bottom', 'Bottom right' => 'bottom right', 'Bottom center' => 'bottom center', 'Bottom left' => 'bottom left', 'Left bottom' => 'left bottom', 'Left center' => 'left center', 'Left top' => 'left top', 'Center' => 'center');
-	
+
 	return
 	'{"fields": {
 
@@ -78,7 +73,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 				"help": "PLG_ZLFRAMEWORK_QTIP_SHOW_SOLO_DESC",
 				"default":"0"
 			},
-			
+
 			"wrapper_hide":{
 				"type": "wrapper",
 				"fields": {
@@ -105,11 +100,11 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 					}
 				}
 			},
-	
+
 		"sep-content":{
 			"type": "separator",
 			"text": "PLG_ZLFRAMEWORK_QTIP_CONTENT"
-		},				
+		},
 			"_class":{
 				"type": "text",
 				"label": "PLG_ZLFRAMEWORK_QTIP_CUSTOM_CLASS",
@@ -148,13 +143,13 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 				"type": "text",
 				"label": "PLG_ZLFRAMEWORK_HEIGHT"
 			},
-			
-		
+
+
 		"sep_trigger":{
 			"type": "separator",
 			"text": "Trigger"
 		},
-			
+
 			"_trigger_render":{
 				"type": "select",
 				"label": "Render",
@@ -168,7 +163,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 				},
 				"default": "1"
 			},
-			
+
 			"_trigger_content":{
 				"type": "select",
 				"label": "PLG_ZLFRAMEWORK_QTIP_TRIGGER",
@@ -194,7 +189,7 @@ require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 				"label": "PLG_ZLFRAMEWORK_QTIP_TRIGGER_TEXT",
 				"help": "PLG_ZLFRAMEWORK_QTIP_TRIGGER_TEXT_DESC"
 			},
-			
+
 			"_trigger_title":{
 				"type": "select",
 				"label": "Title",

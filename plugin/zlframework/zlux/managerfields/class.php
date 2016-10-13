@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -130,7 +125,7 @@ abstract class zluxFieldsEngine
 		// render
 		return implode("\n", $this->renderFields($fields));
 	}
-	
+
 	/**
 	 * Evaluates the fields and returns them in HTML
 	 *
@@ -153,7 +148,7 @@ abstract class zluxFieldsEngine
 
 			$ext = pathinfo($path, PATHINFO_EXTENSION);
 			if ($ext == 'json')
-				$fields = file_get_contents($path);			
+				$fields = file_get_contents($path);
 			else // php
 				$fields = include($path);
 
@@ -206,7 +201,7 @@ abstract class zluxFieldsEngine
 
 					// get content
 					$content = array_filter($this->renderFields($fld->get('fields')));
-					
+
 					// abort if no minimum fields reached
 					if (count($content) == 0 || count($content) < $fld->get('min_count', 0)) continue;
 
@@ -230,7 +225,7 @@ abstract class zluxFieldsEngine
 
 						$result[] = $this->app->zlfw->renderLayout($layout, compact('id', 'content', 'fld'));
 					}
-					
+
 					break;
 				case 'subfield':
 					// get parent fields data
@@ -293,11 +288,11 @@ abstract class zluxFieldsEngine
 							$value = $this->request->get($fld->find('request_value.param'), $fld->find('request_value.type'), $fld->find('request_value.default'));
 						}
 					}
-					
+
 					 // if ($psv) $specific['parents_val'] = $psv;
 
 					$args = $this->app->data->create($fld->get('settings'));
-									
+
 					// render field
 					$result[] = $this->renderField($fld, $id, $value, $args);
 
@@ -308,17 +303,17 @@ abstract class zluxFieldsEngine
 						$pid = $id;
 
 						// add current value to parents array, if empty calculate it
-						// $psv[$id] = $value ? $value : $this->field($params, $value, true); 
-						$psv[$id] = $value ? $value : null; 
+						// $psv[$id] = $value ? $value : $this->field($params, $value, true);
+						$psv[$id] = $value ? $value : null;
 
 						$p_task = $this->request->getVar('parent_task') ? $this->request->getVar('parent_task') : $this->request->getVar('task'); // parent task necesary if double field load ex: layout / sublayout
 						$url = $this->app->link(array('controller' => 'zlframework', 'format' => 'raw', 'type' => $this->type, 'layout' => $this->layout, 'group' => $this->group, 'path' => $this->request->getVar('path'), 'parent_task' => $p_task, 'zlfieldmode' => $this->mode), false);
 
 						// rely options to be used by JS later on
 						$json = $fld->find('childs.loadfields.subfield', '') ? array('paths' => $fld->find('childs.loadfields.subfield.path')) : array('fields' => $childs);
-						
+
 						$pr_opts = json_encode(array('id' => $id, 'url' => $url, 'psv' => $psv, 'json' => json_encode($json)));
-						
+
 						// all options are stored as data on DOM so can be used from JS
 						$loaded_fields = $this->renderFields($childs);
 						$result[] = '<div class="placeholder" data-relieson-type="'.$field_type.'"'.($pr_opts ? " data-relieson='{$pr_opts}'" : '').' data-control="'.$this->control.'" >';
@@ -339,7 +334,7 @@ abstract class zluxFieldsEngine
 	 */
 	function parseXML($xml)
 	{
-		// convert the XML to array for easier managing 
+		// convert the XML to array for easier managing
 		return $this->_parseXML($this->app->zlfw->xml->XMLtoArray($xml));
 	}
 
@@ -391,7 +386,7 @@ abstract class zluxFieldsEngine
 	}
 
 	/*
-		Function: renderIf 
+		Function: renderIf
 			Render or not depending if specified extension is instaled and enabled
 		Params
 			$extensions - array, Ex: [com_widgetkit, 0]
@@ -431,7 +426,7 @@ abstract class zluxFieldsEngine
 	public function replaceVars($vars, $string)
 	{
 		$vars = is_string($vars) ? explode(',', trim($vars, ' ')) : $vars;
-		
+
 		$pattern = $replace = array(); $i=1;
 		foreach((array)$vars as $var){
 			$pattern[] = "/%s$i/"; $i++;

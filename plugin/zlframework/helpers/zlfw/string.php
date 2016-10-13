@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -21,7 +16,7 @@ class zlfwHelperString extends AppHelper {
 	private $matrix;			// array used to store nodes
 	public $debug;
 	private $fixedhtmlDisplayCode;
-	
+
 	/* wrapped class */
 	protected $_class = 'JString';
 
@@ -39,7 +34,7 @@ class zlfwHelperString extends AppHelper {
 		$this->fixedhtmlDisplayCode = "";
 		$this->allowed_styles = array();
 	}
-	
+
 	/*
 		Function: __call
 			Map all functions to JRequest class
@@ -54,25 +49,25 @@ class zlfwHelperString extends AppHelper {
     public function __call($method, $args) {
 		return $this->_call(array($this->_class, $method), $args);
     }
-	
+
 	/*
 		Function: truncateArray
 			truncate an array of strings in diferent ways
-			
+
 		Variables:
 			array - the result with array of string values
 			$length - the length of the output string
 			$truncate_string - the truncate string
 			$mode - truncate mode, grouped [1] or individual [2]
-			
+
 		Return :
 			array - result of truncated strings values
 	*/
 	public function truncateArray($result, $length = 30, $truncate_string = '...', $mode = 1)
-	{	
+	{
 		$values = $result['result'];
 		$report = $result['report'];
-	
+
 		// group all text & truncate
 		if (isset($length) && $length > 0 && $mode == 1)
 		{
@@ -100,13 +95,13 @@ class zlfwHelperString extends AppHelper {
 				}
 			}
 		}
-		
+
 		$result['result'] = $values;
 		$result['report'] = $report;
-		
+
 		return $result;
 	}
-	
+
 	/*
 		Function: truncate
 			Truncates the input string.
@@ -124,7 +119,7 @@ class zlfwHelperString extends AppHelper {
 		if ($text == '') {
 			return '';
 		}
-		
+
 		if ($this->strlen($text) > $length) {
 			$length -= min($length, strlen($truncate_string));
 			$text  = preg_replace('/\s+?(\S+)?$/', '', substr($text, 0, $length + 1));
@@ -132,14 +127,14 @@ class zlfwHelperString extends AppHelper {
 			if ($fixHtml){
 				$text = $this->getFixedHtml($text);
 			}
-			
+
 			return $this->substr($text, 0, $length) . $truncate_string;
 
 		} else {
 			return $text;
 		}
 	}
-	
+
 	// -------------------------------------------------
 	// HTML FIXER v.2.05 15/07/2010
 	// clean dirty html and make it better, fix open tags
@@ -206,7 +201,7 @@ class zlfwHelperString extends AppHelper {
 			array(
 				'/borderColor=([^ >])*/i',
 				'/border=([^ >])*/i'
-			), 
+			),
 			array(
 				'',
 				''
@@ -261,7 +256,7 @@ class zlfwHelperString extends AppHelper {
 			$x="";
 			foreach($check as $chk){
 				foreach($this->allowed_styles as $as)
-					if(stripos($chk, $as) !== False) { $x.=$chk.';'; break; } 
+					if(stripos($chk, $as) !== False) { $x.=$chk.';'; break; }
 			}
 		}
 
@@ -320,7 +315,7 @@ class zlfwHelperString extends AppHelper {
 			if ($flag) {
 				$errorsCounter++;
 				if ($this->debug) echo "<div style='color:#ff0000'>Found a <b>".$this->matrix[$i]["tagType"]."</b> tag inside a <b>".htmlspecialchars($parentType)."</b> tag at node $i: MOVED</div>";
-				
+
 				$swap = $this->matrix[$this->matrix[$i]["parentTag"]]["parentTag"];
 				if ($this->debug) echo "<div style='color:#ff0000'>Every node that has parent ".$this->matrix[$i]["parentTag"]." will have parent ".$swap."</div>";
 				$this->matrix[$this->matrix[$i]["parentTag"]]["tag"]="<!-- T A G \"".$this->matrix[$this->matrix[$i]["parentTag"]]["tagType"]."\" R E M O V E D -->";
@@ -356,7 +351,7 @@ class zlfwHelperString extends AppHelper {
 					$out.=$this->findSonsOf($i);
 					if ($this->matrix[$i]["tagType"]!="") {
 						//write the closing tag
-						if (!in_array($this->matrix[$i]["tagType"], array ( "br","img","hr","input"))) 
+						if (!in_array($this->matrix[$i]["tagType"], array ( "br","img","hr","input")))
 							$out.="</". $this->matrix[$i]["tagType"].">";
 					}
 				}
@@ -413,7 +408,7 @@ class zlfwHelperString extends AppHelper {
 					'/<!DOCTYPE([^>])*>/i',
 					'/<!--(.|\s)*?-->/',
 					'/<\?(.|\s)*?\?>/'
-				), 
+				),
 				array(
 					' ',
 					' ',
@@ -459,7 +454,7 @@ class zlfwHelperString extends AppHelper {
 				*/
 				$contenuto = $ns;
 				$ns = "";
-				
+
 				$tag="";
 				while( $i<strlen($s) && $s[$i]!=">" ){
 					// get chars till the end of a tag
@@ -467,7 +462,7 @@ class zlfwHelperString extends AppHelper {
 					$i++;
 				}
 				$tag.=$s[$i];
-				
+
 				if($s[$i]==">") {
 					/*
 						$tag contains a tag <...chars...>

@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */ 
+
 
 defined('_JEXEC') or die();
 
@@ -15,18 +10,18 @@ defined('_JEXEC') or die();
 
 	// create the settings object
 	$settings = $this->app->data->create($settings);
-	
+
 	$images         = $this->getRenderedValues($params, $widget->mode);
 	$images 		= $images['result'];
 	$thumbs         = $this->getRenderedValues($params, $widget->mode, array('width' => $settings->get('thumb_width'), 'height' => $settings->get('thumb_height')));
 	$thumbs 		= $thumbs['result'];
-	
+
 	$sets           = array_chunk($thumbs, $settings->get('items_per_set'));
 
 	foreach (array_keys($sets) as $s) {
 		$nav[] = '<li><span></span></li>';
 	}
-	
+
 	// workaround for the main dimensions
 	$settings->set('width', $params->find('specific._width', 'auto'));
 	$settings->get('height', $params->find('specific._height', 'auto'));
@@ -40,9 +35,9 @@ defined('_JEXEC') or die();
 			<ul class="slides">
 
 				<?php foreach ($images as $image) : ?>
-				
+
 					<?php
-					
+
 						/* Prepare Captions */
 						$caption = '';
 						if($settings->get('zl_captions') == 2 && $title = $settings->get('_custom_caption')){
@@ -53,10 +48,10 @@ defined('_JEXEC') or die();
 							$caption = $image['filename'];
 						}
 						$captions[]   = "<li>$caption</li>";
-	
+
 						/* Prepare Image */
 						$content = '<img src="'.$image['fileurl'].'" width="'.$image['width'].'" height="'.$image['height'].'" alt="'.$image['filename'].'" />';
-					
+
 						/* Lazy Loading */
 						$content = ($i==$settings['index']) ? $content : $widgetkit['image']->prepareLazyload($content);
 
@@ -75,7 +70,7 @@ defined('_JEXEC') or die();
 					?>
 
 					<li><?php echo $content; ?></li>
-					
+
 					<?php $i=$i+1;?>
 				<?php endforeach; ?>
 
@@ -91,12 +86,12 @@ defined('_JEXEC') or die();
 				<?php foreach ($sets as $set => $items) : ?>
 				<ul class="set">
 					<?php foreach ($items as $thumb) : ?>
-					
+
 					<?php
 						/* Prepare Image */
 						$content = '<img src="'.$thumb['fileurl'].'" width="'.$thumb['width'].'" height="'.$thumb['height'].'" alt="'.$thumb['filename'].'" />';
 					?>
-					
+
 					<li><div><?php echo $content; ?></div></li>
 					<?php endforeach; ?>
 				</ul>
@@ -105,7 +100,7 @@ defined('_JEXEC') or die();
 			<?php if ($settings['slideset_buttons'] && count($sets) > 1) : ?><div class="next"></div><div class="prev"></div><?php endif; ?>
 		</div>
 	</div>
-	
+
 </div>
 
 <?php else : ?>

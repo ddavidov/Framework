@@ -1,10 +1,5 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
+
 
 defined('_JEXEC') or die();
 
@@ -21,7 +16,7 @@ defined('_JEXEC') or die();
 	// if no apps return message instead
 	if(empty($apps)) {
 		// json string
-		return 
+		return
 		'{"fields": {
 			"message_wrapper": {
 				"type":"fieldset",
@@ -34,7 +29,7 @@ defined('_JEXEC') or die();
 					}
 				}
 			}
-		}}';	
+		}}';
 	}
 
 	// get apps
@@ -65,16 +60,16 @@ defined('_JEXEC') or die();
 		// filter types
 		$types = !empty($allowed_types) ? array_filter($types, create_function('$type', 'return in_array($type->id, array(\''.implode('\', \'', $allowed_types).'\'));')) : $types;
 
-		
+
 		if(!empty($types)) foreach ($types as $type)
 		{
 			$elements = $type->getElements();
 			$type_json = array();
-			
+
 			if(!empty($elements))
 			{
 				// process elements
-				foreach ($elements as $element) 
+				foreach ($elements as $element)
 				{
 					$element_json = array();
 					$name = $element->config->name ? $element->config->name : $element->getMetaData('name');
@@ -95,13 +90,13 @@ defined('_JEXEC') or die();
 							$json_path = 'zlfield:json/itemfilter/_elements.option.json.php';
 							$element_json[] = include($this->app->path->path($json_path));
 							break;
-							
+
 						case 'category':
 						case 'itemcategory': case 'itemcategorypro': case 'relatedcategories':
 						case 'relatedcategoriespro':
 							// ignore as it's filtered by general Category filter
 							break;
-							
+
 						case 'date':
 						case 'datepro':
 							$json_path = 'zlfield:json/itemfilter/_elements.date.json.php';
@@ -156,7 +151,7 @@ defined('_JEXEC') or die();
 							"control":"'.$element->identifier.'"
 						}';
 					}
-					
+
 				} // end elements foreach
 
 				$json[] =
@@ -177,7 +172,7 @@ defined('_JEXEC') or die();
 	} // end App foreach
 
 	// return json string
-	return 
+	return
 	'{"fields": {
 
 		'. /* options */ '

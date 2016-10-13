@@ -1,10 +1,4 @@
 <?php
-/**
- * @package     ZOOlanders
- * @version     3.3.16
- * @author      ZOOlanders - http://zoolanders.com
- * @license     GNU General Public License v2 or later
- */
 
 defined('_JEXEC') or die();
 
@@ -47,16 +41,16 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 			'oauth_token'			=> $token,
 			'uid'					=> $token_uid,
 		);
-		
+
 		$this->dropbox->setToken($token);
 	}
 
 	/**
 	 * Writes a file to the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 * @param mixed $content The content to write
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function write($file, $content, $overwrite = true){
@@ -64,7 +58,7 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 
 	/**
 	 * Reads a file content from the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 */
 	public function read($file) {
@@ -72,9 +66,9 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 
 	/**
 	 * Deletes a file from the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function delete($file) {
@@ -82,7 +76,7 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 
 	/**
 	 * Check if a file exists in the filesystem selected
-	 * 
+	 *
 	 * @param string $file The filename (or path)
 	 */
 	public function exists($file) {
@@ -90,7 +84,7 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 
 	/**
 	 * Moves an uploaded file to a destination folder
-	 * 
+	 *
 	 * @param string $file The name of the php (temporary) uploaded file
 	 * @param string $dest The path (including filename) to move the uploaded file to
 	 */
@@ -100,9 +94,9 @@ class ZLStorageAdapterDropbox extends ZLStorageAdapterBase implements ZLStorageA
 
 	/**
 	 * Get a Folder/File tree list
-	 * 
+	 *
 	 * @param string $root The path to the root folder
-	 * 
+	 *
 	 * @return boolean The success of the operation
 	 */
 	public function getTree($root, $legalExt)

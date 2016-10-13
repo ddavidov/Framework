@@ -5,11 +5,6 @@ namespace Zoolanders\Framework\Container;
 use Auryn\Injector;
 use Pimple\Container as Pimple;
 use Zoolanders\Framework\Autoloader;
-use Zoolanders\Framework\Event\ContainerConfigurationLoaded;
-use Zoolanders\Framework\Event\ContainerServicesLoaded;
-use Zoolanders\Framework\Filesystem\Filesystem;
-use Zoolanders\Framework\Service\Event;
-use Zoolanders\Framework\Zoo\Zoo;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;

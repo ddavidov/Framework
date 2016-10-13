@@ -25,24 +25,6 @@ class Item extends Database
     protected $join_frontpage = false;
     protected $join_tags = false;
 
-    /**
-     * @param string $name
-     * @param mixed $args
-     * @return $this|static
-     */
-    public function __call($name, $args)
-    {
-        // filterAt, filterPublished, filterWhatever
-        $filter = 'filter'.ucfirst($name);
-        if (method_exists($this, $filter)) {
-            call_user_func_array([$this, $filter], $args);
-            return $this;
-        }
-
-
-        return $this;
-    }
-
     /*
         Function: _buildQueryFrom
             Builds FROM tables list for the query

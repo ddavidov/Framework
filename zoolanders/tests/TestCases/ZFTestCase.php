@@ -4,6 +4,8 @@ namespace ZFTests\TestCases;
 
 use PHPUnit\Framework\TestCase;
 use Zoolanders\Framework\Container\Container;
+use Joomla\Input\Input;
+use \Zoolanders\Framework\Service\Event;
 
 /**
  * Class ZFTestCase
@@ -22,7 +24,14 @@ class ZFTestCase extends TestCase
     {
         parent::setUpBeforeClass();
 
-        self::$container = new Container(array());
+        $config = array();
+
+        // Mocking service container:
+        self::$container = new Container(array(
+            'input' => new Input(),
+            'joomla' => \JFactory::getApplication('site', $config),
+            'event' => new Event(self::$container)
+        ));
     }
 
     public static function tearDownAfterClass()

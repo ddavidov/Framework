@@ -1,6 +1,9 @@
 <?php
 
-// Bootstraping Joomla env:
+// Bootstrap Joomla env:
+require("../vendor/joomla/joomla-platform/libraries/import.legacy.php");
+require("../vendor/joomla/joomla-platform/libraries/import.php");
+
 if(!defined('_JEXEC')){
     define('_JEXEC', 1);
 }

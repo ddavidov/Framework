@@ -1,2 +1,3 @@
 /zoolanders/vendor/
 .idea
+/zoolanders/tests/config/configuration.php

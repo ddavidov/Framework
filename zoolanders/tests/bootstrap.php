@@ -1,6 +1,7 @@
 <?php
 
 // Bootstrap Joomla env:
+require("config/configuration.php");
 require("../vendor/joomla/joomla-platform/libraries/import.legacy.php");
 require("../vendor/joomla/joomla-platform/libraries/import.php");
 

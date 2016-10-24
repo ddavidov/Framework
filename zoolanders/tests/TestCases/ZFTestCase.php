@@ -24,14 +24,14 @@ class ZFTestCase extends TestCase
     {
         parent::setUpBeforeClass();
 
-        $config = array();
+        $config = new \JConfig();
 
         // Mocking service container:
         self::$container = new Container(array(
             'input' => new Input(),
-            'joomla' => \JFactory::getApplication('site', $config),
-            'event' => new Event(self::$container)
+            'joomla' => \JFactory::getApplication('site', get_object_vars($config))
         ));
+        self::$container['event'] = new Event(self::$container);
     }
 
     public static function tearDownAfterClass()

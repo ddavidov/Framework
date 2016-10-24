@@ -20,5 +20,6 @@ class DispatcherTest extends ZFTestCase
         $dispatcher->dispatch('Default');
 
         $this->expectException(ControllerNotFound::class);
+        print "\n";
     }
 }

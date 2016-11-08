@@ -16,10 +16,9 @@ class DispatcherTest extends ZFTestCase
      */
     public function testInvalidControllerException(){
 
+        $this->expectException(ControllerNotFound::class);
+
         $dispatcher = $this->container->make('Zoolanders\Framework\Dispatcher\Dispatcher', array($this->container));
         $dispatcher->dispatch('Default');
-
-        $this->expectException(ControllerNotFound::class);
-        print "\n";
     }
 }

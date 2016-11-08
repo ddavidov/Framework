@@ -24,12 +24,10 @@ class ZFTestCase extends TestCase
     {
         parent::setUpBeforeClass();
 
-        $config = new \JConfig();
-
         // Mocking service container:
         self::$container = new Container(array(
             'input' => new Input(),
-            'joomla' => \JFactory::getApplication('site', get_object_vars($config)),
+            'joomla' => \JFactory::getApplication('site'),
             'zoo' => \App::getInstance('zoo')
         ));
         self::$container['event'] = new Event(self::$container);

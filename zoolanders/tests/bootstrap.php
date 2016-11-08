@@ -3,20 +3,11 @@
 define('VENDOR_DIR', __DIR__."/../vendor/");
 
 // Bootstrap Joomla env:
-require("config/configuration.php");
-require(VENDOR_DIR . "joomla/joomla-platform/libraries/import.legacy.php");
-require(VENDOR_DIR . "joomla/joomla-platform/libraries/import.php");
 
-if(!defined('_JEXEC')){
-    define('_JEXEC', 1);
-}
+// Path to prepared joomla environment:
+define('JOOMLA_ENV_PATH', VENDOR_DIR . 'ddavidov/joo');
 
-if(!defined('JPATH_SITE')){
-    define('JPATH_SITE', __DIR__);
-}
-
-// Bootstrap ZOO:
-require(VENDOR_DIR . "ddavidov/xoo/config.php");
+require_once JOOMLA_ENV_PATH . '/joomla-env-bootstrap.php';
 
 // Bootstrap Framework
 $loader = require_once(dirname(dirname(__FILE__)) . '/include.php');

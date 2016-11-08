@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ddavidov/xoo.git",
-                "reference": "3960ac68002a3befe0c6b4c1b49225e94491929f"
+                "reference": "0a4ea1cafdea82fe2007b455f32d17df43da025b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ddavidov/xoo/zipball/3960ac68002a3befe0c6b4c1b49225e94491929f",
-                "reference": "3960ac68002a3befe0c6b4c1b49225e94491929f",
+                "url": "https://api.github.com/repos/ddavidov/xoo/zipball/0a4ea1cafdea82fe2007b455f32d17df43da025b",
+                "reference": "0a4ea1cafdea82fe2007b455f32d17df43da025b",
                 "shasum": ""
             },
             "type": "library",
@@ -116,7 +116,7 @@
                 "source": "https://github.com/ddavidov/xoo/tree/master",
                 "issues": "https://github.com/ddavidov/xoo/issues"
             },
-            "time": "2016-11-08 11:37:41"
+            "time": "2016-11-08 13:56:07"
         },
         {
             "name": "dropbox/dropbox-sdk",

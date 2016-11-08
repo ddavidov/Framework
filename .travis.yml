@@ -19,4 +19,4 @@ addons:
 
 before_script:
   - mysql -uroot -e "create database IF NOT EXISTS joomla;"
-  - mysql -uroot -e joomla < vendor/ddavidov/xoo/db/joomla.sql
+  - mysql -uroot -e joomla < zoolanders/vendor/ddavidov/xoo/db/joomla.sql

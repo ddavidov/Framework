@@ -17,5 +17,6 @@ addons:
     - mysql-client-core-5.6
     - mysql-client-5.6
 
-before_install:
+before_script:
   - mysql -uroot -e "create database IF NOT EXISTS joomla;"
+  - mysql -uroot -e joomla < vendor/ddavidov/xoo/db/joomla.sql

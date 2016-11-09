@@ -27,12 +27,12 @@
         "league/flysystem-ziparchive": "^1.0",
         "natxet/cssmin": "^3.0",
         "linkorb/jsmin-php": "^1.0",
-        "ddavidov/xoo": "dev-master"
+        "ddavidov/joomla-zoo-env": "dev-master"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url":  "https://github.com/ddavidov/xoo"
+            "url":  "https://github.com/ddavidov/joomla-zoo-env.git"
         }
     ],
     "require-dev": {

@@ -31,12 +31,12 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "https://github.com/joolanders/JoomlaZooEnvironment.git"
+            "url":  "https://github.com/joolanders/framework-test-env.git"
         }
     ],
     "require-dev": {
         "phpunit/phpunit": "5.5.*",
         "tightenco/collect": "^5.2",
-        "joolanders/joomlazooenvironment": "dev-master"
+        "joolanders/framework-test-env": "dev-master"
     }
 }

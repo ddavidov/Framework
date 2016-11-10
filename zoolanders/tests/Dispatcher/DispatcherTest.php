@@ -11,6 +11,12 @@ use Zoolanders\Framework\Dispatcher\Exception\ControllerNotFound;
  */
 class DispatcherTest extends ZFTestCase
 {
+    public function testEnv(){
+
+        // Test if tests were launched
+        $this->assertTrue(true);
+    }
+
     /**
      * Test dispatching front controller
      */

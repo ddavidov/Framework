@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b0512d6630f9550ccc3323f2993241dc",
-    "content-hash": "0c5e62567e81e5ff67050bacd9d2beed",
+    "hash": "1fe6a809679de70091beccac7fa73f44",
+    "content-hash": "8772690c98d461b729f899b8ef362e59",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -86,37 +86,6 @@
                 "sdk"
             ],
             "time": "2016-11-03 20:28:28"
-        },
-        {
-            "name": "ddavidov/joomla-zoo-env",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ddavidov/joomla-zoo-env.git",
-                "reference": "72910d57c595734dee405c8e22c5577433ddc758"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ddavidov/joomla-zoo-env/zipball/72910d57c595734dee405c8e22c5577433ddc758",
-                "reference": "72910d57c595734dee405c8e22c5577433ddc758",
-                "shasum": ""
-            },
-            "type": "library",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ddavidov",
-                    "email": "ddavidov@mindk.com"
-                }
-            ],
-            "description": "ZOO core",
-            "support": {
-                "source": "https://github.com/ddavidov/joomla-zoo-env/tree/master",
-                "issues": "https://github.com/ddavidov/joomla-zoo-env/issues"
-            },
-            "time": "2016-11-09 12:52:32"
         },
         {
             "name": "dropbox/dropbox-sdk",
@@ -2160,6 +2129,37 @@
             "time": "2015-06-14 21:17:01"
         },
         {
+            "name": "joolanders/joomlazooenvironment",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joolanders/JoomlaZooEnvironment.git",
+                "reference": "cb7446225c82db32eecfad173a5bdf7c0842b714"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joolanders/JoomlaZooEnvironment/zipball/cb7446225c82db32eecfad173a5bdf7c0842b714",
+                "reference": "cb7446225c82db32eecfad173a5bdf7c0842b714",
+                "shasum": ""
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "joolanders",
+                    "email": "ddavidov@mindk.com"
+                }
+            ],
+            "description": "Joomla and ZOO installation. Test environment for ZL products",
+            "support": {
+                "source": "https://github.com/joolanders/JoomlaZooEnvironment/tree/master",
+                "issues": "https://github.com/joolanders/JoomlaZooEnvironment/issues"
+            },
+            "time": "2016-11-10 10:51:22"
+        },
+        {
             "name": "myclabs/deep-copy",
             "version": "1.5.5",
             "source": {
@@ -3458,7 +3458,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ddavidov/joomla-zoo-env": 20
+        "joolanders/joomlazooenvironment": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

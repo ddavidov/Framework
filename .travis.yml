@@ -1,0 +1,21 @@
+language: php
+php:
+  - '5.6'
+  - '7.0'
+install:
+  - composer update
+services:
+  - mysql
+
+dist: trusty
+sudo: required
+addons:
+  apt:
+    packages:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+
+before_script:
+  - mysql -uroot -e "create database IF NOT EXISTS joomla;"
+  - mysql -uroot joomla < zoolanders/vendor/ddavidov/joomla-zoo-env/db/joomla.sql

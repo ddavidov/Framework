@@ -26,11 +26,17 @@
         "guzzlehttp/guzzle": "^6.2",
         "league/flysystem-ziparchive": "^1.0",
         "natxet/cssmin": "^3.0",
-        "linkorb/jsmin-php": "^1.0",
-        "tightenco/collect": "^5.2"
+        "linkorb/jsmin-php": "^1.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/ddavidov/joomla-zoo-env.git"
+        }
+    ],
     "require-dev": {
         "phpunit/phpunit": "5.5.*",
-        "joomla/registry": "^1.5"
+        "tightenco/collect": "^5.2",
+        "ddavidov/joomla-zoo-env": "dev-master"
     }
 }

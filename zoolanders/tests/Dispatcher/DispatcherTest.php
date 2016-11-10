@@ -3,6 +3,7 @@
 namespace ZFTests\Dispatcher;
 
 use ZFTests\TestCases\ZFTestCase;
+use Zoolanders\Framework\Dispatcher\Exception\ControllerNotFound;
 
 /**
  * Class DispatcherTest
@@ -13,8 +14,11 @@ class DispatcherTest extends ZFTestCase
     /**
      * Test dispatching front controller
      */
-    public function testDispatcher(){
+    public function testInvalidControllerException(){
 
-        $this->assertTrue(true);
+        $this->expectException(ControllerNotFound::class);
+
+        $dispatcher = $this->container->make('Zoolanders\Framework\Dispatcher\Dispatcher', array($this->container));
+        $dispatcher->dispatch('Default');
     }
 }

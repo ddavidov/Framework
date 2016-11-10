@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1fe6a809679de70091beccac7fa73f44",
-    "content-hash": "8772690c98d461b729f899b8ef362e59",
+    "hash": "08594e13056736c644a2ac4ef2c2cbe6",
+    "content-hash": "48e38b7fda062334753b0e74aeefb846",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2129,17 +2129,17 @@
             "time": "2015-06-14 21:17:01"
         },
         {
-            "name": "joolanders/joomlazooenvironment",
+            "name": "joolanders/framework-test-env",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/joolanders/JoomlaZooEnvironment.git",
-                "reference": "cb7446225c82db32eecfad173a5bdf7c0842b714"
+                "url": "https://github.com/joolanders/framework-test-env.git",
+                "reference": "bcb9b3d4519ef842fb96f41c442ea4ab943f031e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joolanders/JoomlaZooEnvironment/zipball/cb7446225c82db32eecfad173a5bdf7c0842b714",
-                "reference": "cb7446225c82db32eecfad173a5bdf7c0842b714",
+                "url": "https://api.github.com/repos/joolanders/framework-test-env/zipball/bcb9b3d4519ef842fb96f41c442ea4ab943f031e",
+                "reference": "bcb9b3d4519ef842fb96f41c442ea4ab943f031e",
                 "shasum": ""
             },
             "type": "library",
@@ -2154,10 +2154,10 @@
             ],
             "description": "Joomla and ZOO installation. Test environment for ZL products",
             "support": {
-                "source": "https://github.com/joolanders/JoomlaZooEnvironment/tree/master",
-                "issues": "https://github.com/joolanders/JoomlaZooEnvironment/issues"
+                "source": "https://github.com/joolanders/framework-test-env/tree/master",
+                "issues": "https://github.com/joolanders/framework-test-env/issues"
             },
-            "time": "2016-11-10 10:51:22"
+            "time": "2016-11-10 13:28:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3458,7 +3458,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "joolanders/joomlazooenvironment": 20
+        "joolanders/framework-test-env": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

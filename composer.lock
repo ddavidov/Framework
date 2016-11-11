@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "08594e13056736c644a2ac4ef2c2cbe6",
-    "content-hash": "48e38b7fda062334753b0e74aeefb846",
+    "hash": "71aee9d671495ef1ecafc2f13557b6b6",
+    "content-hash": "da6382cfc1b516d024a42df0579480b5",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.23",
+            "version": "3.19.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fbfb87734e5d298b40354ac7fb3f95d0f72ad16e"
+                "reference": "fa18e76a05fca7866044b8d4564c8a5d0b161805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fbfb87734e5d298b40354ac7fb3f95d0f72ad16e",
-                "reference": "fbfb87734e5d298b40354ac7fb3f95d0f72ad16e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fa18e76a05fca7866044b8d4564c8a5d0b161805",
+                "reference": "fa18e76a05fca7866044b8d4564c8a5d0b161805",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-11-03 20:28:28"
+            "time": "2016-11-10 22:35:46"
         },
         {
             "name": "dropbox/dropbox-sdk",
@@ -2134,12 +2134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joolanders/framework-test-env.git",
-                "reference": "bcb9b3d4519ef842fb96f41c442ea4ab943f031e"
+                "reference": "fcdb516b3943aa30a744fa77160bb1c8716f43ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joolanders/framework-test-env/zipball/bcb9b3d4519ef842fb96f41c442ea4ab943f031e",
-                "reference": "bcb9b3d4519ef842fb96f41c442ea4ab943f031e",
+                "url": "https://api.github.com/repos/joolanders/framework-test-env/zipball/fcdb516b3943aa30a744fa77160bb1c8716f43ec",
+                "reference": "fcdb516b3943aa30a744fa77160bb1c8716f43ec",
                 "shasum": ""
             },
             "type": "library",
@@ -2157,7 +2157,7 @@
                 "source": "https://github.com/joolanders/framework-test-env/tree/master",
                 "issues": "https://github.com/joolanders/framework-test-env/issues"
             },
-            "time": "2016-11-10 13:28:00"
+            "time": "2016-11-11 13:35:57"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2655,16 +2655,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.5.7",
+            "version": "5.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3f67cee782c9abfaee5e32fd2f57cdd54bc257ba"
+                "reference": "cd13b23ac5a519a4708e00736c26ee0bb28b2e01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3f67cee782c9abfaee5e32fd2f57cdd54bc257ba",
-                "reference": "3f67cee782c9abfaee5e32fd2f57cdd54bc257ba",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/cd13b23ac5a519a4708e00736c26ee0bb28b2e01",
+                "reference": "cd13b23ac5a519a4708e00736c26ee0bb28b2e01",
                 "shasum": ""
             },
             "require": {
@@ -2698,7 +2698,6 @@
                 "ext-pdo": "*"
             },
             "suggest": {
-                "ext-tidy": "*",
                 "ext-xdebug": "*",
                 "phpunit/php-invoker": "~1.1"
             },
@@ -2708,7 +2707,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.5.x-dev"
+                    "dev-master": "5.6.x-dev"
                 }
             },
             "autoload": {
@@ -2734,7 +2733,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-10-03 13:04:15"
+            "time": "2016-10-25 07:40:25"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

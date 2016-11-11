@@ -28,8 +28,10 @@ class CacheTest extends ZFTestCase
 
         // Check if file is really exists and accessible:
         $this->assertFileExists($this->cache_file);
-        $this->assertFileIsReadable($this->cache_file);
-        $this->assertFileIsWritable($this->cache_file);
+
+        //@NOTE: Uncomment if Travis CI already supports PHPUnit 5.6+
+        //$this->assertFileIsReadable($this->cache_file);
+        //$this->assertFileIsWritable($this->cache_file);
     }
 
     /**

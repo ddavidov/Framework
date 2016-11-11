@@ -29,7 +29,7 @@ class CacheTest extends ZFTestCase
         // Check if file is really exists and accessible:
         $this->assertFileExists($this->cache_file);
 
-        //@NOTE: Uncomment if Travis CI already supports PHPUnit 5.6+
+        //@TODO: Uncomment if Travis CI already supports PHPUnit 5.6+
         //$this->assertFileIsReadable($this->cache_file);
         //$this->assertFileIsWritable($this->cache_file);
     }
@@ -44,6 +44,8 @@ class CacheTest extends ZFTestCase
         $this->initCache();
 
         $this->assertNotEmpty($this->cache);
+
+        // Trying to set, save and get value:
         $this->cache->set('test_var', 'testvalue');
         $this->cache->save();
         $this->assertEquals('testvalue', $this->cache->get('test_var'));
@@ -57,6 +59,8 @@ class CacheTest extends ZFTestCase
     public function testCacheCleanup(){
 
         $this->initCache();
+
+        // Cleanup all previously set values
         $this->cache->clear();
         $this->cache->save();
         $this->assertEmpty($this->cache->get('test_var'));

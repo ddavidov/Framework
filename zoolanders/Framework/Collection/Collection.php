@@ -102,9 +102,7 @@ class Collection implements CollectionInterface
      */
     public function each(Closure $callback)
     {
-        array_map($callback, $this->items);
-
-        return $this;
+        return new static(array_map($callback, $this->items));
     }
 
     /**

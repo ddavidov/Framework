@@ -5,6 +5,7 @@ namespace ZFTests\Cache;
 use JmesPath\Tests\_TestClass;
 use ZFTests\TestCases\ZFTestCase;
 use ZFTests\Classes\Cacheable;
+use Zoolanders\Framework\Cache\Cache;
 
 
 /**
@@ -20,6 +21,7 @@ class CacheTest extends ZFTestCase
     /**
      * Test if cache storage files is created successfully and are accessible for
      * write/read
+     * @covers Cache::check()
      */
     public function testCacheStorageIO(){
 
@@ -38,6 +40,8 @@ class CacheTest extends ZFTestCase
      * Test if cache values are stored / retrieved correctly
      *
      * @depends testCacheStorageIO
+     * @covers  Cache::set()
+     * @covers  Cache::get()
      */
     public function testCacheSetRetrievement(){
 
@@ -55,6 +59,7 @@ class CacheTest extends ZFTestCase
      * Test cache file removing and cleanup
      *
      * @depends testCacheStorageIO
+     * @covers  Cache::clear()
      */
     public function testCacheCleanup(){
 

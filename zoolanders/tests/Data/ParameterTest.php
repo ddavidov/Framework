@@ -2,23 +2,24 @@
 
 namespace ZFTests\Data;
 
-use Zoolanders\Framework\Data\Json;
+use Zoolanders\Framework\Data\Parameter;
 
 /**
- * Class JsonTest
- * Json data tests
+ * Class ParameterTest
+ * Parameter data unit tests
  *
  * @package ZFTests\Data
  */
-class JsonTest extends DataTest
+class ParameterTest extends DataTest
 {
     /**
      * Make dataset for forward testing:
      */
     protected function makeDataSet($dataset){
 
-        $this->object = new Json($dataset);
+        $this->object = new Parameter($dataset);
 
         return $this->object;
     }
-}
+
+ }

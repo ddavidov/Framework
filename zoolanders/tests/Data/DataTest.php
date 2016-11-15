@@ -4,6 +4,7 @@ namespace ZFTests\Data;
 
 use ZFTests\TestCases\ZFTestCase;
 use Zoolanders\Framework\Data\Data;
+use ZFTests\Classes\Dataset;
 
 /**
  * Class DataTest
@@ -13,6 +14,18 @@ use Zoolanders\Framework\Data\Data;
  */
 class DataTest extends ZFTestCase
 {
+    use Dataset;
+
+    /**
+     * Make dataset for forward testing:
+     */
+    protected function makeDataSet($dataset){
+
+        $this->object = new Data($dataset);
+
+        return $this->object;
+    }
+
     /**
      * Data asseting test
      *
@@ -23,18 +36,9 @@ class DataTest extends ZFTestCase
      * @dataProvider arrayDataSet
      */
     public function testGetSetHas($dataset, $control_value){
-        $obj = new Data($dataset);
-        $this->assertTrue($obj->has($control_value));
 
-        // Test getters / setters:
-        $obj->set('f', 'foxtrot');
-        $this->assertTrue($obj->has('f'));
-        $this->assertEquals('foxtrot', $obj->get('f'));
-
-        // Test "magic" getter/setter:
-        $obj->e = 'echo';
-        $this->assertTrue($obj->has('e'));
-        $this->assertEquals('echo', $obj->get('e'));
+        $this->makeDataSet($dataset);
+        $this->setGetHas($control_value);
     }
 
     /**
@@ -45,12 +49,9 @@ class DataTest extends ZFTestCase
      * @dataProvider    arrayDataSet
      */
     public function testRemove($dataset, $control_value){
-        $obj = new Data($dataset);
-        $this->assertTrue($obj->has($control_value));
 
-        // Removing element from the dataset:
-        $obj->remove($control_value);
-        $this->assertFalse($obj->has($control_value));
+        $this->makeDataSet($dataset);
+        $this->removing($control_value);
     }
 
     /**
@@ -60,9 +61,9 @@ class DataTest extends ZFTestCase
      * @dataProvider    lookupDataSet
      */
     public function testFind($dataset, $needle, $expected){
-        $obj = new Data($dataset);
-        // Check if we found expected value:
-        $this->assertEquals($expected, $obj->find($needle, 'zulu'));
+
+        $this->makeDataSet($dataset);
+        $this->finding($needle, $expected);
     }
 
     /**
@@ -72,8 +73,8 @@ class DataTest extends ZFTestCase
      * @dataProvider    lookupDataSet
      */
     public function testSearchRecursive($dataset, $needle, $expected){
-        $obj = new Data($dataset);
 
+        $this->makeDataSet($dataset);
         $this->markTestSkipped('searchRecursive method requires fixes');
     }
 
@@ -84,10 +85,9 @@ class DataTest extends ZFTestCase
      * @dataProvider    flatternDataSet
      */
     public function testFlattern($dataset, $expected){
-        $obj = new Data($dataset);
 
-        // Check if transformation was correct:
-        $this->assertEquals($expected, $obj->flattenRecursive());
+        $this->makeDataSet($dataset);
+        $this->flatterning($expected);
     }
 
     /**

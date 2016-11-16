@@ -44,6 +44,14 @@ class Item implements ItemInterface
     }
 
     /**
+     * Drop parent node pointer
+     */
+    public function disposeParent()
+    {
+        $this->parent = null;
+    }
+
+    /**
      * Set the parent item
      *
      * @param ItemInterface $item The menu item
@@ -154,7 +162,7 @@ class Item implements ItemInterface
      */
     public function removeChild(ItemInterface $item)
     {
-        $item->setParent(null);
+        $item->disposeParent();
         unset($this->children[$item->getID()]);
 
         return $this;

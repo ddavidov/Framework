@@ -55,7 +55,7 @@ class ItemTest extends ZFTestCase
      * @covers          Item::addChildren
      * @covers          Item::getChildren
      * @covers          Item::hasChildren
-     * @dataProvider    itemDataset
+     * @dataProvider    itemDataSet
      */
     public function testGetSetChildren($itemset){
         $item = new Item();
@@ -78,7 +78,7 @@ class ItemTest extends ZFTestCase
      *
      * @depends         testGetSetChildren
      * @covers          Item::removeChild()
-     * @dataProvider    itemDataset
+     * @dataProvider    itemDataSet
      */
     public function testRemovingChildren($itemset){
         $item = new Item();
@@ -100,7 +100,7 @@ class ItemTest extends ZFTestCase
      *
      * @depends         testGetSetChildren
      * @covers          Item::removeChildById()
-     * @dataProvider    itemDataset
+     * @dataProvider    itemDataSet
      */
     public function testRemovingChildrenById($itemset){
         $item = new Item();
@@ -118,9 +118,37 @@ class ItemTest extends ZFTestCase
     }
 
     /**
+     * Test getPathWay
+     *
+     * @covers      Item::getPathway()
+     */
+    public function testPathWay(){
+        $top = new Item();
+        $middle = new Item();
+        $bottom = new Item();
+
+        $hierarchy = [$top, $middle, $bottom];
+        $middle->addChild($bottom);
+        $top->addChild($middle);
+        $pathway = $bottom->getPathway();
+
+        for($i = 0; $i<count($pathway); $i++){
+            $this->assertEquals($hierarchy[$i]->getID(), $pathway[$i]->getID());
+        }
+    }
+
+    /**
+     * Test filtering method
+     */
+    public function testFiltering(){
+        //@TODO: Implement, when dataProvider added
+        $this->markTestSkipped('Should be implemented');
+    }
+
+    /**
      * Item dataset for testing mass attachment
      */
-    public function itemDataset(){
+    public function itemDataSet(){
 
         return [
             [ [
@@ -130,4 +158,5 @@ class ItemTest extends ZFTestCase
             ] ]
         ];
     }
+
 }

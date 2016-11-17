@@ -195,12 +195,12 @@ class Item implements ItemInterface
      */
     public function getPathway()
     {
+        $pathway = array();
 
-        if ($this->parent == null) {
-            return array();
+        if ($this->parent !== null) {
+            $pathway = $this->parent->getPathway();
         }
 
-        $pathway = $this->parent->getPathway();
         $pathway[] = $this;
 
         return $pathway;

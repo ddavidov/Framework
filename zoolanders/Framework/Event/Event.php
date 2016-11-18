@@ -63,7 +63,7 @@ abstract class Event implements EventInterface
             $name = $param->getName();
 
             if (isset($this->$name)) {
-                $properties[] = $this->$name;
+                $properties[$name] = $this->$name;
             }
         }
 

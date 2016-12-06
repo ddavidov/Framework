@@ -79,6 +79,11 @@ class Dispatcher
      */
     public function trigger(Event $event)
     {
+        if(ZF_TEST && !empty($this->container->eventstack)){
+            // Test mode, notify event catcher service
+            $this->container->eventstack->push($event->getName(), $event);
+        }
+
         return $this->notify($event);
     }
 

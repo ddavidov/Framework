@@ -5,7 +5,8 @@ namespace ZFTests\TestCases;
 use PHPUnit\Framework\TestCase;
 use Zoolanders\Framework\Container\Container;
 use Joomla\Input\Input;
-use \Zoolanders\Framework\Service\Event;
+use Zoolanders\Framework\Service\Event;
+use ZFTests\Classes\EventStackService;
 
 /**
  * Class ZFTestCase
@@ -28,7 +29,8 @@ class ZFTestCase extends TestCase
         self::$container = new Container(array(
             'input' => new Input(),
             'joomla' => \JFactory::getApplication('site'),
-            'zoo' => \App::getInstance('zoo')
+            'zoo' => \App::getInstance('zoo'),
+            'eventstack' => EventStackService::getInstance()
         ));
         self::$container['event'] = new Event(self::$container);
     }
@@ -52,6 +54,24 @@ class ZFTestCase extends TestCase
             return self::$container;
         } else {
             return parent::__get($name);
+        }
+    }
+
+    /**
+     * Assert event was triggered
+     *
+     * @param $eventName
+     * @param callable $callback
+     * @param string $message
+     */
+    public function assertEventTriggered($eventName, callable $callback, $message = ''){
+        $eventStack = self::$container->eventstack;
+        $offset = $eventStack->find($eventName);
+        $this->assertThat(($offset !== false), new PHPUnit_Framework_Constraint_IsTrue, $message);
+
+        if($offset !== false)
+        {
+            call_user_func($callback, $eventStack->get($offset));
         }
     }
 }

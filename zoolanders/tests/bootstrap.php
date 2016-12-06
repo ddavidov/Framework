@@ -1,6 +1,7 @@
 <?php
 
 define('VENDOR_DIR', __DIR__."/../vendor/");
+define('ZF_TEST', true);
 
 // Bootstrap Joomla env:
 

@@ -52,6 +52,10 @@ class Autoloader
     }
 }
 
+if(!defined('ZF_TEST')){
+    define('ZF_TEST', false);
+}
+
 $composerAutoloader = require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 // Create autoloader and add the mapping to the framework

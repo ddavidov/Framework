@@ -19,7 +19,7 @@ class DispatcherTest extends ZFTestCase
     /**
      * Sample listening method
      */
-    public function listenerSample($event){
+    public static function listenerSample($event){
         self::$check = $event->getReturnValue();
     }
 

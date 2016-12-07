@@ -67,7 +67,7 @@ class ZFTestCase extends TestCase
     public function assertEventTriggered($eventName, callable $callback, $message = ''){
         $eventStack = self::$container->eventstack;
         $offset = $eventStack->find($eventName);
-        $this->assertThat(($offset !== false), new PHPUnit_Framework_Constraint_IsTrue, $message);
+        $this->assertThat(($offset !== false), new \PHPUnit_Framework_Constraint_IsTrue, $message);
 
         if($offset !== false)
         {

@@ -15,7 +15,7 @@ use Zoolanders\Framework\Utils\NameFromClass;
  */
 class UtilsTest extends ZFTestCase
 {
-    use IsString, NameFromClass;
+    use IsString;
 
     /**
      * Test array column class methods
@@ -36,18 +36,6 @@ class UtilsTest extends ZFTestCase
     public function testIsString($value, $expected){
         // Check against isString method:
         $this->assertEquals($expected, $this->isString($value));
-    }
-
-    /**
-     * Test namefrom class method
-     *
-     * @covers      NameFromClass::getName()
-     */
-    public function testNameFromClass(){
-        $full_class = explode('\\', __CLASS__);
-        $class_name = array_pop($full_class);
-
-        $this->assertEquals($class_name, $this->getName());
     }
 
     /**

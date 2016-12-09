@@ -144,7 +144,10 @@ class Response extends JHttpResponse
             $node = array();
         }
 
-        $this->{$varname} = $value;
+        array_push($node, $value);
+
+        $this->{$varname} = $node;
+
         return $this;
     }
 

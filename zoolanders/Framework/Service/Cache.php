@@ -17,9 +17,9 @@ class Cache extends Service
     public function create($file, $hash = true, $lifetime = null, $type = 'file')
     {
         if ($type == 'apc' && extension_loaded('apc') && class_exists('\\APCIterator')) {
-            $cache = new Zoolanders\Cache\Apc(md5($file), $lifetime);
+            $cache = new \Zoolanders\Framework\Cache\Apc(md5($file), $lifetime);
         } else {
-            $cache = new Zoolanders\Cache\Cache($file, $hash, $lifetime);
+            $cache = new \Zoolanders\Framework\Cache\Cache($file, $hash, $lifetime);
         }
 
         return $cache;

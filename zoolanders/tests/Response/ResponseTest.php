@@ -50,9 +50,41 @@ class ResponseTest extends ZFTestCase
      * Test set get header ops
      *
      * @covers          Response::setHeader()
+     * @depends         testSetGet
+     *
+     * @dataProvider    headersDataSet
      */
-    public function testSetGetHeader(){
-        // @TODO: Add logics
+    public function testSetHeader($key, $value){
+        $response = new Response();
+
+        $response->setHeader($key, $value);
+        $this->assertArrayHasKey($key, $response->headers);
+        $this->assertEquals($response->headers[$key], $value);
+    }
+
+    /**
+     * Test send headers
+     *
+     * @covers          Response::sendHeaders()
+     * @depends         testSetHeader
+     *
+     */
+    public function testSendHeaders(){
+
+        $this->markTestSkipped('Unable to test without emulation');
+    }
+
+    /**
+     * Test add func
+     *
+     * @covers          Response::add()
+     * @dataProvider    bindingDataSet
+     */
+    public function testAdd($key, $value){
+        $response = new Response();
+
+        $response->add($key, $value);
+        $this->assertArraySubset([ $value ], $response->{$key});
     }
 
     /**
@@ -79,6 +111,17 @@ class ResponseTest extends ZFTestCase
             ['charlie', 1],
             ['delta', false],
             ['echo', array()]
+        ];
+    }
+
+    /**
+     * Headers data provider
+     */
+    public function headersDataSet(){
+        return [
+            [ 'Content-Type', 'application/pdf' ],
+            [ 'Location', 'http://example.com' ],
+            [ 'X-Data-Attribute', 'alpha' ],
         ];
     }
 }

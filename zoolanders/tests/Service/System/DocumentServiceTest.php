@@ -3,23 +3,23 @@
 namespace ZFTests\Service\System;
 
 use ZFTests\Service\SystemServiceTestLayer;
-use Zoolanders\Framework\Service\System\Dbo;
+use Zoolanders\Framework\Service\System\Document;
 
 /**
  * Class ApplicationServiceTest
- * Dbo service test
+ * Document service test
  *
  * @package ZFTests\Service\System
  */
-class DboServiceTest extends SystemServiceTestLayer
+class DocumentServiceTest extends SystemServiceTestLayer
 {
-    protected $serviceClassNames = ['JDatabaseDriverMysqli', 'JDatabaseDriverMysql'];
+    protected $serviceClassNames = ['JDocument', 'JDocumentHtml'];
 
     /**
      * Service class instance provider
      */
     protected function getServiceInstance()
     {
-        return new Dbo(self::$container);
+        return new Document(self::$container);
     }
 }

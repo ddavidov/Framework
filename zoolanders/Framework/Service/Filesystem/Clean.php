@@ -11,7 +11,7 @@ trait Clean
      *
      * Original Credits:
      * @package    JCE
-     * @copyright    Copyright �� 2009-2011 Ryan Demmer. All rights reserved.
+     * @copyright    Copyright (C) 2009-2011 Ryan Demmer. All rights reserved.
      * @license    GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
      *
      * Adapted to ZOO (ZOOlanders.com)

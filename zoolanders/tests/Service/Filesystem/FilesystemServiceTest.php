@@ -65,6 +65,69 @@ class FilesystemServiceTest extends ZFTestCase
     }
 
     /**
+     * Test read directory files method
+     *
+     * @covers      Filesystem::readDirectoryFiles()
+     */
+    public function testReadDirectoryFiles(){
+
+        $filteredFS = ['test1.txt', 'test2.txt'];
+        $internalFS = ['subdir/test3.txt'];
+
+        $file = new Filesystem(self::$container);
+        $content = $file->readDirectoryFiles(JOOMLA_ENV_PATH . '/fixtures/filesystem');
+
+        $this->assertArraySubset(array_merge($internalFS, $filteredFS), $content);
+
+        // Now filter without subdirectories:
+        $content = $file->readDirectoryFiles(JOOMLA_ENV_PATH . '/fixtures/filesystem', '', false, false);
+        $this->assertArraySubset($filteredFS, $content);
+
+        // Now filter by name:
+        $content = $file->readDirectoryFiles(JOOMLA_ENV_PATH . '/fixtures/filesystem', '', '~test3~i');
+        $this->assertArraySubset($internalFS, $content);
+    }
+
+    /**
+     * Test read directory files method
+     *
+     * @covers      Filesystem::readDirectory()
+     */
+    public function testReadDirectory(){
+        $file = new Filesystem(self::$container);
+        $content = $file->readDirectory(JOOMLA_ENV_PATH . '/fixtures/filesystem');
+
+        $this->assertArraySubset(['subdir'], $content);
+
+        // Test filtering
+        $content = $file->readDirectory(JOOMLA_ENV_PATH . '/fixtures/filesystem', '', '~folder~i');
+
+        $this->assertArraySubset([], $content);
+    }
+
+    /**
+     * Test get ext function
+     *
+     * @covers          Filesystem::getExtension()
+     * @dataProvider    filesExtDataSet
+     */
+    public function testGetExtension($filename, $ext){
+        $file = new Filesystem(self::$container);
+        $this->assertEquals($ext, $file->getExtension($filename));
+    }
+
+    /**
+     * Test makepath function
+     *
+     * @covers          Filesystem::makePath()
+     * @dataProvider    makepathDataSet
+     */
+    public function testMakePath($arg1, $arg2, $expected){
+        $file = new Filesystem(self::$container);
+        $this->assertEquals($expected, $file->makePath($arg1, $arg2));
+    }
+
+    /**
      * Filesize data provider based on simple fixtured files
      */
     public function precizeFilesizeSet(){
@@ -123,6 +186,31 @@ class FilesystemServiceTest extends ZFTestCase
         return [
             ['/some/related/path/', '/some/related/path/'],
             ['/some/weird///path.txt', '/some/weird/path.txt'],
+        ];
+    }
+
+    /**
+     * Files and ext dataset
+     */
+    public function filesExtDataSet(){
+        return [
+            ['index.html', 'html'],
+            ['controller.php', 'php'],
+            ['image.jpeg', 'jpeg'],
+            ['document.pdf', 'pdf'],
+            ['innerpath/file.txt', 'txt'],
+            ['come_folder', '']
+        ];
+    }
+
+    /**
+     * Dataset for testing makepath func.
+     */
+    public function makepathDataSet(){
+        return [
+            [ 'folder', 'container', 'folder/container' ],
+            [ 'folder/', 'container', 'folder/container' ],
+            [ '/folder/', '/container', '/folder/container' ]
         ];
     }
 }

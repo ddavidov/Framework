@@ -21,7 +21,7 @@ trait Mime
     {
         $mimes = $this->getMimeMapping();
         $file = pathinfo($filename);
-        $ext = $file['extension'];
+        $ext = isset($file['extension']) ? $file['extension'] : '';
 
         if ($ext) {
 
@@ -42,7 +42,7 @@ trait Mime
 
         return 'application/octet-stream';
     }
-    
+
     /**
      * Get the mapping from extension to mime type
      *

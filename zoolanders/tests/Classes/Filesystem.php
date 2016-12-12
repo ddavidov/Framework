@@ -5,6 +5,7 @@ namespace ZFTests\Classes;
 use Zoolanders\Framework\Service\Filesystem as FSBase;
 use Zoolanders\Framework\Service\Filesystem\Size;
 use Zoolanders\Framework\Service\Filesystem\Mime;
+use Zoolanders\Framework\Service\Filesystem\Clean;
 
 /**
  * Class Filesystem
@@ -14,5 +15,5 @@ use Zoolanders\Framework\Service\Filesystem\Mime;
  */
 class Filesystem extends FSBase
 {
-    use Size, Mime;
+    use Size, Mime, Clean;
 }

@@ -28,11 +28,6 @@ class Filesystem extends Service
     protected $filesystem;
 
     /**
-     * @var ZOO app
-     */
-    public $app;
-
-    /**
      * Filesystem constructor.
      * @param Container $c
      * @param \League\Flysystem\Filesystem|null $fs
@@ -40,8 +35,6 @@ class Filesystem extends Service
     public function __construct(Container $c, \League\Flysystem\Filesystem $fs = null)
     {
         parent::__construct($c);
-
-        $this->app = $c->zoo;
 
         if (!$fs) {
             $adapter = new Local('/');
@@ -69,6 +62,10 @@ class Filesystem extends Service
      */
     public function __get($name)
     {
+        if('app' == $name){
+            return $this->getContainer()->zoo;
+        }
+
         return $this->filesystem->$name;
     }
 

@@ -51,7 +51,6 @@ trait Size
     {
         // init vars
         $sourcepath = $this->app->path->path('root:' . $source);
-        $size = '';
 
         if (strpos($source, 'http') === 0) // external source
         {
@@ -65,14 +64,17 @@ trait Size
 
             $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         }
+
+        // value check
+        if (empty($size)) {
+            $size = 0;
+        }
+
         if (is_file($sourcepath)) {
             $size = filesize($sourcepath);
         } else if (is_dir($sourcepath)) foreach ($this->app->path->files('root:' . $source, false, '/^.*()$/i') as $file) {
             $size += filesize($this->app->path->path("root:{$source}/{$file}"));
         }
-
-        // value check
-        if (!$size) return 0;
 
         // return size
         return $format ? $this->formatFilesize($size) : $size;

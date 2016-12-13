@@ -128,6 +128,39 @@ class FilesystemServiceTest extends ZFTestCase
     }
 
     /**
+     * Test createDir function
+     *
+     * @covers          Filesystem::folderCreate()
+     */
+    public function testFolderCreate(){
+        $file = new Filesystem(self::$container);
+        $dirPath = FIXTURES_PATH . '/testdir';
+        // Create:
+        $file->folderCreate($dirPath);
+        // Check if ok:
+        //@TODO: Uncomment when Travis phpunit support assertDirectoryExists and other method
+        //$this->assertDirectoryExists($dirPath);
+        //$this->assertDirectoryIsReadable($dirPath);
+        //$this->assertDirectoryIsWritable($dirPath);
+        // Cleanup:
+        $file->deleteDir($dirPath);
+        // Check if deleted
+        //@TODO: Uncomment when Travis phpunit support assertDirectoryNotExists method
+        //$this->assertDirectoryNotExists($dirPath);
+    }
+
+    /**
+     * Test size string transformation
+     *
+     * @covers          Filesystem::returnBytes()
+     * @dataProvider    sizeStringDataProvider
+     */
+    public function testBytesOutput($src, $expected){
+        $file = new Filesystem(self::$container);
+        $this->assertEquals($expected, $file->returnBytes($src));
+    }
+
+    /**
      * Filesize data provider based on simple fixtured files
      */
     public function precizeFilesizeSet(){
@@ -211,6 +244,19 @@ class FilesystemServiceTest extends ZFTestCase
             [ 'folder', 'container', 'folder/container' ],
             [ 'folder/', 'container', 'folder/container' ],
             [ '/folder/', '/container', '/folder/container' ]
+        ];
+    }
+
+    /**
+     * Byte string data provider
+     */
+    public function sizeStringDataProvider(){
+        return [
+            [ '1 KB', 1024 ],
+            [ '1 MB', 1048576 ],
+            [ '1 GB', 1073741824 ],
+            [ '2 B', '2 B' ],
+            [ '1 TB', '1 TB' ]
         ];
     }
 }

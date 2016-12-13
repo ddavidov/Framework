@@ -305,7 +305,10 @@ class Filesystem extends Service
      */
     public function returnBytes($size_str)
     {
-        switch (substr($size_str, -1)) {
+        $last_sign = substr($size_str, -1);
+        $last_sign = in_array($last_sign, ['B', 'b']) ? substr($size_str, -2, 1) : $last_sign;
+
+        switch ($last_sign) {
             case 'M':
             case 'm':
                 return (int)$size_str * 1048576;

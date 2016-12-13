@@ -2134,12 +2134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joolanders/framework-test-env.git",
-                "reference": "d1241fa78820c3ac384985fb29cb97d820b3f9e1"
+                "reference": "5a42372c00276112c493357906211310fdd3d070"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joolanders/framework-test-env/zipball/d1241fa78820c3ac384985fb29cb97d820b3f9e1",
-                "reference": "d1241fa78820c3ac384985fb29cb97d820b3f9e1",
+                "url": "https://api.github.com/repos/joolanders/framework-test-env/zipball/5a42372c00276112c493357906211310fdd3d070",
+                "reference": "5a42372c00276112c493357906211310fdd3d070",
                 "shasum": ""
             },
             "type": "library",
@@ -2157,7 +2157,7 @@
                 "source": "https://github.com/joolanders/framework-test-env/tree/master",
                 "issues": "https://github.com/joolanders/framework-test-env/issues"
             },
-            "time": "2016-12-12 10:23:17"
+            "time": "2016-12-12 15:30:06"
         },
         {
             "name": "myclabs/deep-copy",

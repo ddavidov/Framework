@@ -11,7 +11,7 @@ use Zoolanders\Framework\Service\Crypt;
  *
  * @package ZFTests\Service
  */
-class CryptServiceTest extends ZFTestCase
+class CryptServiceTest extends ServiceTest
 {
     /**
      * Encrypt decrypt tests

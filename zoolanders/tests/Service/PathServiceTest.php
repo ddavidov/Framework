@@ -12,7 +12,7 @@ use ZFTests\Classes\Filesystem;
  *
  * @package ZFTests\Service
  */
-class PathServiceTest extends ZFTestCase
+class PathServiceTest extends ServiceTest
 {
     /**
      * Get Path service instance

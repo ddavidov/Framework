@@ -29,6 +29,7 @@ class ZFTestCase extends TestCase
         self::$container = new Container(array(
             'input' => new Input(),
             'joomla' => \JFactory::getApplication('site'),
+            'system' => \JFactory::getApplication('site'),
             'zoo' => \App::getInstance('zoo'),
             'eventstack' => EventStackService::getInstance()
         ));

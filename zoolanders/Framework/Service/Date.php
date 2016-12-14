@@ -87,7 +87,7 @@ class Date extends Service
             $mins = $mins > 0 ? ' ' . $mins . \JText::_('min') : '';
             $delta = $hours . $mins ? \JText::sprintf('%s ago', $hours . $mins) : \JText::_('1min ago');
         } else {
-            $delta = \JHtml::_('date', $date->toSql(true), \JText::_('DATE_FORMAT_LC3') . ' %H:%M');
+            $delta = \JHtml::_('date', $date->toSql(true), \JText::_('DATE_FORMAT_LC3') . ' H:i');
         }
 
         return $delta;

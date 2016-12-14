@@ -19,7 +19,7 @@ class Crypt extends Service
     {
         parent::__construct($c);
 
-        $secret = $this->container->system->config->get('secret');
+        $secret = $this->container->joomla->getCfg('secret');
 
         $key = new \JCryptKey('simple', $secret, $secret);
         $this->crypt = new \JCrypt(null, $key);

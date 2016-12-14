@@ -58,6 +58,15 @@ class DateServiceTest extends ServiceTest
     }
 
     /**
+     * Test date format transformations
+     *
+     * @covers          Date::format()
+     */
+    public function testFormat(){
+
+    }
+
+    /**
      * Dataset to test delta text date function
      */
     public function deltaTextDataSet(){

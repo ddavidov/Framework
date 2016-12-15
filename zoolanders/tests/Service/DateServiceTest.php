@@ -61,9 +61,41 @@ class DateServiceTest extends ServiceTest
      * Test date format transformations
      *
      * @covers          Date::format()
+     * @covers          Date::strftimeToDateFormat()
+     *
+     * @dataProvider    formatDataSet
      */
-    public function testFormat(){
+    public function testFormat($original, $expected){
+        $ds = new Date(self::$container);
 
+        $this->assertEquals($expected, $ds->format($original));
+        $this->assertEquals($expected, $ds->strftimeToDateFormat($original));
+    }
+
+    /**
+     * Test reversion date format transformations
+     *
+     * @covers          Date::dateFormatToStrftime()
+     *
+     * @dataProvider    bkFormatDataSet
+     */
+    public function testDateFormat($original, $expected){
+        $ds = new Date(self::$container);
+
+        $this->assertEquals($expected, $ds->strftimeToDateFormat($original));
+    }
+
+    /**
+     * Test date preset functions e.g. dateOnly, getDateTime, etc.
+     *
+     * @covers          Date::getDateOnly()
+     * @covers          Date::getDateTime()
+     */
+    public function testDateCropFunctions(){
+        $ds = new Date(self::$container);
+        $date = $ds->create();
+        // @TODO: Need user for this
+        $this->markTestSkipped('User required');
     }
 
     /**
@@ -74,6 +106,28 @@ class DateServiceTest extends ServiceTest
             [ time(), '1min ago'],
             [ (time() - self::HOUR), '1hr ago'],
             [ (time() - self::HOUR * 3), '3hr ago']
+        ];
+    }
+
+    /**
+     * Format testing data set
+     */
+    public function formatDataSet(){
+        return [
+            [ '%Y-%m-%d', 'Y-m-d'],
+            [ '%Y-%m-%d %H:%s', 'Y-m-d H:U'],
+            [ '%Y %M', 'Y i']
+        ];
+    }
+
+    /**
+     * Format revers transform testing data set
+     */
+    public function bkFormatDataSet(){
+        return [
+            [ 'Y-m-d', '\Y-\m-\d'],
+            [ 'Y-m-d H:U', '\Y-\m-\d \H:\U'],
+            [ 'Y i', '\Y \i']
         ];
     }
 }

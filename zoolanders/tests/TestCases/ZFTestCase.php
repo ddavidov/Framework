@@ -7,6 +7,7 @@ use Zoolanders\Framework\Container\Container;
 use Joomla\Input\Input;
 use Zoolanders\Framework\Service\Event;
 use ZFTests\Classes\EventStackService;
+use Zoolanders\Framework\Service\System;
 
 /**
  * Class ZFTestCase
@@ -29,11 +30,11 @@ class ZFTestCase extends TestCase
         self::$container = new Container(array(
             'input' => new Input(),
             'joomla' => \JFactory::getApplication('site'),
-            'system' => \JFactory::getApplication('site'),
             'zoo' => \App::getInstance('zoo'),
             'eventstack' => EventStackService::getInstance()
         ));
         self::$container['event'] = new Event(self::$container);
+        self::$container['system'] = new System(self::$container);
     }
 
     public static function tearDownAfterClass()

@@ -2,6 +2,7 @@
 
 define('VENDOR_DIR', __DIR__."/../vendor/");
 define('FIXTURES_PATH', __DIR__.'/fixtures');
+define('FRAMEWORK_ROOT', __DIR__.'/../Framework');
 define('ZF_TEST', true);
 
 // Bootstrap Joomla env:

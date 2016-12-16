@@ -5,9 +5,11 @@ namespace ZFTests\TestCases;
 use PHPUnit\Framework\TestCase;
 use Zoolanders\Framework\Container\Container;
 use Joomla\Input\Input;
+use Zoolanders\Framework\Container\Nested;
 use Zoolanders\Framework\Service\Event;
 use ZFTests\Classes\EventStackService;
-use Zoolanders\Framework\Service\System;
+use Zoolanders\Framework\Service\System\Config;
+use Zoolanders\Framework\Service\User;
 
 /**
  * Class ZFTestCase
@@ -26,6 +28,7 @@ class ZFTestCase extends TestCase
     {
         parent::setUpBeforeClass();
 
+        // @TODO: Refactor this part later (check out loadServices)
         // Mocking service container:
         self::$container = new Container(array(
             'input' => new Input(),
@@ -33,8 +36,16 @@ class ZFTestCase extends TestCase
             'zoo' => \App::getInstance('zoo'),
             'eventstack' => EventStackService::getInstance()
         ));
+
         self::$container['event'] = new Event(self::$container);
-        self::$container['system'] = new System(self::$container);
+        self::$container['user'] = self::$container->zoo->user; // Tmp solution
+
+        // Mock system:
+        $system = new Nested([
+            'config' => new Config(self::$container)
+        ]);
+
+        self::$container['system'] = $system;
     }
 
     public static function tearDownAfterClass()

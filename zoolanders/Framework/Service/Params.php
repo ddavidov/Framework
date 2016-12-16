@@ -69,7 +69,7 @@ class Params extends Service
             $this->reload($component);
         }
 
-        return $this->container->data->create($this->params[$component]->get($key, $default));
+        return $this->container->data->create($this->params[$component])->get($key, $default);
     }
 
     /**

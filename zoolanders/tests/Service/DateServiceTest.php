@@ -89,13 +89,33 @@ class DateServiceTest extends ServiceTest
      * Test date preset functions e.g. dateOnly, getDateTime, etc.
      *
      * @covers          Date::getDateOnly()
-     * @covers          Date::getDateTime()
+     * @covers          Date::getDayStart()
+     * @covers          Date::getDayEnd()
+     *
+     * @dataProvider    dateOnlySetProvider
      */
-    public function testDateCropFunctions(){
+    public function testDateCalc($src, $expected){
         $ds = new Date(self::$container);
-        $date = $ds->create();
-        // @TODO: Need user for this
-        $this->markTestSkipped('User required');
+        $date = $ds->create($src);
+
+        // Check assertions
+        $this->assertEquals($expected . ' 00:00:00', $ds->getDateOnly($date)->__toString());
+        $this->assertEquals($expected . ' 00:00:00', $ds->getDayStart($date)->__toString());
+        $this->assertEquals($expected . ' 23:59:59', $ds->getDayEnd($date)->__toString());
+    }
+
+    /**
+     * Test date preset functions e.g. dateTime
+     *
+     * @covers          Date::getDateTime()
+     *
+     * @dataProvider    dateTimeSetProvider
+     */
+    public function testDateTime($src, $expected){
+        $ds = new Date(self::$container);
+        $date = $ds->create($src);
+
+        $this->assertEquals($expected, $ds->getDateTime($date)->__toString());
     }
 
     /**
@@ -128,6 +148,28 @@ class DateServiceTest extends ServiceTest
             [ 'Y-m-d', '\Y-\m-\d'],
             [ 'Y-m-d H:U', '\Y-\m-\d \H:\U'],
             [ 'Y i', '\Y \i']
+        ];
+    }
+
+    /**
+     * DateOnly test data set
+     */
+    public function dateOnlySetProvider(){
+        return [
+            [ 0, '1970-01-01'],
+            [ 1267394400, '2010-02-28'],
+            [ 1481752803, '2016-12-14']
+        ];
+    }
+
+    /**
+     * DateTime test data set
+     */
+    public function dateTimeSetProvider(){
+        return [
+            [ 0, '1970-01-01 00:00:00'],
+            [ 1267394400, '2010-02-28 22:00:00'],
+            [ 1481752803, '2016-12-14 22:00:03']
         ];
     }
 }

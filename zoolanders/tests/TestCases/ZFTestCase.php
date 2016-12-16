@@ -5,12 +5,8 @@ namespace ZFTests\TestCases;
 use Joomla\Registry\Registry;
 use PHPUnit\Framework\TestCase;
 use Zoolanders\Framework\Container\Container;
-use Joomla\Input\Input;
-use Zoolanders\Framework\Container\Nested;
 use Zoolanders\Framework\Service\Event;
 use ZFTests\Classes\EventStackService;
-use Zoolanders\Framework\Service\System\Config;
-use Zoolanders\Framework\Service\User;
 
 /**
  * Class ZFTestCase
@@ -37,7 +33,6 @@ class ZFTestCase extends TestCase
 
         self::$container['eventstack'] = EventStackService::getInstance();
         self::$container['event'] = new Event(self::$container);
-        self::$container['user'] = self::$container->zoo->user; // Tmp solution
     }
 
     public static function tearDownAfterClass()

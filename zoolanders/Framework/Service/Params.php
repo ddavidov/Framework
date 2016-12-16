@@ -33,6 +33,7 @@ class Params extends Service
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->params = new Registry();
         $this->reload();
     }
 
@@ -43,8 +44,8 @@ class Params extends Service
     {
         $db = $this->container->db;
 
-        $sql = $db->getQuery(true)
-            ->select($db->qn('params'))
+        $sql = $db->getQuery(true);
+        $sql->select($db->qn('params'))
             ->from($db->qn('#__extensions'))
             ->where($db->qn('type') . " = " . $db->q('component'))
             ->where($db->qn('element') . " = " . $db->q($component));

@@ -350,7 +350,7 @@ class Database extends Service
      */
     public function __call($method, $args)
     {
-        return $this->_call(array($this->_database, $method), $args);
+        return call_user_func_array(array($this->_database, $method), $args);
     }
 
     /**

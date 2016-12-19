@@ -3,6 +3,7 @@
 namespace ZFTests\Service;
 
 use Zoolanders\Framework\Service\Params;
+use ZFTests\Classes\Providers\SimpleDataSetProvider;
 
 /**
  * Class ParamsServiceTest
@@ -12,6 +13,8 @@ use Zoolanders\Framework\Service\Params;
  */
 class ParamsServiceTest extends ServiceTest
 {
+    use SimpleDataSetProvider;
+
     /**
      * Test binding ops
      *
@@ -20,7 +23,7 @@ class ParamsServiceTest extends ServiceTest
      * @covers          Params::save()
      * @covers          Params::reload()
      *
-     * @dataProvider    bindingDataSet
+     * @dataProvider    simpleKeyValueProvider
      */
     public function testBinding($key, $value){
         $params = new Params(self::$container);
@@ -50,7 +53,7 @@ class ParamsServiceTest extends ServiceTest
      * @covers          Params::setParams()
      * @covers          Params::getParams()
      *
-     * @dataProvider    bindingDataSet
+     * @dataProvider    simpleKeyValueProvider
      */
     public function testMassBinding($key, $value){
         $params = new Params(self::$container);
@@ -65,16 +68,5 @@ class ParamsServiceTest extends ServiceTest
         $this->assertArraySubset([ 'com_zoo' => [$key => $value] ], $params->getParams());
         // Drop params:
         $db->transactionRollback();
-    }
-
-    /**
-     * Binding test data set
-     */
-    public function bindingDataSet(){
-        return [
-            [ 'a', 'alpha' ],
-            [ 'b', 'bravo' ],
-            [ 'c', ['charlie'] ]
-        ];
     }
 }

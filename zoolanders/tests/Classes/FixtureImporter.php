@@ -38,7 +38,7 @@ class FixtureImporter
      */
     public function import($pkg_name){
         // Lookup for fixtures file:
-        $path = realpath(FIXTURES_PATH) . '/' . $this->config['path'] . '/' . $pkg_name . 'sql';
+        $path = realpath(FIXTURES_PATH . '/' . $this->config['path'] . '/' . $pkg_name . '.sql');
 
         if(file_exists($path)){
             $this->processSql($path);
@@ -58,7 +58,8 @@ class FixtureImporter
             $res = fopen($resource, 'r');
 
             while( !feof($res) ){
-                $line = fread($res);
+                $line = fgets($res);
+
                 $db->setQuery($line);
                 $db->execute();
 

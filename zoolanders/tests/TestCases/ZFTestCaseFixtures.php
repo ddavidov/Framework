@@ -2,7 +2,12 @@
 
 namespace ZFTests\TestCases;
 
+use ZFTests\Classes\FixtureImporter;
 
+/**
+ * Class ZFTestCaseFixtures
+ * @package ZFTests\TestCases
+ */
 class ZFTestCaseFixtures extends ZFTestCase
 {
     /**
@@ -11,6 +16,9 @@ class ZFTestCaseFixtures extends ZFTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+        self::$container['fixtures'] = new FixtureImporter(self::$container, [
+            'path' => 'sql'
+        ]);
 
         self::raiseFixtures();
     }
@@ -29,17 +37,25 @@ class ZFTestCaseFixtures extends ZFTestCase
      * Test fixture workflow
      */
     protected static function raiseFixtures(){
-        $dbo = \JFactory::getDbo();
+        $dbo = self::$container->db;
         $dbo->transactionStart();
 
-        //@TODO: Import fixture data from sql file
+        self::$container->fixtures->import(self::getPkgName());
     }
 
     /**
      * Test fixtures remove
      */
     protected static function dropFixtures(){
-        $dbo = \JFactory::getDbo();
+        $dbo = self::$container->db;
         $dbo->transactionRollback();
+    }
+
+    /**
+     * Define fixture pkg name
+     */
+    protected static function getPkgName(){
+        $parts = explode('\\', static::class);
+        return strtolower(preg_replace('/Test$/Ui', '', array_pop($parts)));
     }
 }

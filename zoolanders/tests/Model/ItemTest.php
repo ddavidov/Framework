@@ -2,7 +2,7 @@
 
 namespace ZFTests\Model;
 
-use ZFTests\TestCases\ZFTestCase;
+use ZFTests\TestCases\ZFTestCaseFixtures;
 
 /**
  * Class ItemTest
@@ -10,13 +10,13 @@ use ZFTests\TestCases\ZFTestCase;
  *
  * @package ZFTests\Model
  */
-class ItemTest extends ZFTestCase
+class ItemTest extends ZFTestCaseFixtures
 {
     /**
      * Test creating instance
      */
     public function testMake(){
-        //@TODO: Implement this
+
         $this->markTestSkipped('To be implemented afetr query builder updated');
     }
 }

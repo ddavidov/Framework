@@ -43,7 +43,8 @@ class FixtureImporter
         if(file_exists($path)){
             $this->processSql($path);
         } else {
-            throw new \Exception('Fixture package [' . $path . '] not found');
+            //throw new \Exception('Fixture package [' . $path . '] not found');
+            // Silent exit
         }
     }
 

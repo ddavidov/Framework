@@ -40,13 +40,16 @@ class ZFTestCaseFixtures extends ZFTestCase
         $dbo = self::$container->db;
         $dbo->transactionStart();
 
-        self::$container->fixtures->import(self::getPkgName());
+        self::$container->fixtures->import( self::getPkgName() );
     }
 
     /**
      * Test fixtures remove
      */
     protected static function dropFixtures(){
+
+        self::$container->fixtures->import( self::getPkgName() . '_rollback' );
+
         $dbo = self::$container->db;
         $dbo->transactionRollback();
     }

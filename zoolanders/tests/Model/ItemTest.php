@@ -17,6 +17,8 @@ class ItemTest extends ZFTestCaseFixtures
      */
     public function testMake(){
 
-        $this->markTestSkipped('To be implemented afetr query builder updated');
+        $this->assertTableHasRow('zoo_item', [
+           'alias' => 'test-item'
+        ]);
     }
 }

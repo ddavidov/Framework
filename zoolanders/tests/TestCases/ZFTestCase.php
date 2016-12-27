@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Service\Event;
 use ZFTests\Classes\EventStackService;
+use ZFTests\Classes\DBUtils;
 
 /**
  * Class ZFTestCase
@@ -16,6 +17,8 @@ use ZFTests\Classes\EventStackService;
  */
 class ZFTestCase extends TestCase
 {
+    use DBUtils;
+
     /**
      * @var DI container
      */
@@ -74,4 +77,29 @@ class ZFTestCase extends TestCase
             call_user_func($callback, $eventStack->get($offset));
         }
     }
+
+    /**
+     * Assert DB table has row with provided column values
+     *
+     * @param   $tablename (without prefixes)
+     * @param   $params
+     * @param   string $message
+     */
+    public function assertTableHasRow($tablename, $params, $message = ''){
+        $sql = $this->buildMatchQuery($tablename, $params);
+        $db = self::$container->db;
+        $db->setQuery($sql);
+
+        $result = $db->loadObjectList();
+
+        if($db->getErrorNum()){
+            // Mark assertion as failed or incompleted
+            $this->markTestIncomplete('DB query built with errors');
+        } else {
+            $this->assertThat(empty($result), new \PHPUnit_Framework_Constraint_IsFalse, $message);
+        }
+
+    }
+
+
 }

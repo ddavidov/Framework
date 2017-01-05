@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 abstract class Database extends Model
 {
     use Date, IsString;
-    
+
     /**
      * @var string
      */
@@ -165,7 +165,7 @@ abstract class Database extends Model
             return $this;
         }
 
-        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        $this->orWheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
         return $this;
     }
 

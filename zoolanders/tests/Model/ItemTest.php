@@ -39,4 +39,14 @@ class ItemTest extends DatabaseTest
             [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE `id` = \'1\'']
         ];
     }
+
+    /**
+     * OR - Where clause testing dataset
+     */
+    public function orWhereClauseProvider()
+    {
+        return [
+            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE (`id` = \'1\' OR `id` = \'1\')']
+        ];
+    }
 }

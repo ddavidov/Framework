@@ -51,6 +51,22 @@ class DatabaseTest extends ZFTestCaseFixtures
     }
 
     /**
+     * Test where clause building with different cases
+     *
+     * @covers          Database::where()
+     * @dataProvider    orWhereClauseProvider
+     */
+    public function testOrWhere($params, $expected){
+        $dbm = $this->getTestInstance();
+        extract($params);
+        $dbm->orwhere($name, $operator, $value);
+        $dbm->orWhere($name, $operator, $value);
+        $dbm->buildQuery();
+
+        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
+    }
+
+    /**
      * Fieldset provider
      */
     public function fieldsetProvider(){
@@ -67,6 +83,16 @@ class DatabaseTest extends ZFTestCaseFixtures
     {
         return [
             [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT *FROM ``WHERE `id` = \'1\'']
+        ];
+    }
+
+    /**
+     * OR - Where clause testing dataset
+     */
+    public function orWhereClauseProvider()
+    {
+        return [
+            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT *FROM ``WHERE (`id` = \'1\' OR `id` = \'1\')']
         ];
     }
 }

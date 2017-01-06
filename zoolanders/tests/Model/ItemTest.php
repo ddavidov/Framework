@@ -13,6 +13,11 @@ use Zoolanders\Framework\Model\Item;
 class ItemTest extends DatabaseTest
 {
     /**
+     * @var string  Test cases source relative path
+     */
+    protected $_data_source = '/querying/item.csv';
+
+    /**
      * Creates and returns instance of testing class
      */
     protected function getTestInstance(){
@@ -27,26 +32,6 @@ class ItemTest extends DatabaseTest
         return [
             [ ['id'], "SELECT `a`.*,`a`.`id`FROM `#__zoo_item` AS `a`" ],
             [ ['id','alias'], "SELECT `a`.*,`a`.`id`,`a`.`alias`FROM `#__zoo_item` AS `a`" ]
-        ];
-    }
-
-    /**
-     * Where clause testing dataset
-     */
-    public function whereClauseProvider()
-    {
-        return [
-            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE `id` = \'1\'']
-        ];
-    }
-
-    /**
-     * OR - Where clause testing dataset
-     */
-    public function orWhereClauseProvider()
-    {
-        return [
-            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE (`id` = \'1\' OR `id` = \'1\')']
         ];
     }
 }

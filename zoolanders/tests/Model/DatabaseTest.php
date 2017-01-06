@@ -15,11 +15,39 @@ use Zoolanders\Framework\Model\Database;
 class DatabaseTest extends ZFTestCaseFixtures
 {
     /**
+     * @var string  Test cases source relative path
+     */
+    protected $_data_source = '/querying/database.csv';
+
+    /**
      * Creates and returns instance of testing class
      */
     protected function getTestInstance(){
 
         return new DatabaseModel(self::$container);
+    }
+
+    /**
+     * Load and parse CSV file with test cases
+     *
+     * @param $filePath
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function loadTestDataCSV($filePath){
+        if(file_exists($filePath)){
+            $data = [];
+            $content = file_get_contents($filePath);
+            $strings = explode("\n", $content);
+            if(!empty($strings)){
+                foreach ($strings as $str){
+                    $data[] = str_getcsv ( $str );
+                }
+            }
+            return $data;
+        } else {
+            throw new \Exception('CSV file ['.$filePath.'] with test data not found');
+        }
     }
 
     /**
@@ -36,34 +64,34 @@ class DatabaseTest extends ZFTestCaseFixtures
     }
 
     /**
-     * Test where clause building with different cases
-     *
-     * @covers          Database::where()
-     * @dataProvider    whereClauseProvider
+     * Test query building methods, using test cases from data file
      */
-    public function testWhere($params, $expected){
+    public function testQuerying(){
         $dbm = $this->getTestInstance();
-        extract($params);
-        $dbm->where($name, $operator, $value);
-        $dbm->buildQuery();
 
-        $this->assertEquals($expected, str_replace("\n",'',$dbm->getQuery()->__toString()));
-    }
+        $data = $this->loadTestDataCSV(FIXTURES_PATH . $this->_data_source);
+        if(!empty($data)){
+            foreach($data as $case){
+                $methodName = array_shift($case);
+                if(!empty($methodName)){
+                    $args = @array_shift($case);
+                    $expected = @array_shift($case);
 
-    /**
-     * Test where clause building with different cases
-     *
-     * @covers          Database::where()
-     * @dataProvider    orWhereClauseProvider
-     */
-    public function testOrWhere($params, $expected){
-        $dbm = $this->getTestInstance();
-        extract($params);
-        $dbm->orwhere($name, $operator, $value);
-        $dbm->orWhere($name, $operator, $value);
-        $dbm->buildQuery();
+                    if($args){
+                        $args = eval(sprintf('return %s;', $args));
+                    }
 
-        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
+                    $reflection = new \ReflectionClass($dbm);
+                    if($reflection->hasMethod($methodName)){
+                        $methodReflection = $reflection->getMethod($methodName);
+                        $methodReflection->invokeArgs($dbm, $args);
+                        $dbm->buildQuery();
+
+                        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -76,23 +104,4 @@ class DatabaseTest extends ZFTestCaseFixtures
         ];
     }
 
-    /**
-     * Where clause testing dataset
-     */
-    public function whereClauseProvider()
-    {
-        return [
-            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT *FROM ``WHERE `id` = \'1\'']
-        ];
-    }
-
-    /**
-     * OR - Where clause testing dataset
-     */
-    public function orWhereClauseProvider()
-    {
-        return [
-            [ ['name' => 'id', 'operator' => '=', 'value' => 1], 'SELECT *FROM ``WHERE (`id` = \'1\' OR `id` = \'1\')']
-        ];
-    }
 }

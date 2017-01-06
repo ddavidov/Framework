@@ -1,0 +1,1 @@
+where,"['fieldOrCallable' =>'id','operator'=>'=','value'=>1]","SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE `id` = '1'"

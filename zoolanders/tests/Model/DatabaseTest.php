@@ -100,12 +100,45 @@ class DatabaseTest extends ZFTestCaseFixtures
     }
 
     /**
+     * Get set table prefix methods test
+     *
+     * @covers          Database::setTablePrefix()
+     * @covers          Database::getTablePrefix()
+     *
+     * @dataProvider    prefixDataProvider
+     */
+    public function testGetSetPrefix($prefix, $expected){
+        $dbm = $this->getTestInstance();
+
+        // Get set operations:
+        $dbm->setTablePrefix($prefix);
+        $this->assertEquals($prefix, $dbm->getTablePrefix($prefix));
+
+        $dbm->where('id','=','1');
+        $dbm->buildQuery();
+
+        // Check if affects queries
+        //echo $dbm->getQuery()->__toString();
+    }
+
+    /**
      * Fieldset provider
      */
     public function fieldsetProvider(){
         return [
             [ ['id'], "SELECT *,`id`FROM ``" ],
             [ ['id','alias'], "SELECT *,`id`,`alias`FROM ``" ]
+        ];
+    }
+
+    /**
+     * Test prefix data provider
+     */
+    public function prefixDataProvider(){
+        return [
+            ['a', ''],
+            ['b', ''],
+            ['c', '']
         ];
     }
 

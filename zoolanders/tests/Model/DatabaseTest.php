@@ -67,8 +67,6 @@ class DatabaseTest extends ZFTestCaseFixtures
      * Test query building methods, using test cases from data file
      */
     public function testQuerying(){
-        $dbm = $this->getTestInstance();
-
         $data = $this->loadTestDataCSV(FIXTURES_PATH . $this->_data_source);
         if(!empty($data)){
             foreach($data as $case){
@@ -79,6 +77,13 @@ class DatabaseTest extends ZFTestCaseFixtures
 
                     if($args){
                         $args = eval(sprintf('return %s;', $args));
+                    }
+
+                    $dbm = $this->getTestInstance();
+
+                    // Bind first where clause for alternatives
+                    if(preg_match('/^or/iU', $methodName)){
+                        $dbm->orWhere('id','=','1');
                     }
 
                     $reflection = new \ReflectionClass($dbm);

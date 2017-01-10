@@ -210,7 +210,7 @@ abstract class Database extends Model
         $wheres = [];
         foreach ($value as $v) {
             $this->setupOperatorAndValue($operator, $v);
-            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $value;
+            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $v;
         }
 
         $this->wheres[] = '(' . implode(" OR ", $wheres) . ')';
@@ -235,7 +235,7 @@ abstract class Database extends Model
         $wheres = [];
         foreach ($value as $v) {
             $this->setupOperatorAndValue($operator, $v);
-            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $value;
+            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $v;
         }
 
         $this->orWheres[] = '(' . implode(" OR ", $wheres) . ')';

@@ -194,7 +194,7 @@ abstract class Database extends Model
     {
         $this->orWheres[] = $this->getPrefix() . $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
 
-        eturn $this;
+        return $this;
     }
 
     /**

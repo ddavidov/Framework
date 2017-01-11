@@ -59,6 +59,7 @@ class DatabaseTest extends ZFTestCaseFixtures
     public function testFields($fieldset, $expected){
         $dbm = $this->getTestInstance();
         $dbm->fields($fieldset);
+        $dbm->buildQuery();
 
         $this->assertEquals($expected, str_replace("\n",'',$dbm->getQuery()->__toString()));
     }
@@ -118,7 +119,7 @@ class DatabaseTest extends ZFTestCaseFixtures
         $dbm->buildQuery();
 
         // Check if affects queries
-        //echo $dbm->getQuery()->__toString();
+        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
     }
 
     /**
@@ -126,8 +127,8 @@ class DatabaseTest extends ZFTestCaseFixtures
      */
     public function fieldsetProvider(){
         return [
-            [ ['id'], "SELECT *,`id`FROM ``" ],
-            [ ['id','alias'], "SELECT *,`id`,`alias`FROM ``" ]
+            [ ['id'], "SELECT `id`FROM ``" ],
+            [ ['id','alias'], "SELECT `id`,`alias`FROM ``" ]
         ];
     }
 
@@ -136,9 +137,9 @@ class DatabaseTest extends ZFTestCaseFixtures
      */
     public function prefixDataProvider(){
         return [
-            ['a', ''],
-            ['b', ''],
-            ['c', '']
+            ['a', 'SELECT `a`.*FROM `` AS `a`WHERE `a`.`id` = \'1\''],
+            ['b', 'SELECT `b`.*FROM `` AS `b`WHERE `b`.`id` = \'1\''],
+            ['c', 'SELECT `c`.*FROM `` AS `c`WHERE `c`.`id` = \'1\'']
         ];
     }
 

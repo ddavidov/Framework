@@ -14,6 +14,11 @@ abstract class Database extends Model
     use Date, IsString;
 
     /**
+     * @var array
+     */
+    protected $columns = [];
+
+    /**
      * @var string
      */
     protected $tablePrefix = '';
@@ -57,13 +62,13 @@ abstract class Database extends Model
         parent::__construct($container);
 
         $this->query = $this->container->db->getQuery(true);
+    }
 
-        // Prefix the table if necessary
-        $prefix = (strlen($this->tablePrefix) > 0) ? ' AS ' . $this->query->qn($this->tablePrefix) : '';
-
-        // Autoperform SELECT AND FROM statement
-        $this->query->from($this->query->qn($this->tableName) . $prefix);
-        $this->fields(['*']);
+    /**
+     * Get list of columns to be selected
+     */
+    protected function getColumns(){
+        return empty($this->columns) ? [$this->getPrefix() . '*'] : $this->columns;
     }
 
     /**
@@ -72,16 +77,18 @@ abstract class Database extends Model
      */
     public function fields($fields = ['*'], $prefix = null)
     {
-        if ($prefix === null) {
-            $prefix = $this->tablePrefix;
-        }
+        $prefix = $prefix ? $prefix : $this->tablePrefix;
 
-        // Prefix and quote name fields
-        foreach ($fields as $field) {
-            $field = ($field == '*') ? $field : $this->query->qn($field);
-            $field = $prefix ? $this->query->qn($prefix) . '.' . $field : $field;
-            $this->query->select($field);
-        }
+        $fields = array_map(function($item) use ($prefix){
+            $cell = '';
+            if($prefix){
+                $cell .= $this->getPrefix();
+            }
+            return $cell . ($item!=='*' ? $this->query->qn($item) : $item);
+        }, $fields);
+
+        $this->columns = array_merge($this->columns, $fields);
+        $this->columns = array_unique($this->columns);
     }
 
     /**
@@ -98,6 +105,14 @@ abstract class Database extends Model
     public function buildQuery()
     {
         $query = $this->getQuery();
+
+        // Prefix the table if necessary
+        $prefix = (strlen($this->tablePrefix) > 0) ? ' AS ' . $this->query->qn($this->tablePrefix) : '';
+
+
+        // Autoperform SELECT AND FROM statement
+        $query->select($this->getColumns());
+        $query->from($this->query->qn($this->tableName) . $prefix);
 
         // Join stuff
         if (count($this->joins)) {
@@ -341,13 +356,6 @@ abstract class Database extends Model
     public function setTablePrefix($tablePrefix)
     {
         $this->tablePrefix = $tablePrefix;
-
-        // Prefix the table if necessary
-        $prefix = (strlen($this->tablePrefix) > 0) ? ' AS ' . $this->query->qn($this->tablePrefix) : '';
-
-        // Autoperform FROM statement
-        $this->query->clear('from');
-        $this->query->from($this->query->qn($this->tableName) . $prefix);
     }
 
     /**

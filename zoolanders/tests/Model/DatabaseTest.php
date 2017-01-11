@@ -92,11 +92,33 @@ class DatabaseTest extends ZFTestCaseFixtures
                         $methodReflection->invokeArgs($dbm, $args);
                         $dbm->buildQuery();
 
-                        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
+                        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()), sprintf('Calling %s with provided params assertion failed', $methodName));
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Get set table prefix methods test
+     *
+     * @covers          Database::setTablePrefix()
+     * @covers          Database::getTablePrefix()
+     *
+     * @dataProvider    prefixDataProvider
+     */
+    public function testGetSetPrefix($prefix, $expected){
+        $dbm = $this->getTestInstance();
+
+        // Get set operations:
+        $dbm->setTablePrefix($prefix);
+        $this->assertEquals($prefix, $dbm->getTablePrefix($prefix));
+
+        $dbm->where('id','=','1');
+        $dbm->buildQuery();
+
+        // Check if affects queries
+        //echo $dbm->getQuery()->__toString();
     }
 
     /**
@@ -106,6 +128,17 @@ class DatabaseTest extends ZFTestCaseFixtures
         return [
             [ ['id'], "SELECT *,`id`FROM ``" ],
             [ ['id','alias'], "SELECT *,`id`,`alias`FROM ``" ]
+        ];
+    }
+
+    /**
+     * Test prefix data provider
+     */
+    public function prefixDataProvider(){
+        return [
+            ['a', ''],
+            ['b', ''],
+            ['c', '']
         ];
     }
 

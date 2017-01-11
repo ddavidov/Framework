@@ -148,7 +148,8 @@ abstract class Database extends Model
 
         $this->setupOperatorAndValue($operator, $value);
 
-        $this->wheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $value;
+        $this->wheres[] = $this->getPrefix() . $this->query->qn($fieldOrCallable) . " " . $operator . " " . $value;
+
         return $this;
     }
 
@@ -165,7 +166,8 @@ abstract class Database extends Model
             return $this;
         }
 
-        $this->orWheres[] = $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+        $this->orWheres[] = $this->getPrefix() . $this->query->qn($fieldOrCallable) . " " . $operator . " " . $this->query->q($value);
+
         return $this;
     }
 
@@ -177,7 +179,8 @@ abstract class Database extends Model
      */
     public function whereBetween($field, $from, $to)
     {
-        $this->wheres[] = $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+        $this->wheres[] = $this->getPrefix() . $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+
         return $this;
     }
 
@@ -189,7 +192,8 @@ abstract class Database extends Model
      */
     public function orWhereBetween($field, $from, $to)
     {
-        $this->orWheres[] = $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+        $this->orWheres[] = $this->getPrefix() . $this->query->qn($field) . " BETWEEN " . $this->query->q($from) . " AND " . $this->query->q($to);
+
         return $this;
     }
 
@@ -210,7 +214,7 @@ abstract class Database extends Model
         $wheres = [];
         foreach ($value as $v) {
             $this->setupOperatorAndValue($operator, $v);
-            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $v;
+            $wheres[] = $this->getPrefix() . $this->query->qn($field) . " " . $operator . " " . $v;
         }
 
         $this->wheres[] = '(' . implode(" OR ", $wheres) . ')';
@@ -235,7 +239,7 @@ abstract class Database extends Model
         $wheres = [];
         foreach ($value as $v) {
             $this->setupOperatorAndValue($operator, $v);
-            $wheres[] = $this->query->qn($field) . " " . $operator . " " . $v;
+            $wheres[] = $this->getPrefix() . $this->query->qn($field) . " " . $operator . " " . $v;
         }
 
         $this->orWheres[] = '(' . implode(" OR ", $wheres) . ')';
@@ -317,7 +321,7 @@ abstract class Database extends Model
         settype($ids, 'array');
 
         if (count($ids)) {
-            $this->wherePrefix($this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
+            $this->wherePrefix( $this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
         }
 
         return $this;

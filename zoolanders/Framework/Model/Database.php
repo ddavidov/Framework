@@ -321,7 +321,7 @@ abstract class Database extends Model
         settype($ids, 'array');
 
         if (count($ids)) {
-            $this->wherePrefix($this->getPrefix() . $this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
+            $this->wherePrefix( $this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
         }
 
         return $this;

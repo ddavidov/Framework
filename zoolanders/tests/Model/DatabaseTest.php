@@ -92,7 +92,7 @@ class DatabaseTest extends ZFTestCaseFixtures
                         $methodReflection->invokeArgs($dbm, $args);
                         $dbm->buildQuery();
 
-                        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()));
+                        $this->assertEquals($expected, str_replace("\n", '', $dbm->getQuery()->__toString()), sprintf('Calling %s with provided params assertion failed', $methodName));
                     }
                 }
             }

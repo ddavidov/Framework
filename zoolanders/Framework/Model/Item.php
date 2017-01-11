@@ -26,7 +26,7 @@ class Item extends Database
     */
     protected function _buildQueryFrom(&$query)
     {
-        $query->from(ZOO_TABLE_ITEM . ' AS a');
+        $query->from(ZOO_TABLE_ITEM . ' AS ' . $this->getTablePrefix());
     }
 
     /*
@@ -37,12 +37,12 @@ class Item extends Database
     {
         // frontpage
         if ($this->join_frontpage) {
-            $query->join('LEFT', ZOO_TABLE_CATEGORY_ITEM . " AS f ON a.id = f.item_id");
+            $query->join('LEFT', ZOO_TABLE_CATEGORY_ITEM . " AS f ON " . $this->getPrefix(). "id = f.item_id");
         }
 
         // tags
         if ($this->join_tags) {
-            $query->join('LEFT', ZOO_TABLE_TAG . " AS t ON a.id = t.item_id");
+            $query->join('LEFT', ZOO_TABLE_TAG . " AS t ON " . $this->getPrefix(). ".id = t.item_id");
         }
 
         // elements
@@ -80,7 +80,7 @@ class Item extends Database
     protected function _buildQueryGroup(&$query)
     {
         if ($group_by = $this->_db->escape($this->getState('group_by'))) {
-            $query->group('a.' . $group_by);
+            $query->group($this->getTablePrefix() . $group_by);
         }
     }
 

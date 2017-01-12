@@ -26,6 +26,21 @@ class ItemTest extends DatabaseTest
     }
 
     /**
+     * Test database selecting records from fixture set using query builder
+     */
+    public function testSelectingItem(){
+
+        $dbm = $this->getTestInstance();
+        $dbm->where('alias', 'LIKE', 'test-item-fixture');
+        $dbm->buildQuery();
+
+        $db = self::$container->db;
+        $db->setQuery($dbm->getQuery());
+
+        $this->assertArraySubset(['alias'=>'test-item-fixture','type'=>'article'], $db->loadAssoc());
+    }
+
+    /**
      * Fieldset provider
      */
     public function fieldsetProvider(){

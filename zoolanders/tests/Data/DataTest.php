@@ -70,12 +70,12 @@ class DataTest extends ZFTestCase
      * Test search recursive method
      *
      * @covers          Data::searchRecursive()
-     * @dataProvider    lookupDataSet
+     * @dataProvider    lookupRecursiveDataSet
      */
-    public function testSearchRecursive($dataset, $needle, $expected){
+    public function testSearchRecursive($dataset, $expected, $needle){
 
         $this->makeDataSet($dataset);
-        $this->markTestSkipped('searchRecursive method requires fixes');
+        $this->assertEquals($expected, $this->object->searchRecursive($needle));
     }
 
     /**
@@ -140,6 +140,39 @@ class DataTest extends ZFTestCase
                 [1,2,3],
                 3,
                 'zulu'
+            ]
+        ];
+    }
+
+    /**
+     * Data provider for recursive search/find ops testing:
+     */
+    public function lookupRecursiveDataSet(){
+        return [
+            [
+                [
+                    'a' => 'alpha',
+                    'b' => ['foo' => 'bravo'],
+                    'c' => 'charlie'
+                ],
+                'b',
+                'bravo'
+            ],
+            [
+                ['squad' =>
+                    [
+                        'corporal' => 'John',
+                        'sergeant' => 'Peter',
+                        'captain' => 'Jack'
+                    ]
+                ],
+                'squad',
+                'Jack'
+            ],
+            [
+                [1,2,3],
+                false,
+                4
             ]
         ];
     }

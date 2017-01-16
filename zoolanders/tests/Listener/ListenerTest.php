@@ -17,6 +17,6 @@ class ListenerTest extends ZFTestCase
      * Test listener
      */
     public function testListener(){
-        $this->markTestSkipped('Listener is abstract and have no core logic');
+        $this->markTestSkipped('Listener is abstract and have no any core logic for now');
     }
 }

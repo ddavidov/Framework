@@ -5,6 +5,7 @@ namespace ZFTests\Model;
 use ZFTests\TestCases\ZFTestCaseFixtures;
 use ZFTests\Classes\DatabaseModel;
 use Zoolanders\Framework\Model\Database;
+use ZFTests\Classes\CSVData;
 
 /**
  * Class DatabaseTest
@@ -14,6 +15,8 @@ use Zoolanders\Framework\Model\Database;
  */
 class DatabaseTest extends ZFTestCaseFixtures
 {
+    use CSVData;
+
     /**
      * @var string  Test cases source relative path
      */
@@ -25,29 +28,6 @@ class DatabaseTest extends ZFTestCaseFixtures
     protected function getTestInstance(){
 
         return new DatabaseModel(self::$container);
-    }
-
-    /**
-     * Load and parse CSV file with test cases
-     *
-     * @param $filePath
-     * @return mixed
-     * @throws \Exception
-     */
-    protected function loadTestDataCSV($filePath){
-        if(file_exists($filePath)){
-            $data = [];
-            $content = file_get_contents($filePath);
-            $strings = explode("\n", $content);
-            if(!empty($strings)){
-                foreach ($strings as $str){
-                    $data[] = str_getcsv ( $str );
-                }
-            }
-            return $data;
-        } else {
-            throw new \Exception('CSV file ['.$filePath.'] with test data not found');
-        }
     }
 
     /**

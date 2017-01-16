@@ -35,7 +35,7 @@ class DateServiceTest extends ServiceTest
         // Check different date:
         $past = $date = $ds->create(time() - (3600*24+10)); // 1 day ago
         $this->assertFalse($ds->isToday($past));
-        $this->asserttrue($ds->isYesterday($past));
+        $this->assertTrue($ds->isYesterday($past));
     }
 
     /**

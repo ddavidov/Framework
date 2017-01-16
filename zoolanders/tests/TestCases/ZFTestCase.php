@@ -101,5 +101,26 @@ class ZFTestCase extends TestCase
 
     }
 
+    /**
+     * Assert DB table has no rows with provided column values
+     *
+     * @param   $tablename (without prefixes)
+     * @param   $params
+     * @param   string $message
+     */
+    public function assertTableHasNoRow($tablename, $params, $message = ''){
+        $sql = $this->buildMatchQuery($tablename, $params);
+        $db = self::$container->db;
+        $db->setQuery($sql);
 
+        $result = $db->loadObjectList();
+
+        if($db->getErrorNum()){
+            // Mark assertion as failed or incompleted
+            $this->markTestIncomplete('DB query built with errors');
+        } else {
+            $this->assertThat(empty($result), new \PHPUnit_Framework_Constraint_IsTrue(), $message);
+        }
+
+    }
 }

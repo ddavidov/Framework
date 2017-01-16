@@ -272,7 +272,7 @@ class Database extends Service
             return mysqli_fetch_row($result);
         }
 
-        return mysql_fetch_row($result);
+        return mysqli_fetch_row($result);
     }
 
     /**

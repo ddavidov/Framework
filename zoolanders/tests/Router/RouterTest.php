@@ -22,8 +22,11 @@ class RouterTest extends ZFTestCase
         $router = new TestRouter($container);
 
         // Check if routes cache file created:
-        $this->assertFileExists($container->path->path('cache:') . '/routes');
+        $cache_file = $container->path->path('cache:') . '/routes';
+        $this->assertFileExists($cache_file);
         /* Uncomment if PHPUnit version supports it: */
         //$this->assertFileIsReadable($container->path->path('cache:') . '/routes');
+        unlink($cache_file);
+        $this->assertFileNotExists($cache_file);
     }
 }

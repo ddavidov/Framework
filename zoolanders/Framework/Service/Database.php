@@ -226,7 +226,7 @@ class Database extends Service
      *
      * @since 1.0.0
      */
-    public function insertObject($table, &$object, $key = null)
+    public function insertObject($table, $object, $key = null)
     {
 
         // insert object

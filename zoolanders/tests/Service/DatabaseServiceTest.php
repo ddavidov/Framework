@@ -94,32 +94,4 @@ class DatabaseServiceTest extends ZFTestCaseFixtures
         $this->assertEquals($expected, $db->replacePrefix('#__zoo_item'));
     }
 
-    /**
-     * Test insert object method
-     *
-     * @covers          Database::insertObject()
-     */
-    public function testInsertObject(){
-
-        if(version_compare(PHP_VERSION, '7.0.0', '>='))
-        {
-            $this->markTestSkipped('Skipped due to PHP7 compatibility issue.');
-        }
-
-        $db = new Database(self::$container);
-
-        $tag = new Tag();
-        $tag->item_id = 1;
-        $tag->name = 'test';
-
-        $result = $db->insertObject('#__zoo_tag', $tag);
-
-        // Check if record appeared in DB:
-        $this->assertNotFalse($result);
-        $this->assertTableHasRow('zoo_tag', ['item_id' => $tag->item_id, 'name' => $tag->name]);
-
-        // Cleanup the insertion:
-        $sql = "DELETE FROM `#__zoo_tag` WHERE item_id=1 AND name='test'";
-        $db->query($sql);
-    }
 }

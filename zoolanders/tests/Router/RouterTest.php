@@ -3,6 +3,7 @@
 namespace ZFTests\Router;
 
 use ZFTests\TestCases\ZFTestCase;
+use ZFTests\Classes\TestRouter;
 
 /**
  * Class RouterTest
@@ -13,22 +14,16 @@ use ZFTests\TestCases\ZFTestCase;
 class RouterTest extends ZFTestCase
 {
     /**
-     * Test build route
+     * Test router init
      */
-    public function testBuildRoute(){
-        $this->markTestSkipped(
-            'Build route is an abstraction'
-        );
-    }
+    public function testRouterInit(){
+        $container = self::$container;
+        $container->params->set('cache_routes', true);
+        $router = new TestRouter($container);
 
-    /**
-     * Test parse route
-     */
-    public function testParseRoute(){
-        $this->markTestSkipped(
-            'Parse route is an abstraction'
-        );
+        // Check if routes cache file created:
+        $this->assertFileExists($container->path->path('cache:') . '/routes');
+        /* Uncomment if PHPUnit version supports it: */
+        //$this->assertFileIsReadable($container->path->path('cache:') . '/routes');
     }
-
-    //@TODO: Cover with tests creating and clearing routing cache
 }

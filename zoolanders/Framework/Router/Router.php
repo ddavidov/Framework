@@ -54,7 +54,6 @@ abstract class Router
             if (!$this->cache || !$this->cache->check()) {
                 $this->cache = null;
             } else {
-                $this->find(null, null);
                 $key = json_encode($this->menuItems);
 
                 if (!$this->cache->get($key)) {

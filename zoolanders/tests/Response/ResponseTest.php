@@ -63,18 +63,6 @@ class ResponseTest extends ZFTestCase
     }
 
     /**
-     * Test send headers
-     *
-     * @covers          Response::sendHeaders()
-     * @depends         testSetHeader
-     *
-     */
-    public function testSendHeaders(){
-
-        $this->markTestSkipped('Unable to test without emulation');
-    }
-
-    /**
      * Test add func
      *
      * @covers          Response::add()

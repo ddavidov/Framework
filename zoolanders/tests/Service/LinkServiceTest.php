@@ -36,9 +36,14 @@ class LinkServiceTest extends ServiceTest
      */
     public function testRoute($params, $expected){
         $lnk = new Link(self::$container);
+        // Mocking env variables:
         $_SERVER['HTTP_HOST'] = 'test.com';
 
-        $this->markTestSkipped('Unable test properly at this version');
+        // Prepare to canonical:
+        $parts = explode('index.php', $lnk->route($params));
+        $route = array_pop($parts);
+
+        $this->assertEquals($expected, $route);
     }
 
     /**

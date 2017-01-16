@@ -226,7 +226,7 @@ class Database extends Service
      *
      * @since 1.0.0
      */
-    public function insertObject($table, $object, $key = null)
+    public function insertObject($table, &$object, $key = null)
     {
 
         // insert object
@@ -248,7 +248,7 @@ class Database extends Service
      *
      * @since 1.0.0
      */
-    public function updateObject($table, $object, $key, $updatenulls = true)
+    public function updateObject($table, &$object, $key, $updatenulls = true)
     {
 
         // update object
@@ -272,7 +272,7 @@ class Database extends Service
             return mysqli_fetch_row($result);
         }
 
-        return mysqli_fetch_row($result);
+        return mysql_fetch_row($result);
     }
 
     /**

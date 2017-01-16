@@ -5,6 +5,7 @@ namespace ZFTests\Service;
 use Zoolanders\Framework\Service\Database;
 use ZFTests\TestCases\ZFTestCaseFixtures;
 use ZFTests\Classes\CSVData;
+use ZFTests\Classes\Tag;
 
 /**
  * Class DatabaseServiceTest

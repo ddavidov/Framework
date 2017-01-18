@@ -15,16 +15,17 @@ use Zoolanders\Framework\Utils\NameFromClass;
  */
 class UtilsTest extends ZFTestCase
 {
-    use IsString;
+    use IsString, ArrayColumn;
 
     /**
      * Test array column class methods
      *
-     * @covers      ArrayColumn::array_column()
+     * @covers          ArrayColumn::array_column()
+     * @dataProvider    recordSetData
      */
-    public function testArrayColumn(){
-        //@TODO: Update when implement http request emulation under test env:
-        $this->markTestSkipped('To be completed on Input assertions implemented');
+    public function testArrayColumn($input, $key, $output){
+        // Check against array_column method:
+        $this->assertArraySubset($output, $this->array_column($input, $key));
     }
 
     /**
@@ -53,6 +54,32 @@ class UtilsTest extends ZFTestCase
             [ null, false ],
             [ [1, 2, 3], false ],
             [ $obj, false ]
+        ];
+    }
+
+    /**
+     * Testing record set
+     */
+    public function recordSetData(){
+        return [
+            [
+                [
+                    ['name' => 'John', 'surname' => 'Doe'],
+                    ['name' => 'Peter', 'surname' => 'Parker'],
+                    ['name' => 'Kent', 'surname' => 'Clark']
+                ],
+                'name',
+                ['John', 'Peter', 'Kent']
+            ],
+            [
+                [
+                    ['letter' => 'A', 'code' => 'alpha'],
+                    ['letter' => 'B', 'code' => 'bravo'],
+                    ['letter' => 'C', 'code' => 'charlie']
+                ],
+                'code',
+                ['alpha', 'bravo', 'charlie']
+            ]
         ];
     }
 }

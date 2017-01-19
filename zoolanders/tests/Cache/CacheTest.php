@@ -60,6 +60,7 @@ class CacheTest extends ZFTestCase
      *
      * @depends testCacheStorageIO
      * @covers  Cache::clear()
+     * @covers  Cache::save()
      */
     public function testCacheCleanup(){
 

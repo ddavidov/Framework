@@ -13,6 +13,8 @@ class DispatcherTest extends ZFTestCase
 {
     /**
      * Test dispatching front controller
+     *
+     * @covers      Dispatcher::dispatch()
      */
     public function testInvalidControllerException(){
 
@@ -20,5 +22,9 @@ class DispatcherTest extends ZFTestCase
 
         $dispatcher = $this->container->make('Zoolanders\Framework\Dispatcher\Dispatcher', array($this->container));
         $dispatcher->dispatch('Default');
+
+        // Check if expected events were triggered
+        $this->assertEventTriggered('dispatcher:beforedispatch', function(){});
+        $this->assertEventTriggered('dispatcher:afterdispatch', function(){});
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace ZFTests\Tree;
+
 use ZFTests\TestCases\ZFTestCase;
 use Zoolanders\Framework\Tree\Tree;
 

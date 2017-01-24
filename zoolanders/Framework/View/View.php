@@ -217,7 +217,7 @@ class View
      *
      * @throws  \Exception  When the layout file is not found
      */
-    public function loadTemplate()
+    public function loadTemplate($forceParams = null)
     {
         ob_start();
 

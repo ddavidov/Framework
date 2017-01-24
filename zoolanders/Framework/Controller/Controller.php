@@ -171,10 +171,11 @@ class Controller
      */
     public function getView($name = null, $config = array())
     {
-        $viewName = empty($name) ? $name : '\Zoolanders\Framework\View\View';
+        // Use provided or default view
+        $viewName = !empty($name) ? $name : '\Zoolanders\Framework\View\View';
 
         // Get the model's class name
-        $view = $this->container->make($viewName);
+        $view = $this->container->make($viewName, $config);
 
         // set the default paths
         $view->addTemplatePath(JPATH_COMPONENT . '/views/' . $this->getName() . '/tmpl');

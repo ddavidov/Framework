@@ -19,7 +19,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
     {
         parent::__construct($c);
 
-        $this->zoo = $this->container->zoo->getApp()->event;
+        $this->zoo = $this->container->zoo->event;
 
         $this->proxyAllZooEvents();
     }

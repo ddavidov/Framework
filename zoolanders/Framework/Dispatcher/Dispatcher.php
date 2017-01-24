@@ -87,7 +87,7 @@ class Dispatcher
 
         // controller loaded ?
         $class = $this->controller ? $this->controller : $default;
-        $class = 'Zoolanders\Zoolanders\Controller\\' . ucfirst($class);
+        //$class = 'Zoolanders\Zoolanders\Controller\\' . ucfirst($class);
 
         if (class_exists($class)) {
             // perform the request task

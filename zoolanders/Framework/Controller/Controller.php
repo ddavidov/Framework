@@ -125,7 +125,7 @@ class Controller
         }
 
         $this->triggerEvent(new BeforeExecute($this, $task));
-        
+
         if (!method_exists($this, $task)) {
             $task = $this->defaultTask;
         }
@@ -171,14 +171,14 @@ class Controller
      */
     public function getView($name = null, $config = array())
     {
-        $viewName = '\Zoolanders\Framework\View\View';
+        $viewName = empty($name) ? $name : '\Zoolanders\Framework\View\View';
 
         // Get the model's class name
         $view = $this->container->make($viewName);
-        
+
         // set the default paths
         $view->addTemplatePath(JPATH_COMPONENT . '/views/' . $this->getName() . '/tmpl');
-        
+
         return $view;
     }
 

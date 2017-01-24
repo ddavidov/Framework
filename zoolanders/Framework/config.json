@@ -14,6 +14,7 @@
             "css": "\\Zoolanders\\Framework\\Service\\Assets\\Css",
             "js": "\\Zoolanders\\Framework\\Service\\Assets\\Js"
         },
+        "zoo": "\\Zoolanders\\Framework\\Service\\Zoo",
         "db": "\\Zoolanders\\Framework\\Service\\Database",
         "date": "\\Zoolanders\\Framework\\Service\\Date",
         "request": "\\Zoolanders\\Framework\\Service\\Request",

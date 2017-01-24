@@ -22,6 +22,7 @@ class Response extends JHttpResponse
         200 => 'OK',
         401 => 'Unauthorized',
         403 => 'Forbidden',
+        404 => 'Not Found',
         500 => 'Internal Server Error'
     );
 
@@ -143,7 +144,10 @@ class Response extends JHttpResponse
             $node = array();
         }
 
-        $this->{$varname} = $value;
+        array_push($node, $value);
+
+        $this->{$varname} = $node;
+
         return $this;
     }
 

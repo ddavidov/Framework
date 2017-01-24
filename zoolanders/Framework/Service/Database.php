@@ -248,7 +248,7 @@ class Database extends Service
      *
      * @since 1.0.0
      */
-    public function updateObject($table, $object, $key, $updatenulls = true)
+    public function updateObject($table, &$object, $key, $updatenulls = true)
     {
 
         // update object
@@ -350,7 +350,7 @@ class Database extends Service
      */
     public function __call($method, $args)
     {
-        return $this->_call(array($this->_database, $method), $args);
+        return call_user_func_array(array($this->_database, $method), $args);
     }
 
     /**

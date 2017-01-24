@@ -84,7 +84,7 @@ class Path extends Service
      */
     public function paths($resource)
     {
-        return $this->paths($resource);
+        return $this->helper->paths($resource);
     }
 
     /**
@@ -251,7 +251,7 @@ class Path extends Service
                     }
 
                     // read subdirectory
-                    $files = array_merge($files, $this->_list($path . '/' . $file['basename'], $prefix . $file . '/', $mode, $recursive, $filter));
+                    $files = array_merge($files, $this->_list($path . '/' . $file['basename'], $prefix . $file['basename'] . '/', $mode, $recursive, $filter));
 
                 } else {
 
@@ -285,7 +285,7 @@ class Path extends Service
      */
     public function relative($path)
     {
-        return ltrim(preg_replace('/^' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/') . '/i', '', str_replace(DIRECTORY_SEPARATOR, '/', $path)), '/');
+        return ltrim(preg_replace('/^' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/') . '/i', '', str_replace(DIRECTORY_SEPARATOR, '/', realpath($path))), '/');
     }
 
     /**

@@ -40,6 +40,13 @@ class View
     protected $container;
 
     /**
+     * Render data
+     *
+     * @var
+     */
+    protected $data = [];
+
+    /**
      * Constructor.
      */
     public function __construct(Container $container)
@@ -62,6 +69,14 @@ class View
         if ($name == 'input') {
             return $this->container->input;
         }
+    }
+
+    /**
+     * Magic method to bind rendering data
+     */
+    public function __set($varname, $value)
+    {
+        $this->data[$varname] = $value;
     }
 
     /**
@@ -151,12 +166,13 @@ class View
      * Instead of loadTemplate is uses loadAnyTemplate.
      *
      * @param   string $tpl The name of the template file to parse
+     * @param   mixed $data Data to be rendered
      *
      * @return  boolean  True on success
      *
      * @throws  \Exception  When the layout file is not found
      */
-    public function display($tpl = null)
+    public function display($tpl = null, $data = [])
     {
         $this->triggerEvent(new BeforeDisplay($this, $tpl));
 
@@ -217,16 +233,18 @@ class View
      *
      * @throws  \Exception  When the layout file is not found
      */
-    public function loadTemplate($forceParams = null)
+    public function loadTemplate($tpl = null)
     {
+        $tpl = empty($tpl) ? $this->getLayout() : $tpl;
+
         ob_start();
 
         // Extract forced parameters
-        if (!empty($forceParams)) {
-            extract($forceParams);
+        if (!empty($this->data)) {
+            extract($this->data);
         }
 
-        include($this->templatePaths[0] . $this->getLayout() . '.php');
+        include($this->templatePaths[0] . $tpl . '.php');
 
         return ob_get_clean();
     }

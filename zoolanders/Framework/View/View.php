@@ -15,11 +15,12 @@ use Zoolanders\Framework\Event\View\AfterDisplay;
 use Zoolanders\Framework\Event\View\BeforeDisplay;
 use Zoolanders\Framework\Event\View\GetTemplatePath;
 use Zoolanders\Framework\Utils\NameFromClass;
+use Zoolanders\Framework\Response\Response;
 
 /**
  * Class View
  */
-class View
+class View implements ViewInterface
 {
     use Triggerable, NameFromClass;
 
@@ -33,6 +34,11 @@ class View
     protected $templatePaths = [];
 
     /**
+     * @var string  View type
+     */
+    protected $type = '';
+
+    /**
      * The container attached to this view
      *
      * @var   Container
@@ -44,7 +50,7 @@ class View
      *
      * @var
      */
-    protected $data = [];
+    public $data = [];
 
     /**
      * Constructor.
@@ -168,7 +174,7 @@ class View
      * @param   string $tpl The name of the template file to parse
      * @param   mixed $data Data to be rendered
      *
-     * @return  boolean  True on success
+     * @return  string  Rendered content
      *
      * @throws  \Exception  When the layout file is not found
      */
@@ -176,13 +182,18 @@ class View
     {
         $this->triggerEvent(new BeforeDisplay($this, $tpl));
 
+        if(!empty($data)){
+            $this->data = $data;
+        }
+
         $templateResult = $this->loadTemplate($tpl);
 
-        echo $templateResult;
+        // Should be HTML response with ContentType: text/html
+        $content = $templateResult;
 
         $this->triggerEvent(new AfterDisplay($this, $tpl, $templateResult));
 
-        return true;
+        return $content;
     }
 
     /**
@@ -257,5 +268,13 @@ class View
     public function &getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getType()
+    {
+        return  $this->type;
     }
 }

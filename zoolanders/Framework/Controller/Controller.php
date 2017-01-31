@@ -8,7 +8,9 @@ use Zoolanders\Framework\Controller\Exception\TaskNotFound;
 use Zoolanders\Framework\Event\Controller\AfterExecute;
 use Zoolanders\Framework\Event\Controller\BeforeExecute;
 use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Response\RedirectResponse;
 use Zoolanders\Framework\Utils\NameFromClass;
+use Zoolanders\Framework\Response\Response;
 
 /**
  * Class Controller
@@ -79,7 +81,6 @@ class Controller
      */
     protected $container = null;
 
-
     /**
      * Controller constructor.
      * @param Container $container
@@ -89,7 +90,7 @@ class Controller
         // Get a local copy of the container
         $this->container = $container;
 
-        $this->registerDefaultTask('display');
+        $this->registerDefaultTask($this->defaultTask ? $this->defaultTask : 'default');
     }
 
     /**
@@ -120,15 +121,16 @@ class Controller
      */
     public function execute($task)
     {
+
+        if (empty($task)) {
+            $task = $this->defaultTask;
+        }
+
         if (!method_exists($this, $task)) {
             throw new TaskNotFound(\JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
         }
 
         $this->triggerEvent(new BeforeExecute($this, $task));
-
-        if (!method_exists($this, $task)) {
-            $task = $this->defaultTask;
-        }
 
         $ret = $this->container->execute([$this, $task]);
 
@@ -147,15 +149,14 @@ class Controller
      */
     public function display($tpl = null)
     {
-       $view = $this->getView();
+        $layout = $this->getName();
 
         // Set the layout
         if (!is_null($this->layout)) {
-            $view->setLayout($this->layout);
+            $layout .= ':' . $this->layout;
         }
 
-        // Display without caching
-        $view->display($tpl);
+        return $this->render($layout);
     }
 
     /**
@@ -172,13 +173,13 @@ class Controller
     public function getView($name = null, $config = array())
     {
         // Use provided or default view
-        $viewName = !empty($name) ? $name : '\Zoolanders\Framework\View\View';
+        $viewName = !empty($name) ? $name : $this->getName();
+        $config['view_name'] = $viewName;
 
-        // Get the model's class name
-        $view = $this->container->make($viewName, $config);
+        $view = $this->container->factory->view($this->input, $config);
 
         // set the default paths
-        $view->addTemplatePath(JPATH_COMPONENT . '/views/' . $this->getName() . '/tmpl');
+        $view->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($viewName) . '/' . $view->getType() . '/tmpl');
 
         return $view;
     }
@@ -193,9 +194,8 @@ class Controller
         if ($this->redirect) {
             $app = $this->container->system->getApplication();
             $app->enqueueMessage($this->message, $this->messageType);
-            $app->redirect($this->redirect);
 
-            return true;
+            return new RedirectResponse($this->redirect);
         }
 
         return false;
@@ -274,7 +274,6 @@ class Controller
      */
     protected function csrfProtection()
     {
-
         $hasToken = false;
         $session = $this->container->system->getSession();
 
@@ -315,5 +314,28 @@ class Controller
     public function hasRedirect()
     {
         return !empty($this->redirect);
+    }
+
+    /**
+     * Render view with provided data
+     *
+     * @param   string  Layout name: "viewname:tmplname"
+     * @param   mixed   Playload data
+     *
+     * @return  Response
+     */
+    protected function render($layout, $data = array())
+    {
+        $buffer = explode(":", $layout);
+        $viewName = array_shift($buffer);
+        $tplName = @array_shift($buffer);
+
+        $viewName = empty($viewName) ? $this->getName() : $viewName;
+        $response = $this->container->factory->response($this->input);
+
+        $view = $this->getView($viewName);
+        $response->setContent($view->display($tplName, $data));
+
+        return $response;
     }
 }

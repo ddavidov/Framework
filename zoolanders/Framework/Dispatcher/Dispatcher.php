@@ -6,6 +6,7 @@ use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Event\Dispatcher\AfterDispatch;
 use Zoolanders\Framework\Event\Dispatcher\BeforeDispatch;
 use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Response\ResponseInterface;
 
 class Dispatcher
 {
@@ -35,7 +36,7 @@ class Dispatcher
         $this->container = $container;
 
         $this->controller = $this->input->getCmd('controller', $this->input->getCmd('view', null));
-        $this->task = $this->input->getCmd('task', 'display');
+        $this->task = $this->input->getCmd('task');
     }
 
     /**
@@ -87,13 +88,17 @@ class Dispatcher
 
         // controller loaded ?
         $class = $this->controller ? $this->controller : $default;
-        //$class = 'Zoolanders\Zoolanders\Controller\\' . ucfirst($class);
+        $class = $this->container->environment->getRootNamespace() . 'Controller\\' . ucfirst($class);
 
         if (class_exists($class)) {
             // perform the request task
             $ctrl = $this->container->make($class);
-            $ctrl->execute($this->task);
-            $ctrl->redirect();
+            $response = $ctrl->execute($this->task);
+            if($response instanceof ResponseInterface){
+                $response->send();
+            } else {
+                throw new Exception\BadResponseType();
+            }
         } else {
             throw new Exception\ControllerNotFound($class);
         }

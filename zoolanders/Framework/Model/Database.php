@@ -114,7 +114,7 @@ abstract class Database extends Model
         $query->select($this->getColumns());
         $query->from($this->query->qn($this->tableName) . $prefix);
 
-        // Join stuff
+
         if (count($this->joins)) {
             foreach ($this->joins as $type => $tables) {
                 foreach ($tables as $sql) {

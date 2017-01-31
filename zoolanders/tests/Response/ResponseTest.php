@@ -23,7 +23,7 @@ class ResponseTest extends ZFTestCase
         if($pass === null){
             $response = new Response();
         } else {
-            $response = new Response($pass);
+            $response = new Response([], $pass);
         }
 
         $this->assertEquals($expect, $response->code);
@@ -39,8 +39,6 @@ class ResponseTest extends ZFTestCase
      */
     public function testSetGet($key, $value){
         $response = new Response();
-
-        $this->assertEmpty($response->{$key});
 
         $response->set($key, $value);
         $this->assertEquals($value, $response->{$key});
@@ -69,10 +67,14 @@ class ResponseTest extends ZFTestCase
      * @dataProvider    bindingDataSet
      */
     public function testAdd($key, $value){
-        $response = new Response();
+
+        $this->markTestSkipped("Move to JsonResponse test");
+
+        /*
+        $response = new Response([]);
 
         $response->add($key, $value);
-        $this->assertArraySubset([ $value ], $response->{$key});
+        $this->assertArraySubset([ $value ], $response->{$key});*/
     }
 
     /**

@@ -8,17 +8,22 @@ use JHttpResponse;
  * Class JsonResponse
  * HTTP Response helper
  */
-class Response extends JHttpResponse
+class Response extends JHttpResponse implements ResponseInterface
 {
     /**
      * @var string Data
      */
-    public $data = array();
+    public $data = null;
+
+    /**
+     * @var string  Content type
+     */
+    public $type = 'text/html';
 
     /**
      * @var array   Used HTTP states codes
      */
-    private static $status_codes = array(
+    protected static $status_codes = array(
         200 => 'OK',
         401 => 'Unauthorized',
         403 => 'Forbidden',
@@ -32,55 +37,10 @@ class Response extends JHttpResponse
      * @param   int $code
      * @param   $data
      */
-    public function __construct($code = 200, $data = array())
+    public function __construct($data = '', $code = 200)
     {
         $this->code = $code;
         $this->data = $data;
-    }
-
-    /**
-     * Bind variable to data
-     *
-     * @param   string  Varname
-     * @param   mixed   Value
-     *
-     * @return  object
-     */
-    public function __set($varname, $value)
-    {
-        if (null === $this->data) {
-            $this->data = array();
-        }
-
-        if (is_array($this->data)) {
-            $this->data[$varname] = $value;
-        } elseif (is_object($this->data)) {
-            $this->data->{$varname} = $value;
-        } else {
-            $this->data = $value;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get variable from data
-     *
-     * @param   string  Varname
-     *
-     * @return  mixed
-     */
-    public function __get($varname)
-    {
-        $value = null;
-
-        if (is_array($this->data) && array_key_exists($varname, $this->data)) {
-            $value = $this->data[$varname];
-        } elseif (is_object($this->data) && property_exists(get_class($this->data), $varname)) {
-            $value = $this->data->{$varname};
-        }
-
-        return $value;
     }
 
     /**
@@ -89,7 +49,7 @@ class Response extends JHttpResponse
      * @param   $key
      * @param   $value
      *
-     * @return  void
+     * @return  Response
      */
     public function setHeader($key, $value)
     {
@@ -105,12 +65,38 @@ class Response extends JHttpResponse
     protected function sendHeaders()
     {
         header($_SERVER["SERVER_PROTOCOL"] . " $this->code " . @self::$status_codes[$this->code]);
-        $this->setHeader('Content-Type', 'application/json');
+        $this->setHeader('Content-Type', $this->type);
 
         if (!empty($this->headers)) {
             foreach ($this->headers as $key => $value) {
                 header(sprintf("%s: %s", $key, $value));
             }
+        }
+    }
+
+    /**
+     * Set content
+     *
+     * @param   $content
+     * @return  Response
+     */
+    public function setContent($content)
+    {
+        $this->data = $content;
+        return $this;
+    }
+
+    /**
+     * Send content to the client
+     *
+     * @return void
+     */
+    protected function sendContent()
+    {
+        if (!empty($this->data)) {
+            echo $this->data;
+        } else if (@self::$status_codes[$this->code]) {
+            echo @self::$status_codes[$this->code];
         }
     }
 
@@ -129,29 +115,6 @@ class Response extends JHttpResponse
     }
 
     /**
-     * Add a value to subarray (for example for errors)
-     *
-     * @param $varname
-     * @param $value
-     *
-     * @return object
-     */
-    public function add($varname, $value)
-    {
-        $node = $this->{$varname};
-        if (empty($node)) {
-            $this->{$varname} = array();
-            $node = array();
-        }
-
-        array_push($node, $value);
-
-        $this->{$varname} = $node;
-
-        return $this;
-    }
-
-    /**
      * Send prepared response to user agent
      *
      * @return  mixed
@@ -159,12 +122,7 @@ class Response extends JHttpResponse
     public function send()
     {
         $this->sendHeaders();
-
-        if (!empty($this->data)) {
-            echo json_encode($this->data);
-        } else if (@self::$status_codes[$this->code]) {
-            echo @self::$status_codes[$this->code];
-        }
+        $this->sendContent();
 
         exit();
     }

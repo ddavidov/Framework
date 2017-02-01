@@ -24,4 +24,11 @@ interface ViewInterface
      * @return mixed
      */
     public function getType();
+
+    /**
+     * @param $tpl
+     * @param array $data
+     * @return mixed
+     */
+    public function render($tpl, $data = []);
 }

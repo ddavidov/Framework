@@ -13,9 +13,9 @@ class JsonView extends View
     /**
      * @inheritdoc
      */
-    public function display($tpl = null, $data = [])
+    public function render($tpl = null, $data = [])
     {
-        if(!empty($data)){
+        if (!empty($data)) {
             $this->data = $data;
         }
 

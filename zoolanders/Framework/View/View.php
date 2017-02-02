@@ -139,5 +139,5 @@ abstract class View implements ViewInterface
     /**
      * @return mixed
      */
-    abstract function render();
+    abstract function render($tpl, $data = []);
 }

@@ -4,7 +4,6 @@ namespace Zoolanders\Framework\Controller;
 
 use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Controller\Exception\TaskNotFound;
-use Zoolanders\Framework\Controller\Mixin\HasRedirects;
 use Zoolanders\Framework\Event\Controller\AfterExecute;
 use Zoolanders\Framework\Event\Controller\BeforeExecute;
 use Zoolanders\Framework\Event\Triggerable;
@@ -19,7 +18,7 @@ use Zoolanders\Framework\View\ViewInterface;
  */
 class Controller
 {
-    use Triggerable, NameFromClass, HasRedirects;
+    use Triggerable, NameFromClass;
 
     /**
      * Array of class methods

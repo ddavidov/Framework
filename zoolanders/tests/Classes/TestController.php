@@ -3,6 +3,8 @@
 namespace ZFTests\Classes;
 
 use Zoolanders\Framework\Controller\Controller;
+use Zoolanders\Framework\Controller\Mixin\HasRedirects;
+use Zoolanders\Framework\Controller\Mixin\NeedsCsrfProtection;
 
 /**
  * Class TestController
@@ -10,6 +12,8 @@ use Zoolanders\Framework\Controller\Controller;
  */
 class TestController extends Controller
 {
+    use HasRedirects, NeedsCsrfProtection;
+    
     /**
      * Simple test action
      *

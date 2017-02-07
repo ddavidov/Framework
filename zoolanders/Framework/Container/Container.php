@@ -192,7 +192,7 @@ class Container extends Pimple
                     $method = [new $listener($this), 'handle'];
                 }
 
-                if(!empty($this->event)){
+                if($this->event){
                     $this->event->dispatcher->connect($event, $method);
                 }
             }

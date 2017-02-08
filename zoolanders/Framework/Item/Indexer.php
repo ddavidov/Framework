@@ -29,17 +29,10 @@ class Indexer
     /**
      * @param \Item $item
      */
-    public function reindex(\Item $item)
-    {
-        $this->cleanSearchIndex($item);
-        $this->index($item);
-    }
-
-    /**
-     * @param \Item $item
-     */
     public function index(\Item $item)
     {
+        $this->cleanSearchIndex($item);
+
         $dataToSave = [];
 
         /** @var \Element $element * */

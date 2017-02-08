@@ -30,6 +30,6 @@ class IndexSearchValues extends Listener
     public function handle(Item\Saved $event)
     {
         $item = $event->getItem();
-        $this->indexer->reindex($item);
+        $this->indexer->index($item);
     }
 }

@@ -28,7 +28,7 @@ class Factory extends Service
     }
 
     /**
-     * Make view
+     * Make response
      *
      * @param   Input
      *
@@ -47,10 +47,5 @@ class Factory extends Service
         }
 
         return $this->container->make($viewClass, $config);
-    }
-
-    public function event()
-    {
-
     }
 }

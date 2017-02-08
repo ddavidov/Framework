@@ -2,6 +2,9 @@
 
 namespace Zoolanders\Framework\Service;
 
+use Zoolanders\Framework\Response\ResponseInterface;
+use Zoolanders\Framework\View\ViewInterface;
+
 /**
  * Class Factory
  * @package Zoolanders\Framework\Service
@@ -13,7 +16,7 @@ class Factory extends Service
      *
      * @param   Input
      *
-     * @return  Response
+     * @return  ResponseInterface
      */
     public function response($input)
     {
@@ -25,11 +28,11 @@ class Factory extends Service
     }
 
     /**
-     * Make response
+     * Make view
      *
      * @param   Input
      *
-     * @return  View
+     * @return  ViewInterface
      */
     public function view($input, $config = [])
     {
@@ -44,5 +47,10 @@ class Factory extends Service
         }
 
         return $this->container->make($viewClass, $config);
+    }
+
+    public function event()
+    {
+
     }
 }

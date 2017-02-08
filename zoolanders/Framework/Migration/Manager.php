@@ -42,8 +42,6 @@ class Manager
     }
 
     /**
-     * @return \Phinx\Config\ConfigInterface
-     */
     public function getConfig()
     {
         return $this->manager->getConfig();

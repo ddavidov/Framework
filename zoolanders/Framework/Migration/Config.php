@@ -35,8 +35,8 @@ class Config extends \Phinx\Config\Config
                 ]
             ],
             'paths' => [
-                'migrations' => dirname(__FILE__) . '/Migrations',
-                'seeds' => dirname(__FILE__) . '/Seeds'
+                'migrations' => JPATH_LIBRARIES . '/zoolanders/installation/migrations',
+                'seeds' => JPATH_LIBRARIES . '/zoolanders/installation/seeds'
             ]
         ];
 

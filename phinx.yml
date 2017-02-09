@@ -1,6 +1,6 @@
 paths:
-    migrations: %%PHINX_CONFIG_DIR%%/zoolanders/Framework/Migration/Migrations
-    seeds: %%PHINX_CONFIG_DIR%%/zoolanders/Framework/Migration/Seeds
+    migrations: %%PHINX_CONFIG_DIR%%/zoolanders/installation/migrations
+    seeds: %%PHINX_CONFIG_DIR%%/zoolanders/installation/seeds
 
 environments:
     default_migration_table: phinxlog

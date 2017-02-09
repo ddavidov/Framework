@@ -36,7 +36,8 @@
     },
     "events": {
         "item:saved": [
-            "\\Zoolanders\\Framework\\Listener\\Item\\IndexSearchValues"
+            "\\Zoolanders\\Framework\\Listener\\Item\\IndexSearchValues",
+            "\\Zoolanders\\Framework\\Listener\\Item\\SaveTranslations"
         ],
         "type:beforesave" : [
             "\\Zoolanders\\Framework\\Listener\\Type\\EncryptPasswords"

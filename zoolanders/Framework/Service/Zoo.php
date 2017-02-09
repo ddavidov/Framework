@@ -4,6 +4,7 @@ namespace Zoolanders\Framework\Service;
 
 use App;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Table;
 
 defined('_JEXEC') or die;
 
@@ -29,6 +30,13 @@ class Zoo extends Service
 
         // Autoload zoo
         $this->load();
+    }
+
+    public function addOverrides()
+    {
+        $zooHelper = $this->app->table;
+        $helper = new Table\Helper($this->app);
+        $this->app->addHelper($helper, 'table');
     }
 
     /**
@@ -119,6 +127,7 @@ class Zoo extends Service
     {
         $this->registerPaths();
         $this->registerClasses();
+        $this->addOverrides();
     }
 
     /**

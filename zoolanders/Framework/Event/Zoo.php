@@ -40,6 +40,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
         $listeners['type:coreconfig'] = [];
         $listeners['type:aftersave'] = [];
 
+
         $listeners = array_keys($listeners);
 
         // Get the event name already registered in the zoo dispatcher

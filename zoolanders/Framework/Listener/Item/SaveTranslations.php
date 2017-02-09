@@ -53,9 +53,13 @@ class SaveTranslations extends Listener
 
         // Enabled for this language?
         $enabledLanguages = $params->get('content.language', array());
-        foreach ($languages as $language) {
-            if (!in_array($language, $enabledLanguages)) {
-                $values[$language]['enabled'] = 0;
+
+        // Empty list => all enabled
+        if (!empty($enabledLanguages)) {
+            foreach ($languages as $language) {
+                if (!in_array($language, $enabledLanguages)) {
+                    $values[$language]['enabled'] = 0;
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 <?php
 
+
 use Phinx\Migration\AbstractMigration;
 
 class CreateItemLanguagesTable extends AbstractMigration

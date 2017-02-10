@@ -1,3 +1,5 @@
 /zoolanders/vendor/
 .idea
 /zoolanders/tests/config/configuration.php
+dist
+node_modules

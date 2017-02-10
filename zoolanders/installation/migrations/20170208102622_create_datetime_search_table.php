@@ -1,5 +1,6 @@
 <?php
 
+
 use Phinx\Migration\AbstractMigration;
 
 class CreateDatetimeSearchTable extends AbstractMigration

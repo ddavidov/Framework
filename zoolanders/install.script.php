@@ -144,19 +144,19 @@ class lib_zoolandersInstallerScript
 
         $target = JPATH_LIBRARIES . '/zoolanders';
 
-        die();
-
         // If  is not really installed (someone removed the directory instead of uninstalling?) I have to install it.
         if (!JFolder::exists($target)) {
             return true;
         }
 
-        $currentLibrary = JLibraryHelper::getLibrary('zoolanders');
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*')->from('#__extensions')->where('type LIKE ' . $db->q('library'))->where('element LIKE ' . $db->q('lib_zoolanders'));
+        $db->setQuery($query);
 
-        /** @var JTableExtension $extension */
-        $extension = JTable::getInstance('extension');
+        $extension = $db->loadObject();
 
-        if ($extension->load($currentLibrary->id)) {
+        if (!$extension || !$extension->extension_id) {
             return true;
         }
 
@@ -175,7 +175,7 @@ class lib_zoolandersInstallerScript
     {
         $filePath = JPATH_LIBRARIES . '/zoolanders/include.php';
         if (file_exists($filePath)) {
-            @require_once $filePath;
+            require_once $filePath;
         }
     }
 

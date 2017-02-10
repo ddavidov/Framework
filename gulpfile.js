@@ -83,12 +83,15 @@ gulp.task('build-copy', function() {
     return merge(
 
         // package
-        gulp.src(['zoolanders/installation/pkg_zoolanders.xml'])
+        gulp.src(['zoolanders/pkg_zoolanders.xml'])
             .pipe(gulp.dest('dist/tmp')),
 
         // library
         gulp.src(['zoolanders/Framework/**'])
             .pipe(gulp.dest('dist/tmp/packages/library/zoolanders/Framework')),
+        // library
+        gulp.src(['zoolanders/installation/**'])
+            .pipe(gulp.dest('dist/tmp/packages/library/zoolanders/installation')),
 
 
         gulp.src([
@@ -124,14 +127,9 @@ gulp.task('build-copy', function() {
         gulp.src(['zoolanders/*.php'])
             .pipe(gulp.dest('dist/tmp/packages/library/zoolanders')),
 
-        gulp.src([
-            'zoolanders/installation/**',
-            '!zoolanders/installation/pkg_zoolanders.xml',
-            '!zoolanders/installation/lib_zoolanders.xml',
-        ])
-            .pipe(gulp.dest('dist/tmp/packages/library/installation')),
-
-        gulp.src(['zoolanders/installation/lib_zoolanders.xml'])
+        gulp.src(['zoolanders/lib_zoolanders.xml'])
+            .pipe(gulp.dest('dist/tmp/packages/library')),
+        gulp.src(['zoolanders/install.script.php'])
             .pipe(gulp.dest('dist/tmp/packages/library')),
 
         // main plugin

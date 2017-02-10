@@ -20,10 +20,10 @@
     <files folder="zoolanders">
         <folder>Framework</folder>
         <folder>vendor</folder>
-
+        <folder>installation</folder>
         <file>include.php</file>
     </files>
 
     <!-- Installation / uninstallation script file -->
-    <scriptfile>installation/install.script.php</scriptfile>
+    <scriptfile>install.script.php</scriptfile>
 </extension>

@@ -21,8 +21,7 @@ before_deploy:
 - nvm install node
 - npm install
 - composer update
-- npm install -g gulp
-- gulp
+- node ./node_modules/gulp/bin/gulp.js
 deploy:
   provider: releases
   api_key:

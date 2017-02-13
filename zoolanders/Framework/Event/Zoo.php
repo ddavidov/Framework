@@ -38,9 +38,13 @@ class Zoo extends \Zoolanders\Framework\Service\Service
         // Some extra events
         $listeners['item:save'] = [];
         $listeners['type:coreconfig'] = [];
+        $listeners['type:aftersave'] = [];
+
+
+        $listeners = array_keys($listeners);
 
         // Get the event name already registered in the zoo dispatcher
-        foreach ($listeners as $eventName => $methods) {
+        foreach ($listeners as $eventName) {
 
             // proxy each event found
             $eventClass = $this->getEventObjectClass($eventName);
@@ -71,7 +75,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
         $event = @$parts[1];
 
         // First try a dedicated event class for this resource
-        $eventClass = '\\Zoolanders\\Event\\' . ucfirst(strtolower($resource)) . '\\' . ucfirst(strtolower($event));
+        $eventClass = '\\Zoolanders\\Framework\\Event\\' . ucfirst(strtolower($resource)) . '\\' . ucfirst(strtolower($event));
 
         return $eventClass;
     }

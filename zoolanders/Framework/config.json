@@ -35,6 +35,13 @@
         "user": "\\Zoolanders\\Framework\\Service\\User"
     },
     "events": {
+        "item:saved": [
+            "\\Zoolanders\\Framework\\Listener\\Item\\IndexSearchValues",
+            "\\Zoolanders\\Framework\\Listener\\Item\\SaveTranslations"
+        ],
+        "category:saved": [
+            "\\Zoolanders\\Framework\\Listener\\Category\\SaveTranslations"
+        ],
         "type:beforesave" : [
             "\\Zoolanders\\Framework\\Listener\\Type\\EncryptPasswords"
         ],

@@ -140,8 +140,7 @@ gulp.task('build-plugin', function(){
 
 gulp.task('build-zip', function() {
     return gulp.src([
-        'dist/tmp/packages/lib_zoolanders.zip',
-        'dist/tmp/packages/plg_zlframework.zip',
+        'dist/tmp/**/*.zip',
         'dist/tmp/pkg_zoolanders.xml'
     ])
     .pipe(zip('pkg_zoolanders.zip'))

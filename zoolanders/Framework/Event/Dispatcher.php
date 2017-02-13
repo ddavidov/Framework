@@ -1,6 +1,7 @@
 <?php
 
 namespace Zoolanders\Framework\Event;
+
 use Zoolanders\Framework\Container\Container;
 
 /**
@@ -77,7 +78,7 @@ class Dispatcher
     /**
      * @see notify
      */
-    public function trigger(Event $event)
+    public function trigger(EventInterface $event)
     {
         if(ZF_TEST){
             // Test mode, notify event catcher service
@@ -90,13 +91,13 @@ class Dispatcher
     /**
      * Notifies all listeners of a given event.
      *
-     * @param Event $event The event
+     * @param EventInterface $event The event
      *
-     * @return Event The Event instance
+     * @return EventInterface The Event instance
      *
      * @since 1.0.0
      */
-    public function notify(Event $event)
+    public function notify(EventInterface $event)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
             call_user_func_array($listener, [$event]);

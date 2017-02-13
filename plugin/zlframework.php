@@ -19,6 +19,7 @@ class plgSystemZlframework extends JPlugin
 	function onAfterInitialise()
 	{
 		require_once JPATH_LIBRARIES . '/zoolanders/include.php';
+
 		$this->container = Zoolanders\Framework\Container\Container::getInstance();
 		$this->app = $this->container->zoo->getApp();
 

@@ -50,7 +50,6 @@ class Category extends \CategoryTable
      */
     public function getAll($application_id, $published = false, $item_count = false, $user = null)
     {
-
         $application_id = (int)$application_id;
         $language = \JFactory::getLanguage()->getTag();
 
@@ -110,15 +109,16 @@ class Category extends \CategoryTable
 
             if ($published) {
                 $where[] = "published = 1";
-                $where[] = "((l.language LIKE ' . $this->database->q($language) . ' AND l.enabled = 1) OR l.language IS NULL)";
+                $where[] = "((l.language LIKE " . $this->database->q($language) . " AND l.enabled = 1) OR l.language IS NULL)";
             }
+
+            $from = $this->name . ' as c';
+            $from .= " LEFT JOIN #__zoo_zl_category_languages AS l ON c.id = l.category_id";
 
             $categories = $this->all(
                 array(
                     'conditions' => array(implode(" AND ", $where), $application_id), 'order' => 'ordering',
-                    'join' => [
-                        'left' => "#__zoo_zl_category_languages AS l ON c.id = l.category_id"
-                    ]
+                    'from' => $from
                 )
             );
         }

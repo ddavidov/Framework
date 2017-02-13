@@ -18,6 +18,7 @@ before_script:
 - mysql -uroot -e "create database IF NOT EXISTS joomla;"
 - mysql -uroot joomla < zoolanders/vendor/joolanders/framework-test-env/db/joomla.sql
 before_deploy:
+- nvm install node
 - npm install
 - composer update
 - npm install -g gulp

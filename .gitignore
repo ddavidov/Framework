@@ -3,3 +3,4 @@
 /zoolanders/tests/config/configuration.php
 dist
 node_modules
+npm-debug.log

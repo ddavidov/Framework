@@ -30,18 +30,7 @@ var
 
 /** TASKS **/
 
-gulp.task('default', ['build']);
 
-gulp.task('build', function(cb) {
-    runSeq(
-        'build-clean',
-        'build-copy',
-        'build-compress',
-        'build-prepare',
-        'build-zip',
-        cb
-    );
-});
 
 gulp.task('build-clean', function(cb) {
     del(['dist'], cb);
@@ -138,14 +127,6 @@ gulp.task('build-copy', function() {
     );
 });
 
-gulp.task('build-zip', ['build-zip-packages'], function() {
-    return gulp.src([
-        'dist/tmp/**/*.zip',
-        'dist/tmp/pkg_zoolanders.xml',
-    ]).pipe(zip('pkg_zoolanders.zip'))
-        .pipe(gulp.dest(output));
-});
-
 gulp.task('build-zip-packages', function() {
     return merge(
         gulp.src('dist/tmp/packages/library/**/*')
@@ -157,6 +138,16 @@ gulp.task('build-zip-packages', function() {
             .pipe(gulp.dest('dist/tmp/packages/'))
     );
 });
+
+gulp.task('build-zip', gulp.series('build-zip-packages'), function() {
+    return gulp.src([
+        'dist/tmp/**/*.zip',
+        'dist/tmp/pkg_zoolanders.xml',
+    ]).pipe(zip('pkg_zoolanders.zip'))
+        .pipe(gulp.dest(output));
+});
+
+
 
 gulp.task('bump', function() {
     var semver = require('semver');
@@ -180,6 +171,16 @@ gulp.task('bump', function() {
     );
 
 });
+
+gulp.task('build', gulp.series(
+    'build-clean',
+    'build-copy',
+    'build-compress',
+    'build-prepare',
+    'build-zip')
+);
+
+gulp.task('default', gulp.parallel('build'));
 
 
 /* helper */

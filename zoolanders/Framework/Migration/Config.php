@@ -21,6 +21,12 @@ class Config extends \Phinx\Config\Config
             $type = 'mysql';
         }
 
+        // On some system, PDO fails with localhost
+        $host = \JFactory::getConfig()->get('host');
+        if (trim($host) == 'localhost') {
+            $host = '127.0.0.1';
+        }
+
         // Force the configuration using the joomla data and some standard zl stuff
         $defaultConfigArray = [
             'environments' => [
@@ -29,7 +35,7 @@ class Config extends \Phinx\Config\Config
                     'name' => \JFactory::getConfig()->get('db'),
                     'user' => \JFactory::getConfig()->get('user'),
                     'pass' => \JFactory::getConfig()->get('password'),
-                    'host' => \JFactory::getConfig()->get('host'),
+                    'host' => $host,
                     'adapter' => $type,
                     'table_prefix' => \JFactory::getConfig()->get('dbprefix') . 'zoo_zl_'
                 ]

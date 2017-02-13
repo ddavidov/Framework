@@ -147,7 +147,7 @@ class Controller
     {
         // Use provided or default view
         $viewName = !empty($name) ? $name : $this->getName();
-        $config['view_name'] = $viewName;
+        $config['name'] = $viewName;
 
         $view = $this->container->factory->view($this->input, $config);
 
@@ -186,6 +186,12 @@ class Controller
         $response = $this->container->factory->response($this->input);
 
         $view = $this->getView($viewName);
+
+        if('html' == $view->getType()){
+            // Set default view template path:
+            $view->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($viewName) . '/' . $view->getType() . '/tmpl');
+        }
+
         $response->setContent($view->display($tplName, $data));
 
         return $response;

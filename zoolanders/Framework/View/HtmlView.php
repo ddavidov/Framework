@@ -36,9 +36,6 @@ class HtmlView extends View
     public function __construct(Container $container)
     {
         parent::__construct($container);
-
-        // set the default paths
-        $this->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($this->getName()) . '/' . $this->getType() . '/tmpl');
     }
 
     /**

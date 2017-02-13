@@ -68,7 +68,7 @@ trait HasRedirects
     public function redirect()
     {
         if ($this->redirectUrl) {
-            $app = $this->container->system->getApplication();
+            $app = $this->container->system->application;
             $app->enqueueMessage($this->redirectMessage, $this->redirectMessageType);
 
             return new RedirectResponse($this->redirectUrl);

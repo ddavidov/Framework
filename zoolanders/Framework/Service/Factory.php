@@ -37,15 +37,15 @@ class Factory extends Service
     public function view($input, $config = [])
     {
         $type = $input->isAjax() ? 'Json' : 'Html';
-        $name = $config['view_name'];
+        $name = $config['name'];
 
-        $viewClass = $this->container->environment->getRootNamespace() . 'View\'' . ucfirst($name) . '\\' . $type;
+        $viewClass = $this->container->environment->getRootNamespace() . 'View\\' . ucfirst($name) . '\\' . $type;
 
         if(!class_exists($viewClass)){
             // Fallback to core view:
             $viewClass = '\Zoolanders\Framework\View\\' . $type . 'View';
         }
 
-        return $this->container->make($viewClass, $config);
+        return $this->container->make($viewClass);
     }
 }

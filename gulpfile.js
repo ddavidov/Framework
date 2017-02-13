@@ -142,7 +142,7 @@ gulp.task('build-zip', ['build-zip-packages'], function() {
     return gulp.src([
         'dist/tmp/**/*.zip',
         'dist/tmp/pkg_zoolanders.xml',
-    ]).pipe(zip('pkg_zoolanders_'+pkg.version+'.zip'))
+    ]).pipe(zip('pkg_zoolanders.zip'))
         .pipe(gulp.dest(output));
 });
 

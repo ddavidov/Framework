@@ -20,8 +20,8 @@ before_script:
 before_deploy:
 - npm install
 - composer update
-- npm install grunt-cli -g
-- grunt
+- npm install -g gulp
+- gulp
 deploy:
   provider: releases
   api_key:

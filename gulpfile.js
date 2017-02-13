@@ -13,7 +13,6 @@ var
     header  = require('gulp-header'),
     clean   = require('gulp-clean'),
     merge   = require('merge-stream'),
-    runSeq  = require('run-sequence'),
     sym     = require('gulp-sym'),
     fs      = require('fs'),
 
@@ -25,12 +24,10 @@ var
         ' */',
         ''].join('\n').replace(/\n$/g, ''),
 
-    output = util.env.output || util.env.o || 'dist';
+    output = 'dist';
 
 
 /** TASKS **/
-
-
 
 gulp.task('build-clean', function(cb) {
     del(['dist'], cb);
@@ -85,6 +82,8 @@ gulp.task('build-copy', function() {
 
         gulp.src([
             'zoolanders/vendor/**/*',
+            '!zoolanders/vendor/joolanders',
+            '!zoolanders/vendor/joolanders/**',
             '!zoolanders/vendor/**/*.md',
             '!zoolanders/vendor/**/*.txt',
             '!zoolanders/vendor/**/*.pdf',
@@ -127,24 +126,26 @@ gulp.task('build-copy', function() {
     );
 });
 
-gulp.task('build-zip-packages', function() {
-    return merge(
-        gulp.src('dist/tmp/packages/library/**/*')
-            .pipe(zip('lib_zoolanders.zip'))
-            .pipe(gulp.dest('dist/tmp/packages/')),
-
-        gulp.src('dist/tmp/packages/plg_zlframework/**/*')
-            .pipe(zip('plg_zlframework.zip'))
-            .pipe(gulp.dest('dist/tmp/packages/'))
-    );
+gulp.task('build-library', function(){
+    return gulp.src('dist/tmp/packages/library/**/*')
+        .pipe(zip('lib_zoolanders.zip'))
+        .pipe(gulp.dest('dist/tmp/packages/'));
 });
 
-gulp.task('build-zip', gulp.series('build-zip-packages'), function() {
+gulp.task('build-plugin', function(){
+    return gulp.src('dist/tmp/packages/plg_zlframework/**/*')
+        .pipe(zip('plg_zlframework.zip'))
+        .pipe(gulp.dest('dist/tmp/packages/'));
+});
+
+gulp.task('build-zip', function() {
     return gulp.src([
-        'dist/tmp/**/*.zip',
-        'dist/tmp/pkg_zoolanders.xml',
-    ]).pipe(zip('pkg_zoolanders.zip'))
-        .pipe(gulp.dest(output));
+        'dist/tmp/packages/lib_zoolanders.zip',
+        'dist/tmp/packages/plg_zlframework.zip',
+        'dist/tmp/pkg_zoolanders.xml'
+    ])
+    .pipe(zip('pkg_zoolanders.zip'))
+    .pipe(gulp.dest('dist/'));
 });
 
 
@@ -177,7 +178,9 @@ gulp.task('build', gulp.series(
     'build-copy',
     'build-compress',
     'build-prepare',
-    'build-zip')
+    gulp.parallel('build-library', 'build-plugin'),
+    'build-zip'
+    )
 );
 
 gulp.task('default', gulp.parallel('build'));

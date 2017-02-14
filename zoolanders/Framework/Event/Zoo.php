@@ -50,6 +50,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
         $listeners['element:configform'] = [];
         $listeners['element:configparams'] = [];
         $listeners['element:beforedisplay'] = [];
+        $listeners['element:beforesubmissiondisplay'] = [];
         $listeners['type:coreconfig'] = [];
         $listeners['type:aftersave'] = [];
         $listeners['application:sefbuildroute'] = [];

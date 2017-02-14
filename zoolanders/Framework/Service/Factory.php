@@ -49,7 +49,7 @@ class Factory extends Service
 
         if(!class_exists($viewClass)){
             // Fallback to core view:
-            $viewClass = '\Zoolanders\Framework\View\\' . $type . 'View';
+            $viewClass = '\Zoolanders\Framework\View\\' . $type;
         }
 
         return $this->container->make($viewClass);

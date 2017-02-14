@@ -28,7 +28,15 @@ use Zoolanders\Framework\Response\Response;
  */
 abstract class View implements ViewInterface
 {
-    use Triggerable, NameFromClass;
+    use Triggerable;
+
+    /**
+     * The (base) name of the current class
+     *
+     * @var    string
+     */
+    protected $name;
+
 
     /**
      * @var string  View type
@@ -56,6 +64,22 @@ abstract class View implements ViewInterface
     {
         $this->container = $container;
         $this->getName();
+    }
+
+    /**
+     * Method to get the model name
+     * @return  string  The name of the model
+     */
+    public function getName()
+    {
+        if (empty($this->name)) {
+            $class = explode("\\", get_class($this));
+            // it's not the last part (format) but the second-to-last (view name) here
+            array_pop($class);
+            $this->name = array_pop($class);
+        }
+
+        return $this->name;
     }
 
     /**

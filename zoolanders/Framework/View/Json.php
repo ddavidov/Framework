@@ -9,10 +9,10 @@
 namespace Zoolanders\Framework\View;
 
 /**
- * Class HtmlView
+ * Class Html
  * @package Zoolanders\Framework\View
  */
-class JsonView extends View
+class Json extends View
 {
     protected $type = 'json';
 

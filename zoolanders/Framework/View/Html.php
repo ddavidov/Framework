@@ -9,12 +9,13 @@
 namespace Zoolanders\Framework\View;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\View\GetTemplatePath;
 
 /**
- * Class HtmlView
+ * Class Html
  * @package Zoolanders\Framework\View
  */
-class HtmlView extends View
+class Html extends View
 {
     /**
      * @var string
@@ -42,6 +43,8 @@ class HtmlView extends View
     public function __construct(Container $container)
     {
         parent::__construct($container);
+
+        $this->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($this->getName()) . '/tmpl');
     }
 
     /**

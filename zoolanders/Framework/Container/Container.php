@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Container;
 
@@ -175,29 +181,7 @@ class Container extends Pimple
      */
     protected function bindEvents($events)
     {
-        foreach ($events as $event => $listeners) {
-            $listeners = (array) $listeners;
-
-            foreach ($listeners as $listener) {
-                $parts = explode("@", $listener);
-
-                $method = $listener;
-
-                // we have a function to call
-                if (count($parts) == 2) {
-                    $method = $parts;
-                }
-
-                if (class_exists($listener)) {
-                    $listenerClass = $this->injector->make($listener);
-                    $method = [$listenerClass, 'handle'];
-                }
-
-                if (!empty($this->event)){
-                    $this->event->dispatcher->connect($event, $method);
-                }
-            }
-        }
+        $this->event->dispatcher->bindEvents($events);
     }
 
     /**

@@ -1,28 +1,14 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Event\Item;
 
-class Saved extends \Zoolanders\Framework\Event\Event
+class Saved extends Item
 {
-    /**
-     * @var \Item
-     */
-    protected $item;
 
-    /**
-     * Beforesave constructor.
-     * @param \Item $item
-     */
-    public function __construct(\Item $item)
-    {
-        $this->item = $item;
-    }
-
-    /**
-     * @return \Item
-     */
-    public function getItem()
-    {
-        return $this->item;
-    }
 }

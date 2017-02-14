@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Table;
 
@@ -28,6 +34,10 @@ class Item extends \ItemTable
      */
     public function getByCategory($application_id, $category_id, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false)
     {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByCategory($application_id, $category_id, $published, $user, $orderby, $offset, $limit, $ignore_order_priority);
+        }
+
         // get database
         $db = $this->database;
 
@@ -69,9 +79,13 @@ class Item extends \ItemTable
      * @param bool $ignore_order_priority
      * @return array
      */
-    public function getByIds($ids, $published = false, $user = null, $orderby = '', $ignore_order_priority = false){
+    public function getByIds($ids, $published = false, $user = null, $orderby = '', $ignore_order_priority = false)
+    {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByIds($ids, $published, $user, $orderby, $ignore_order_priority);
+        }
 
-        $ids = (array) $ids;
+        $ids = (array)$ids;
 
         if (empty($ids)) {
             return array();
@@ -82,7 +96,7 @@ class Item extends \ItemTable
 
         // get dates
         $date = $this->app->date->create();
-        $now  = $db->Quote($date->toSQL());
+        $now = $db->Quote($date->toSQL());
         $null = $db->Quote($db->getNullDate());
         $language = \JFactory::getLanguage()->getTag();
 
@@ -90,16 +104,16 @@ class Item extends \ItemTable
         list($join, $order) = $this->_getItemOrder($orderby, $ignore_order_priority);
 
         $query = "SELECT a.*"
-            ." FROM ".$this->name." AS a"
-            ." LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
-            .($join ? $join : "")
-            ." WHERE a.id IN (".implode(",", $ids).")"
-            ." AND a.".$this->app->user->getDBAccessString($user)
-            .($published == true ? " AND a.state = 1"
-                ." AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
-                ." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
-                ." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
-            .($order ? " ORDER BY " . $order : "");
+            . " FROM " . $this->name . " AS a"
+            . " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
+            . ($join ? $join : "")
+            . " WHERE a.id IN (" . implode(",", $ids) . ")"
+            . " AND a." . $this->app->user->getDBAccessString($user)
+            . ($published == true ? " AND a.state = 1"
+                . " AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
+                . " AND (a.publish_up = " . $null . " OR a.publish_up <= " . $now . ")"
+                . " AND (a.publish_down = " . $null . " OR a.publish_down >= " . $now . ")" : "")
+            . ($order ? " ORDER BY " . $order : "");
 
         return $this->_queryObjectList($query);
     }
@@ -116,21 +130,25 @@ class Item extends \ItemTable
      * @param bool $ignore_order_priority
      * @return array
      */
-    public function getByCharacter($application_id, $char, $not_in = false, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false){
+    public function getByCharacter($application_id, $char, $not_in = false, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false)
+    {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByCharacter($application_id, $char, $not_in, $published, $user, $orderby, $offset, $limit, $ignore_order_priority);
+        }
 
         // get database
         $db = $this->database;
 
         // get dates
         $date = $this->app->date->create();
-        $now  = $db->Quote($date->toSQL());
+        $now = $db->Quote($date->toSQL());
         $null = $db->Quote($db->getNullDate());
         $language = \JFactory::getLanguage()->getTag();
 
         // escape and quote character array
         if (is_array($char)) {
             foreach ($char as $key => $val) {
-                $char[$key] = "'".$db->escape($val)."'";
+                $char[$key] = "'" . $db->escape($val) . "'";
             }
         }
 
@@ -138,19 +156,19 @@ class Item extends \ItemTable
         list($join, $order) = $this->_getItemOrder($orderby, $ignore_order_priority);
 
         $query = "SELECT a.*"
-            ." FROM ".ZOO_TABLE_CATEGORY_ITEM." AS ci"
-            ." JOIN ".$this->name." AS a ON a.id = ci.item_id"
-            ." LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
-            .($join ? $join : "")
-            ." WHERE a.application_id = ".(int) $application_id
-            ." AND a.".$this->app->user->getDBAccessString($user)
-            .($published == true ? " AND a.state = 1"
-                ." AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
-                ." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
-                ." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
-            ." AND BINARY LOWER(LEFT(a.name, 1)) ".(is_array($char) ? ($not_in ? "NOT" : null)." IN (".implode(",", $char).")" : " = '".$db->escape($char)."'")
-            .($order ? " ORDER BY " . $order : "")
-            .($limit ? " LIMIT ".(int) $offset.",".(int) $limit : "");
+            . " FROM " . ZOO_TABLE_CATEGORY_ITEM . " AS ci"
+            . " JOIN " . $this->name . " AS a ON a.id = ci.item_id"
+            . " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
+            . ($join ? $join : "")
+            . " WHERE a.application_id = " . (int)$application_id
+            . " AND a." . $this->app->user->getDBAccessString($user)
+            . ($published == true ? " AND a.state = 1"
+                . " AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
+                . " AND (a.publish_up = " . $null . " OR a.publish_up <= " . $now . ")"
+                . " AND (a.publish_down = " . $null . " OR a.publish_down >= " . $now . ")" : "")
+            . " AND BINARY LOWER(LEFT(a.name, 1)) " . (is_array($char) ? ($not_in ? "NOT" : null) . " IN (" . implode(",", $char) . ")" : " = '" . $db->escape($char) . "'")
+            . ($order ? " ORDER BY " . $order : "")
+            . ($limit ? " LIMIT " . (int)$offset . "," . (int)$limit : "");
 
         return $this->_queryObjectList($query);
     }
@@ -166,13 +184,18 @@ class Item extends \ItemTable
      * @param bool $ignore_order_priority
      * @return array
      */
-    public function getByTag($application_id, $tag, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false){
+    public function getByTag($application_id, $tag, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false)
+    {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByTag($application_id, $tag, $published, $user, $orderby, $offset, $limit, $ignore_order_priority);
+        }
+
         // get database
         $db = $this->database;
 
         // get dates
         $date = $this->app->date->create();
-        $now  = $db->Quote($date->toSQL());
+        $now = $db->Quote($date->toSQL());
         $null = $db->Quote($db->getNullDate());
         $language = \JFactory::getLanguage()->getTag();
 
@@ -180,20 +203,20 @@ class Item extends \ItemTable
         list($join, $order) = $this->_getItemOrder($orderby, $ignore_order_priority);
 
         $query = "SELECT a.*"
-            ." FROM ".$this->name." AS a "
-            ." LEFT JOIN ".ZOO_TABLE_TAG." AS b ON a.id = b.item_id"
-            ." LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
-            .($join ? $join : "")
-            ." WHERE a.application_id = ".(int) $application_id
-            ." AND b.name = '".$db->escape($tag)."'"
-            ." AND a.".$this->app->user->getDBAccessString($user)
-            .($published == true ? " AND a.state = 1"
-                ." AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
-                ." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
-                ." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
-            ." GROUP BY a.id"
-            .($order ? " ORDER BY " . $order : "")
-            .($limit ? " LIMIT ".(int) $offset.",".(int) $limit : "");
+            . " FROM " . $this->name . " AS a "
+            . " LEFT JOIN " . ZOO_TABLE_TAG . " AS b ON a.id = b.item_id"
+            . " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
+            . ($join ? $join : "")
+            . " WHERE a.application_id = " . (int)$application_id
+            . " AND b.name = '" . $db->escape($tag) . "'"
+            . " AND a." . $this->app->user->getDBAccessString($user)
+            . ($published == true ? " AND a.state = 1"
+                . " AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
+                . " AND (a.publish_up = " . $null . " OR a.publish_up <= " . $now . ")"
+                . " AND (a.publish_down = " . $null . " OR a.publish_down >= " . $now . ")" : "")
+            . " GROUP BY a.id"
+            . ($order ? " ORDER BY " . $order : "")
+            . ($limit ? " LIMIT " . (int)$offset . "," . (int)$limit : "");
 
         return $this->_queryObjectList($query);
     }
@@ -209,14 +232,18 @@ class Item extends \ItemTable
      * @param bool $ignore_order_priority
      * @return array
      */
-    public function getByType($type_id, $application_id = false, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false){
+    public function getByType($type_id, $application_id = false, $published = false, $user = null, $orderby = "", $offset = 0, $limit = 0, $ignore_order_priority = false)
+    {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByType($type_id, $application_id, $published, $user, $orderby, $offset, $limit, $ignore_order_priority);
+        }
 
         // get database
         $db = $this->database;
 
         // get dates
         $date = $this->app->date->create();
-        $now  = $db->Quote($date->toSQL());
+        $now = $db->Quote($date->toSQL());
         $null = $db->Quote($db->getNullDate());
         $language = \JFactory::getLanguage()->getTag();
 
@@ -224,19 +251,19 @@ class Item extends \ItemTable
         list($join, $order) = $this->_getItemOrder($orderby, $ignore_order_priority);
 
         $query = "SELECT a.*"
-            ." FROM ".$this->name." AS a"
-            ." LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
-            .($join ? $join : "")
-            ." WHERE a.type = ".$db->Quote($type_id)
-            .($application_id !== false ? " AND a.application_id = ".(int) $application_id : "")
-            ." AND a.".$this->app->user->getDBAccessString($user)
-            .($published == true ? " AND a.state = 1"
-                ." AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
-                ." AND (a.publish_up = ".$null." OR a.publish_up <= ".$now.")"
-                ." AND (a.publish_down = ".$null." OR a.publish_down >= ".$now.")": "")
-            ." GROUP BY a.id"
-            .($order ? " ORDER BY " . $order : "")
-            .($limit ? " LIMIT ".(int) $offset.",".(int) $limit : "");
+            . " FROM " . $this->name . " AS a"
+            . " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
+            . ($join ? $join : "")
+            . " WHERE a.type = " . $db->Quote($type_id)
+            . ($application_id !== false ? " AND a.application_id = " . (int)$application_id : "")
+            . " AND a." . $this->app->user->getDBAccessString($user)
+            . ($published == true ? " AND a.state = 1"
+                . " AND ((l.language LIKE " . $db->q($language) . " AND l.enabled = 1) OR l.language IS NULL)"
+                . " AND (a.publish_up = " . $null . " OR a.publish_up <= " . $now . ")"
+                . " AND (a.publish_down = " . $null . " OR a.publish_down >= " . $now . ")" : "")
+            . " GROUP BY a.id"
+            . ($order ? " ORDER BY " . $order : "")
+            . ($limit ? " LIMIT " . (int)$offset . "," . (int)$limit : "");
 
         return $this->_queryObjectList($query);
     }

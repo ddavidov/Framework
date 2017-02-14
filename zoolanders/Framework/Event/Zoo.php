@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Event;
 
@@ -36,9 +42,17 @@ class Zoo extends \Zoolanders\Framework\Service\Service
         $listeners = $property->getValue($this->zoo->dispatcher);
 
         // Some extra events
+        $listeners['item:init'] = [];
         $listeners['item:save'] = [];
+        $listeners['category:init'] = [];
+        $listeners['submission:init'] = [];
+        $listeners['element:afteredit'] = [];
+        $listeners['element:configform'] = [];
+        $listeners['element:configparams'] = [];
+        $listeners['element:beforedisplay'] = [];
         $listeners['type:coreconfig'] = [];
         $listeners['type:aftersave'] = [];
+        $listeners['application:sefbuildroute'] = [];
 
 
         $listeners = array_keys($listeners);
@@ -51,6 +65,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
 
             if (class_exists($eventClass)) {
                 $this->zoo->dispatcher->connect($eventName, function ($zooEvent) use ($eventClass) {
+
                     $event = $this->createEventObject($eventClass, $zooEvent);
 
                     if ($event) {
@@ -92,7 +107,11 @@ class Zoo extends \Zoolanders\Framework\Service\Service
 
         // Create the list of the constructor arguments for the event class
         $parameters = [];
-        $parameters[] = $zooEvent->getSubject();
+        $subject = $zooEvent->getSubject();;
+
+        if ($subject) {
+            $parameters[] = $zooEvent->getSubject();
+        }
 
         // add any other paramenter
         $parameters = array_merge($parameters, array_values($zooEvent->getParameters()));

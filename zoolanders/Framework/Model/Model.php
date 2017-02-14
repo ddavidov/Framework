@@ -1,5 +1,11 @@
 <?php
 /**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
+/**
  * Base stuff for the FOF3 Model
  * @package     FOF
  * @copyright   2010-2016 Nicholas K. Dionysopoulos / Akeeba Ltd

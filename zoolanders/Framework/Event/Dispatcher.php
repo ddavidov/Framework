@@ -1,8 +1,15 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Event;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Environment\Init;
 
 /**
  * Handles the dispatching of the Event events
@@ -78,7 +85,7 @@ class Dispatcher
     /**
      * @see notify
      */
-    public function trigger(EventInterface $event)
+    public function trigger(EventInterface &$event)
     {
         if(ZF_TEST){
             // Test mode, notify event catcher service
@@ -97,10 +104,10 @@ class Dispatcher
      *
      * @since 1.0.0
      */
-    public function notify(EventInterface $event)
+    public function notify(EventInterface &$event)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
-            call_user_func_array($listener, [$event]);
+            call_user_func_array($listener, [&$event]);
         }
 
         return $event;
@@ -142,6 +149,36 @@ class Dispatcher
 
         // merge ours with zoo's
         return $this->listeners[$name];
+    }
+
+    /**
+     * @param $events
+     */
+    public function bindEvents($events)
+    {
+        foreach ($events as $event => $listeners) {
+            $listeners = (array) $listeners;
+
+            foreach ($listeners as $listener) {
+                $parts = explode("@", $listener);
+
+                $method = 'handle';
+                $callback = $listener;
+
+                // we have a function to call
+                if (count($parts) >= 2) {
+                    $listener = $parts[0];
+                    $method = $parts[1];
+                }
+
+                if (class_exists($listener)) {
+                    $listenerClass = $this->container->make($listener);
+                    $callback = [$listenerClass, $method];
+                }
+
+                $this->connect($event, $callback);
+            }
+        }
     }
 
 }

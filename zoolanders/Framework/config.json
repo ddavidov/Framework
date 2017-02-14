@@ -14,6 +14,7 @@
             "css": "\\Zoolanders\\Framework\\Service\\Assets\\Css",
             "js": "\\Zoolanders\\Framework\\Service\\Assets\\Js"
         },
+        "inflector": "\\Zoolanders\\Framework\\Service\\Inflector",
         "factory": "\\Zoolanders\\Framework\\Service\\Factory",
         "zoo": "\\Zoolanders\\Framework\\Service\\Zoo",
         "db": "\\Zoolanders\\Framework\\Service\\Database",

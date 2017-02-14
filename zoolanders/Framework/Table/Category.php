@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 namespace Zoolanders\Framework\Table;
 
@@ -22,6 +28,9 @@ class Category extends \CategoryTable
      */
     public function getById($ids, $published = false)
     {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getById($ids, $published);
+        }
 
         $ids = array_filter((array)$ids);
         if (empty($ids)) {
@@ -50,6 +59,10 @@ class Category extends \CategoryTable
      */
     public function getAll($application_id, $published = false, $item_count = false, $user = null)
     {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getAll($application_id, $published, $item_count, $user);
+        }
+
         $application_id = (int)$application_id;
         $language = \JFactory::getLanguage()->getTag();
 
@@ -133,6 +146,10 @@ class Category extends \CategoryTable
      */
     public function getByItemId($item_id, $published = false)
     {
+        if (\JFactory::getApplication()->isAdmin()) {
+            return parent::getByItemId();
+        }
+
         $language = \JFactory::getLanguage()->getTag();
         $db = $this->database;
 

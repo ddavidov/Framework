@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
 
 
 namespace Zoolanders\Framework;
@@ -62,5 +68,7 @@ $composerAutoloader = require_once dirname(__FILE__) . '/vendor/autoload.php';
 // Create autoloader and add the mapping to the framework
 $loader = Autoloader::getInstance($composerAutoloader);
 $loader->addPsr4('Zoolanders\\Framework\\', dirname(__FILE__) . '/Framework');
+
+\JPluginHelper::importPlugin('zoolanders');
 
 return $loader;

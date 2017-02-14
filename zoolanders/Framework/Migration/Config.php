@@ -1,5 +1,11 @@
 <?php
 /**
+ * @package     ZOOlanders Framework
+ * @version     4.0.0-beta11
+ * @author      ZOOlanders - http://zoolanders.com
+ * @license     GNU General Public License v2 or later
+ */
+/**
  * Created by PhpStorm.
  * User: skullbock
  * Date: 07/02/17
@@ -23,7 +29,15 @@ class Config extends \Phinx\Config\Config
 
         // On some system, PDO fails with localhost
         $host = \JFactory::getConfig()->get('host');
-        if (trim($host) == 'localhost') {
+        $port = 3306;
+
+        if (stripos($host, ":") !== false) {
+            $tmp = explode(":", $host);
+            $host = $tmp[0];
+            $port = $tmp[1];
+        }
+
+        if (trim(strtolower($host)) == 'localhost') {
             $host = '127.0.0.1';
         }
 
@@ -36,6 +50,7 @@ class Config extends \Phinx\Config\Config
                     'user' => \JFactory::getConfig()->get('user'),
                     'pass' => \JFactory::getConfig()->get('password'),
                     'host' => $host,
+                    'port' => $port,
                     'adapter' => $type,
                     'table_prefix' => \JFactory::getConfig()->get('dbprefix') . 'zoo_zl_'
                 ]

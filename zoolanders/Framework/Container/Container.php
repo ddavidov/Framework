@@ -199,11 +199,11 @@ class Container extends Pimple
         // Notify we've loaded the services
         if (!empty($this->event)) {
             $this->event->joomla->trigger('onContainerServicesLoaded', array($services));
-        }
 
-        // Bind any listener for events
-        $services = $config->get('events', []);
-        $this->bindEvents($services);
+            // Bind any listener for events
+            $services = $config->get('events', []);
+            $this->bindEvents($services);
+        }
     }
 
     /**

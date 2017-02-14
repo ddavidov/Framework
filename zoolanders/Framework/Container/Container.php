@@ -15,6 +15,37 @@ use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
+/**
+ * Class Container
+ * @package Zoolanders\Framework\Container
+ *
+ * @property-read   \Zoolanders\Framework\Service\Inflector $inflector
+ * @property-read   \Zoolanders\Framework\Service\Filesystem $filesystem
+ * @property-read   \Zoolanders\Framework\Service\Path $path
+ * @property-read   \Zoolanders\Framework\Container\Nested\System $system
+ * @property-read   \Zoolanders\Framework\Container\Nested\Assets $assets
+ * @property-read   \Zoolanders\Framework\Service\Factory $factory
+ * @property-read   \Zoolanders\Framework\Service\Zoo $zoo
+ * @property-read   \Zoolanders\Framework\Service\Database $db
+ * @property-read   \Zoolanders\Framework\Service\Database $database
+ * @property-read   \Zoolanders\Framework\Service\Event $event
+ * @property-read   \Zoolanders\Framework\Service\Date $date
+ * @property-read   \Zoolanders\Framework\Service\Request $input
+ * @property-read   \Zoolanders\Framework\Service\Request $request
+ * @property-read   \Zoolanders\Framework\Service\Params $params
+ * @property-read   \Zoolanders\Framework\Service\Joomla $joomla
+ * @property-read   \Zoolanders\Framework\Service\System\Document $document
+ * @property-read   \Zoolanders\Framework\Service\Environment $environment
+ * @property-read   \Zoolanders\Framework\Service\Installation $installation
+ * @property-read   \Zoolanders\Framework\Service\Dependencies $dependencies
+ * @property-read   \Zoolanders\Framework\Service\Route $route
+ * @property-read   \Zoolanders\Framework\Service\Crypt $crypt
+ * @property-read   \Zoolanders\Framework\Service\Data $data
+ * @property-read   \Zoolanders\Framework\Service\Link $link
+ * @property-read   \Zoolanders\Framework\Service\Cache $cache
+ * @property-read   \Zoolanders\Framework\Service\User $user
+ * @property-read   \Zoolanders\Framework\Service\Zip $zip
+ */
 class Container extends Pimple
 {
     /**
@@ -166,8 +197,7 @@ class Container extends Pimple
         $this->loadServices($services);
 
         // Notify we've loaded the services
-        if(!empty($this->event))
-        {
+        if (!empty($this->event)) {
             $this->event->joomla->trigger('onContainerServicesLoaded', array($services));
         }
 

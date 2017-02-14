@@ -31,7 +31,7 @@ class ZFTestCase extends TestCase
         $config = new Registry();
         $config->loadFile(FRAMEWORK_ROOT.'/config.json');
 
-        self::$container = new Container([]);
+        self::$container = Container::getInstance();
         self::$container->loadConfig($config);
 
         self::$container['eventstack'] = EventStackService::getInstance();

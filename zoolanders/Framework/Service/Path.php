@@ -291,7 +291,14 @@ class Path extends Service
      */
     public function relative($path)
     {
-        return ltrim(preg_replace('/^' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/') . '/i', '', str_replace(DIRECTORY_SEPARATOR, '/', $path)), '/');
+        $relative = ltrim(preg_replace('/^' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/') . '/i', '', str_replace(DIRECTORY_SEPARATOR, '/', realpath($path))), '/');
+
+        // if equal, probably something went wrong, try without realpath (symlinks?)
+        if ($path == $relative) {
+            return ltrim(preg_replace('/^' . preg_quote(str_replace(DIRECTORY_SEPARATOR, '/', JPATH_ROOT), '/') . '/i', '', str_replace(DIRECTORY_SEPARATOR, '/', realpath($path))), '/');
+        }
+
+        return $relative;
     }
 
     /**

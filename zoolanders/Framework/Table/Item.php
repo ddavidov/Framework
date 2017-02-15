@@ -53,7 +53,7 @@ class Item extends \ItemTable
         $query = "SELECT a.*"
             . " FROM " . $this->name . " AS a"
             . " LEFT JOIN " . ZOO_TABLE_CATEGORY_ITEM . " AS b ON a.id = b.item_id"
-            . " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id"
+            . ($published == true ? " LEFT JOIN #__zoo_zl_item_languages AS l ON a.id = l.item_id" : "")
             . ($join ? $join : "")
             . " WHERE a.application_id = " . (int)$application_id
             . " AND a." . $this->app->user->getDBAccessString($user)

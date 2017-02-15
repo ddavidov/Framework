@@ -45,9 +45,21 @@ defined('_JEXEC') or die;
  * @property-read   \Zoolanders\Framework\Service\Cache $cache
  * @property-read   \Zoolanders\Framework\Service\User $user
  * @property-read   \Zoolanders\Framework\Service\Zip $zip
+ *
+ * @method make($class, $options = [])
  */
 class Container extends Pimple
 {
+    /**
+     * Namespaces roots for zoolanders
+     */
+    const ROOT_NAMESPACE = 'Zoolanders\\';
+
+    /**
+     * Framework special namespace
+     */
+    const FRAMEWORK_NAMESPACE = 'Zoolanders\\Framework\\';
+
     /**
      * The container instance
      * @var Container
@@ -76,6 +88,11 @@ class Container extends Pimple
     public $loader;
 
     /**
+     * @var array
+     */
+    protected $registeredExtensions;
+
+    /**
      * Container constructor.
      * @param array $values
      */
@@ -89,6 +106,45 @@ class Container extends Pimple
         $this->injector->share($this);
 
         $this->loader = Autoloader::getInstance();
+    }
+
+    /**
+     * @param $name
+     * @param null $path
+     * @param null $namespace
+     */
+    public function registerExtension($name, $path = null, $namespace = null)
+    {
+        // Autodetect path
+        if (!$path) {
+            $componentName = $name;
+
+            if (stripos($componentName, 'com_') !== 0) {
+                $componentName = 'com_' . $componentName;
+            }
+
+            $path = JPATH_ADMINISTRATOR . '/components/con_' . strtolower($componentName);
+        }
+
+        if (!$namespace) {
+            $namespace = Container::ROOT_NAMESPACE . ucfirst(strtolower($name)) . '\\';
+        }
+
+        $this->registeredExtensions[strtolower($name)][] = $namespace;
+        $this->loader->addPsr4($namespace, $path . '/');
+    }
+
+    /**
+     * @param $extension
+     * @return array|mixed
+     */
+    public function getRegisteredExtensionNamespaces($extension)
+    {
+        if (!isset($this->registeredExtensions[$extension])) {
+            return [];
+        }
+
+        return $this->registeredExtensions[$extension];
     }
 
     /**

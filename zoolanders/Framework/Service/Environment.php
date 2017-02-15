@@ -23,11 +23,6 @@ class Environment extends Service
     protected $environment;
 
     /**
-     * @var string  Root env namespace
-     */
-    protected $root_namespace = '';
-
-    /**
      * Environment constructor.
      * @param Container|null $container
      */
@@ -39,26 +34,6 @@ class Environment extends Service
 
         // set params as DATA class
         $this->params = $container->zoo->getApp()->data->create(array());
-    }
-
-    /**
-     * Set root namespace
-     *
-     * @param   string
-     */
-    public function setRootNamespace($root_namespace){
-
-        $this->root_namespace = $root_namespace;
-    }
-
-    /**
-     * Get registered root namespace
-     *
-     * @return   string
-     */
-    public function getRootNamespace(){
-
-        return $this->root_namespace;
     }
 
     /**

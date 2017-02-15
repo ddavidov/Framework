@@ -9,6 +9,7 @@
 namespace Zoolanders\Framework\Dispatcher;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Controller\Controller;
 use Zoolanders\Framework\Event\Dispatcher\AfterDispatch;
 use Zoolanders\Framework\Event\Dispatcher\BeforeDispatch;
 use Zoolanders\Framework\Event\Triggerable;
@@ -34,6 +35,11 @@ class Dispatcher
     protected $task;
 
     /**
+     * @var string|null
+     */
+    protected $extension;
+
+    /**
      * Dispatcher constructor.
      * @param Container $container
      */
@@ -43,6 +49,7 @@ class Dispatcher
 
         $this->controller = $this->input->getCmd('controller', $this->input->getCmd('view', null));
         $this->task = $this->input->getCmd('task');
+        $this->extension = $this->input->getCmd('option', $this->input->getCmd('plugin', false));
     }
 
     /**
@@ -87,26 +94,40 @@ class Dispatcher
 
     /**
      * @param null $default
+     * @throws Exception\BadResponseType
+     * @throws Exception\ControllerNotFound
      */
     public function dispatch($default = null)
     {
         $this->triggerEvent(new BeforeDispatch($this));
 
         // controller loaded ?
-        $class = $this->controller ? $this->controller : $default;
-        $class = $this->container->environment->getRootNamespace() . 'Controller\\' . ucfirst($class);
+        $controller = $this->controller ? $this->controller : $default;
 
-        if (class_exists($class)) {
-            // perform the request task
-            $ctrl = $this->container->make($class);
-            $response = $ctrl->execute($this->task);
-            if($response instanceof ResponseInterface){
-                $response->send();
+        $namespaces = [];
+        $namespaces[]= Container::FRAMEWORK_NAMESPACE;
+
+        if ($this->extension) {
+            $namespaces = array_merge($this->container->getRegisteredExtensionNamespaces($this->extension), $namespaces);
+        }
+
+        foreach ($namespaces as $namespace) {
+            $class = $namespace . 'Controller\\' . ucfirst($controller);
+
+            if (class_exists($class)) {
+                // perform the request task
+                /** @var Controller $ctrl */
+                $ctrl = $this->container->make($class);
+                $response = $ctrl->execute($this->task);
+
+                if ($response instanceof ResponseInterface) {
+                    $response->send();
+                } else {
+                    throw new Exception\BadResponseType();
+                }
             } else {
-                throw new Exception\BadResponseType();
+                throw new Exception\ControllerNotFound($class);
             }
-        } else {
-            throw new Exception\ControllerNotFound($class);
         }
 
         $this->triggerEvent(new AfterDispatch($this));

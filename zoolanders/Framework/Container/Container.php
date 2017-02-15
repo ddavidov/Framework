@@ -252,13 +252,15 @@ class Container extends Pimple
         $services = $config->get('services', []);
         $this->loadServices($services);
 
-        // Notify we've loaded the services
-        if ($this->event->joomla) {
+        try {
+            // Notify we've loaded the services
             $this->event->joomla->trigger('onContainerServicesLoaded', array($services));
 
             // Bind any listener for events
             $services = $config->get('events', []);
             $this->bindEvents($services);
+        } catch (\InvalidArgumentException $e ){
+            // Ignore the event argument exception, we know that, thank you very much
         }
     }
 

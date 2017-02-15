@@ -97,7 +97,9 @@ class SaveTranslations extends Listener
     {
         $translations = $params->get($param, array());
         foreach ($translations as $language => $translation) {
-            $values[$language][$key] = $translation;
+            if ($translation) {
+                $values[$language][$key] = $translation;
+            }
         }
     }
 }

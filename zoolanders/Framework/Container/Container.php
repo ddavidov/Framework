@@ -123,7 +123,7 @@ class Container extends Pimple
                 $componentName = 'com_' . $componentName;
             }
 
-            $path = JPATH_ADMINISTRATOR . '/components/con_' . strtolower($componentName);
+            $path = JPATH_ADMINISTRATOR . '/components/' . strtolower($componentName);
         }
 
         if (!$namespace) {

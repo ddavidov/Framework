@@ -23,6 +23,11 @@ class Environment extends Service
     protected $environment;
 
     /**
+     * @var string
+     */
+    protected $extension;
+
+    /**
      * Environment constructor.
      * @param Container|null $container
      */
@@ -134,5 +139,23 @@ class Environment extends Service
         }
 
         return false;
+    }
+
+    /**
+     * Get current extension name
+     *
+     * @return mixed|string
+     */
+    public function currentExtension(){
+
+        if(empty($this->extension)){
+            $jinput = $this->container->system->application->input;
+            $this->extension = $jinput->getCmd('option', $jinput->getCmd('plugin', false));
+            if(preg_match('/^\w{1,3}_/', $this->extension)){
+                $this->extension = preg_replace('/^\w{1,3}_/', '', $this->extension);
+            }
+        }
+
+        return $this->extension;
     }
 }

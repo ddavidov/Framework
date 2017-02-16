@@ -35,11 +35,6 @@ class Dispatcher
     protected $task;
 
     /**
-     * @var string|null
-     */
-    protected $extension;
-
-    /**
      * Dispatcher constructor.
      * @param Container $container
      */
@@ -49,7 +44,6 @@ class Dispatcher
 
         $this->controller = $this->input->getCmd('controller', $this->input->getCmd('view', null));
         $this->task = $this->input->getCmd('task');
-        $this->extension = $this->input->getCmd('option', $this->input->getCmd('plugin', false));
     }
 
     /**
@@ -107,8 +101,8 @@ class Dispatcher
         $namespaces = [];
         $namespaces[]= Container::FRAMEWORK_NAMESPACE;
 
-        if ($this->extension) {
-            $namespaces = array_merge($this->container->getRegisteredExtensionNamespaces($this->extension), $namespaces);
+        if ($extension = $this->container->environment->currentExtension()) {
+            $namespaces = array_merge($this->container->getRegisteredExtensionNamespaces($extension), $namespaces);
         }
 
         foreach ($namespaces as $namespace) {
@@ -122,6 +116,7 @@ class Dispatcher
 
                 if ($response instanceof ResponseInterface) {
                     $response->send();
+                    break;
                 } else {
                     throw new Exception\BadResponseType();
                 }

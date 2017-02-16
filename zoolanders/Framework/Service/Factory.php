@@ -44,8 +44,20 @@ class Factory extends Service
     {
         $type = $input->isAjax() ? 'Json' : 'Html';
         $name = $config['name'];
+        $viewClass = '';
 
-        $viewClass = $this->container->environment->getRootNamespace() . 'View\\' . ucfirst($name) . '\\' . $type;
+        $component = $this->container->environment->currentExtension();
+        $namespaces = $this->container->getRegisteredExtensionNamespaces($component);
+
+        if(!empty($namespaces)){
+            // Lookup for view class among namespaces
+            foreach($namespaces as $namespace){
+                $viewClass = $namespace . 'View\\' . ucfirst($name) . '\\' . $type;
+                if(class_exists($viewClass)){
+                    break;
+                }
+            }
+        }
 
         if(!class_exists($viewClass)){
             // Fallback to core view:

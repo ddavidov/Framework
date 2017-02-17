@@ -19,7 +19,7 @@ namespace Zoolanders\Framework\Service;
 
 use Zoolanders\Framework\Utils\IsString;
 
-class Date extends Service
+class Date
 {
 
     use IsString;

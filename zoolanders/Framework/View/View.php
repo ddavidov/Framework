@@ -16,6 +16,7 @@
 namespace Zoolanders\Framework\View;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Dispatcher;
 use Zoolanders\Framework\Event\Triggerable;
 use Zoolanders\Framework\Event\View\AfterDisplay;
 use Zoolanders\Framework\Event\View\BeforeDisplay;
@@ -37,18 +38,10 @@ abstract class View implements ViewInterface
      */
     protected $name;
 
-
     /**
      * @var string  View type
      */
     protected $type = '';
-
-    /**
-     * The container attached to this view
-     *
-     * @var   Container
-     */
-    protected $container;
 
     /**
      * Render data
@@ -60,9 +53,9 @@ abstract class View implements ViewInterface
     /**
      * Constructor.
      */
-    public function __construct(Container $container)
+    public function __construct(Dispatcher $event)
     {
-        $this->container = $container;
+        $this->event = $event;
         $this->getName();
     }
 
@@ -80,22 +73,6 @@ abstract class View implements ViewInterface
         }
 
         return $this->name;
-    }
-
-    /**
-     * Magic get method. Handles magic properties:
-     * $this->input  mapped to $this->container->input
-     *
-     * @param   string $name The property to fetch
-     *
-     * @return  mixed|null
-     */
-    public function __get($name)
-    {
-        // Handle $this->input
-        if ($name == 'input') {
-            return $this->container->input;
-        }
     }
 
     /**
@@ -149,16 +126,6 @@ abstract class View implements ViewInterface
     }
 
     /**
-     * Returns a reference to the container attached to this View
-     *
-     * @return Container
-     */
-    public function &getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
      * @inheritdoc
      */
     public function getType()
@@ -169,5 +136,5 @@ abstract class View implements ViewInterface
     /**
      * @return mixed
      */
-    abstract function render($tpl, $data = []);
+    abstract function render($data = []);
 }

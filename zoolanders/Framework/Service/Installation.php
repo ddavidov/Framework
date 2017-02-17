@@ -8,15 +8,61 @@
 
 namespace Zoolanders\Framework\Service;
 
-class Installation extends Service
+use Zoolanders\Framework\Service\System\Application;
+
+class Installation
 {
+    /**
+     * @var Application
+     */
+    protected $application;
+
+    /**
+     * @var
+     */
+    protected $zoo;
+
+    /**
+     * @var
+     */
+    protected $dependencies;
+
+    /**
+     * @var
+     */
+    protected $environment;
+
+    /**
+     * @var Database
+     */
+    protected $db;
+
+    /**
+     * Installation constructor.
+     * @param Application $application
+     */
+    public function __construct(
+        Application $application,
+        Environment $environment,
+        Dependencies $dependencies,
+        Zoo $zoo,
+        Database $db
+    )
+    {
+        $this->application = $application;
+        $this->environment = $environment;
+        $this->dependencies = $dependencies;
+        $this->zoo = $zoo;
+        $this->db = $db;
+    }
+
     /**
      *  Check if the installation of the framework is ok
      */
     public function checkInstallation()
     {
         // if in admin views
-        if ($this->container->system->application->isAdmin() && $this->container->environment->is('admin.com_zoo admin.com_installer admin.com_plugins')) {
+        if ($this->application->isAdmin() && $this->environment->is('admin.com_zoo admin.com_installer admin.com_plugins')) {
             if ($this->checkDependencies()) {
                 // let's define the check was succesfull to speed up other plugins loading
                 if (!defined('ZLFW_DEPENDENCIES_CHECK_OK')) {
@@ -38,18 +84,18 @@ class Installation extends Service
     public function checkDependencies()
     {
         // prepare cache
-        $cache = $this->container->zoo->getApp()->cache->create($this->container->zoo->getApp()->path->path('cache:') . '/zoolanders/framework', true, '86400', 'apc');
+        $cache = $this->zoo->getApp()->cache->create($this->zoo->getApp()->path->path('cache:') . '/zoolanders/framework', true, '86400', 'apc');
 
         // set plugins order
         $this->checkPluginOrder();
 
         // checks if dependencies are up to date
-        $status = $this->container->dependencies->check("zlfw:dependencies.config");
+        $status = $this->dependencies->check("zlfw:dependencies.config");
 
         if (!$status['state']) {
             // warn but not if in installer to avoid install confusions
-            if (!$this->container->environment->is('admin.com_installer')) {
-                $this->app->dependencies->warn($status['extensions']);
+            if (!$this->environment->is('admin.com_installer')) {
+                $this->dependencies->warn($status['extensions']);
             }
         }
 
@@ -68,7 +114,7 @@ class Installation extends Service
     public function checkPluginOrder($plugin = '')
     {
         // init vars
-        $db = $this->container->db;
+        $db = $this->db;
         $zf = $this->getPlugin('zlframework');
 
         $order = (int)$zf->ordering;
@@ -103,7 +149,7 @@ class Installation extends Service
      */
     public function getPlugin($name, $type = 'system')
     {
-        $db = $this->container->db;
+        $db = $this->db;
         $query = 'SELECT * FROM #__extensions WHERE element LIKE ' . $db->Quote($name) . ' AND folder LIKE ' . $db->Quote($type) . ' LIMIT 1';
 
         $db->setQuery($query);

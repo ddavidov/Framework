@@ -8,26 +8,11 @@
 
 namespace Zoolanders\Framework\Listener\Category;
 
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Event\Category;
-use Zoolanders\Framework\Item\Indexer;
 use Zoolanders\Framework\Listener\Listener;
 
 class SaveTranslations extends Listener
 {
-    /**
-     * @var Indexer
-     */
-    protected $indexer;
-
-    /**
-     * IndexSearchValues constructor.
-     */
-    function __construct(Container $c)
-    {
-        parent::__construct($c);
-    }
-
     /**
      * @param Category\Saved $event
      */

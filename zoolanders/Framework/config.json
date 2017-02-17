@@ -1,5 +1,6 @@
 {
     "services": {
+        "event": "\\Zoolanders\\Framework\\Event\\Dispatcher",
         "filesystem": "\\Zoolanders\\Framework\\Service\\Filesystem",
         "path": "\\Zoolanders\\Framework\\Service\\Path",
         "system": {
@@ -19,8 +20,8 @@
         "zoo": "\\Zoolanders\\Framework\\Service\\Zoo",
         "db": "\\Zoolanders\\Framework\\Service\\Database",
         "date": "\\Zoolanders\\Framework\\Service\\Date",
-        "request": "\\Zoolanders\\Framework\\Service\\Request",
-        "input": "\\Zoolanders\\Framework\\Service\\Request",
+        "request": "\\Zoolanders\\Framework\\Request\\Request",
+        "input": "\\Zoolanders\\Framework\\Request\\Request",
         "params": "\\Zoolanders\\Framework\\Service\\Params",
         "joomla": "\\Zoolanders\\Framework\\Service\\Joomla",
         "document": "\\Zoolanders\\Framework\\Service\\System\\Document",

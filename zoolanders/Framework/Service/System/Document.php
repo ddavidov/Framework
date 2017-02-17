@@ -8,6 +8,8 @@
 
 namespace Zoolanders\Framework\Service\System;
 
+use Zoolanders\Framework\Service\Joomla;
+use Zoolanders\Framework\Service\Path;
 use Zoolanders\Framework\Service\System;
 
 /**
@@ -24,6 +26,13 @@ class Document extends System
      */
     private $file_mod_date;
 
+    public function __construct(Path $path, Joomla $joomla, Application $application)
+    {
+        $this->path = $path;
+        $this->application = $application;
+        $this->joomla = $joomla;
+    }
+
     /**
      * Adds a CSS to the document head
      *
@@ -34,7 +43,7 @@ class Document extends System
      */
     public function addStylesheet($path, $version = null)
     {
-        if ($file = $this->container->path->url($path)) {
+        if ($file = $this->path->url($path)) {
             $this->getClass()->addStylesheet($file . $this->getVersion($version));
         }
     }
@@ -54,16 +63,16 @@ class Document extends System
         $version = $this->getVersion($version);
 
         // load jQuery, if not loaded before
-        if (!$this->container->joomla->version->isCompatible('3.0')) {
-            if (!$this->container->system->application->get('jquery')) {
-                $this->container->system->application->set('jquery', true);
-                $this->getClass()->addScript($this->container->path->url('libraries:jquery/jquery.js') . $version);
+        if (!$this->joomla->version->isCompatible('3.0')) {
+            if (!$this->application->get('jquery')) {
+                $this->application->set('jquery', true);
+                $this->getClass()->addScript($this->path->url('libraries:jquery/jquery.js') . $version);
             }
         } else {
             \JHtml::_('jquery.framework');
         }
 
-        if ($file = $this->container->path->url($path)) {
+        if ($file = $this->path->url($path)) {
             $this->getClass()->addScript($file . $version);
         }
     }

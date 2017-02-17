@@ -8,10 +8,13 @@
 
 namespace Zoolanders\Framework\Event;
 
+use Zoolanders\Framework\Container\Container;
+
 trait Triggerable
 {
     public function triggerEvent(EventInterface $event)
     {
+        $container = Container::getInstance();
         $eventName = 'on' . $event->getName();
 
         // let's try locally
@@ -20,9 +23,9 @@ trait Triggerable
         }
 
         // First, trigger the joomla event
-        $this->container->event->joomla->trigger($eventName, [&$event]);
+        $container->event->joomla->trigger($eventName, [&$event]);
 
         // Then trigger also the zoolanders one
-        $this->container->event->dispatcher->trigger($event);
+        $container->event->trigger($event);
     }
 }

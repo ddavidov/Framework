@@ -9,9 +9,12 @@
 namespace Zoolanders\Framework\Container;
 
 use Auryn\Injector;
-use Pimple\Container as Pimple;
 use Zoolanders\Framework\Autoloader;
 use Joomla\Registry\Registry;
+use Zoolanders\Framework\Dispatcher\Dispatcher;
+use Zoolanders\Framework\Dispatcher\Exception;
+use Zoolanders\Framework\Factory\Factory;
+use Zoolanders\Framework\Response\ResponseInterface;
 
 defined('_JEXEC') or die;
 
@@ -24,14 +27,14 @@ defined('_JEXEC') or die;
  * @property-read   \Zoolanders\Framework\Service\Path $path
  * @property-read   \Zoolanders\Framework\Container\Nested\System $system
  * @property-read   \Zoolanders\Framework\Container\Nested\Assets $assets
- * @property-read   \Zoolanders\Framework\Service\Factory $factory
+ * @property-read   \Zoolanders\Framework\Factory\Factory $factory
  * @property-read   \Zoolanders\Framework\Service\Zoo $zoo
  * @property-read   \Zoolanders\Framework\Service\Database $db
  * @property-read   \Zoolanders\Framework\Service\Database $database
- * @property-read   \Zoolanders\Framework\Service\Event $event
+ * @property-read   \Zoolanders\Framework\Event\Dispatcher $event
  * @property-read   \Zoolanders\Framework\Service\Date $date
- * @property-read   \Zoolanders\Framework\Service\Request $input
- * @property-read   \Zoolanders\Framework\Service\Request $request
+ * @property-read   \Zoolanders\Framework\Request\Request $input
+ * @property-read   \Zoolanders\Framework\Request\Request $request
  * @property-read   \Zoolanders\Framework\Service\Params $params
  * @property-read   \Zoolanders\Framework\Service\Joomla $joomla
  * @property-read   \Zoolanders\Framework\Service\System\Document $document
@@ -45,10 +48,8 @@ defined('_JEXEC') or die;
  * @property-read   \Zoolanders\Framework\Service\Cache $cache
  * @property-read   \Zoolanders\Framework\Service\User $user
  * @property-read   \Zoolanders\Framework\Service\Zip $zip
- *
- * @method make($class, $options = [])
  */
-class Container extends Pimple
+class Container
 {
     /**
      * Namespaces roots for zoolanders
@@ -78,14 +79,19 @@ class Container extends Pimple
     protected $config;
 
     /**
-     * @var Injector
-     */
-    protected $injector;
-
-    /**
      * @var Autoloader
      */
     public $loader;
+
+    /**
+     * @var Factory
+     */
+    public $factory;
+
+    /**
+     * @var Injector
+     */
+    protected $injector;
 
     /**
      * @var array
@@ -94,18 +100,40 @@ class Container extends Pimple
 
     /**
      * Container constructor.
-     * @param array $values
      */
-    public function __construct(array $values)
+    protected function __construct()
     {
-        parent::__construct($values);
-
-        $this->injector = new Injector();
-
-        // Forcibly share the container
-        $this->injector->share($this);
-
         $this->loader = Autoloader::getInstance();
+        $this->injector = new Injector();
+        $this->factory = new Factory($this);
+    }
+
+    /**
+     * @param $name
+     * @param array $args
+     * @return mixed
+     */
+    public function make($name, $args = [])
+    {
+        return $this->injector->make($name, $args);
+    }
+
+    /**
+     * @param $name
+     * @return Injector
+     */
+    public function share($name)
+    {
+        return $this->injector->share($name);
+    }
+
+    /**
+     * @param $callable
+     * @param array $args
+     */
+    public function execute($callable, $args = [])
+    {
+        return $this->injector->execute($callable, $args);
     }
 
     /**
@@ -148,84 +176,21 @@ class Container extends Pimple
     }
 
     /**
-     * Proxy any other call to the injector
-     * @param $name
-     * @param $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array([$this->injector, $name], $arguments);
-    }
-
-    /**
-     * Load the service into the DI Container
-     * @param $services
-     */
-    protected function loadServices($services)
-    {
-        // Load the services
-        foreach ($services as $name => $class) {
-            // it's either an array or an object,
-            if (is_object($class) || is_array($class) || $class instanceof Registry) {
-                $tmp = new Nested([]);
-                $tmp->setParentContainer($this);
-                $tmp->loadServices($class);
-
-                $this[$name] = $tmp;
-                continue;
-            }
-
-            // Otherwise add the service
-            if (!isset($this[$name])) {
-                $this[$name] = function (Container $c) use ($class) {
-                    return new $class($c);
-                };
-            }
-        }
-    }
-
-    /**
      * Singleton pattern
      * @return Container
      */
-    public static function &getInstance($values = [])
+    public static function &getInstance()
     {
         if (self::$container) {
             return self::$container;
         }
 
-        $container = new Container($values);
-
-        // Database Driver service
-        if (!isset($container['zoo'])) {
-            $container['zoo'] = function () use ($container) {
-                return new \Zoolanders\Framework\Service\Zoo($container);
-            };
-        }
-
-        // Database Driver service
-        if (!isset($container['db'])) {
-            $container['db'] = function () use ($container) {
-                return $container['zoo']->database;
-            };
-        }
-
-        // Event service
-        if (!isset($container['event'])) {
-            $container['event'] = function () use ($container) {
-                return new \Zoolanders\Framework\Service\Event($container);
-            };
-        }
+        $container = new Container();
+        $container->share($container->factory);
 
         // get the config file
         $config = new Registry();
         $config->loadFile(JPATH_SITE . '/' . self::$configFile);
-
-        // trigger an event to make the configuration extendable
-        // it's a joomla event since we've yet to return the container on which we
-        // could register a zoolanders core event
-        $container->event->joomla->trigger('onContainerConfigurationLoaded', array(&$config));
 
         // Load the configuration file
         $container->loadConfig($config);
@@ -253,14 +218,23 @@ class Container extends Pimple
         $this->loadServices($services);
 
         try {
-            // Notify we've loaded the services
-            $this->event->joomla->trigger('onContainerServicesLoaded', array($services));
-
             // Bind any listener for events
             $services = $config->get('events', []);
             $this->bindEvents($services);
-        } catch (\InvalidArgumentException $e ){
+        } catch (\InvalidArgumentException $e) {
             // Ignore the event argument exception, we know that, thank you very much
+        }
+    }
+
+    /**
+     * Load the service into the DI Container
+     * @param $services
+     */
+    protected function loadServices($services)
+    {
+        // Load the services
+        foreach ($services as $name => $class) {
+            $this->share($class);
         }
     }
 
@@ -269,33 +243,46 @@ class Container extends Pimple
      */
     protected function bindEvents($events)
     {
-        $this->event->dispatcher->bindEvents($events);
+        $eventDispatcher = $this->make('\Zoolanders\Framework\Event\Dispatcher');
+        $eventDispatcher->bindEvents($events);
     }
 
     /**
-     * Magic getter for alternative syntax, e.g. $container->foo instead of $container['foo']
-     *
-     * @param   string $name
-     *
-     * @return  mixed
-     *
-     * @throws \InvalidArgumentException if the identifier is not defined
+     * Act as service locator. BAD
+     * @param $name
+     * @return mixed
      */
-    function __get($name)
+    public function __get($name)
     {
-        return $this->offsetGet($name);
+        $services = $this->config->get('services', []);
+        if ($class = $services->$name) {
+            return $this->make($class);
+        }
     }
 
     /**
-     * Magic setter for alternative syntax, e.g. $container->foo instead of $container['foo']
-     *
-     * @param   string $name The unique identifier for the parameter or object
-     * @param   mixed $value The value of the parameter or a closure for a service
-     *
-     * @throws \RuntimeException Prevent override of a frozen service
+     * @param null $default
+     * @throws Exception\BadResponseType
+     * @throws Exception\ControllerNotFound
      */
-    function __set($name, $value)
+    public function dispatch()
     {
-        $this->offsetSet($name, $value);
+        //$eventDispatcher = $this->make('\Zoolanders\Framework\Event\Event');
+
+        //$event = $eventDispatcher->create('Dispatcher\BeforeDispatch');
+        //$eventDispatcher->trigger($event);
+
+        $dispatcher = new Dispatcher($this);
+        $response = $this->injector->execute([$dispatcher, 'dispatch']);
+
+        //$event = $eventDispatcher->create('Dispatcher\AfterDispatch');
+        // $eventDispatcher->trigger($event);
+
+        if ($response instanceof ResponseInterface) {
+            $response->send();
+            return;
+        }
+
+        throw new Exception\BadResponseType();
     }
 }

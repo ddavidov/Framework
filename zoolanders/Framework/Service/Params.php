@@ -9,21 +9,15 @@
 namespace Zoolanders\Framework\Service;
 
 use Joomla\Registry\Registry;
-use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\System\Dbo;
 
 defined('_JEXEC') or die;
 
 /**
  * A helper class to quickly get the component parameters
  */
-class Params extends Service
+class Params
 {
-
-    /**
-     * @var  Container
-     */
-    protected $container;
-
     /**
      * Params indexed by component
      *
@@ -33,13 +27,13 @@ class Params extends Service
 
     /**
      * Public constructor for the params object
-     *
-     * @param  Container $container
      */
-    public function __construct(Container $container)
+    public function __construct(Dbo $db, Registry $params, Data $data)
     {
-        $this->container = $container;
-        $this->params = new Registry();
+        $this->db = $db;
+        $this->params = $params;
+        $this->data = $data;
+
         $this->reload();
     }
 
@@ -48,7 +42,7 @@ class Params extends Service
      */
     public function reload($component = 'com_zoo')
     {
-        $db = $this->container->db;
+        $db = $this->db;
 
         $sql = $db->getQuery(true);
         $sql->select($db->qn('params'))
@@ -58,7 +52,7 @@ class Params extends Service
 
         $json = $db->setQuery($sql)->loadResult();
 
-        $this->params[$component] = $this->container->data->create($json, 'parameter');
+        $this->params[$component] = $this->data->create($json, 'parameter');
     }
 
     /**
@@ -75,7 +69,7 @@ class Params extends Service
             $this->reload($component);
         }
 
-        return $this->container->data->create($this->params[$component])->get($key, $default);
+        return $this->data->create($this->params[$component])->get($key, $default);
     }
 
     /**
@@ -128,7 +122,7 @@ class Params extends Service
      */
     public function save()
     {
-        $db = $this->container->db;
+        $db = $this->db;
         foreach ($this->params as $component => $params) {
             $data = (string) $params;
 

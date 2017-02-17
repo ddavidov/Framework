@@ -11,8 +11,13 @@ namespace Zoolanders\Framework\Service;
 use League\Flysystem\Filesystem;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
-class Zip extends Service
+class Zip
 {
+    function __construct(Filesystem $fs)
+    {
+        $this->filesystem = $fs;
+    }
+
     /**
      * @param $file
      * @return Filesystem
@@ -29,8 +34,8 @@ class Zip extends Service
         settype($files, 'array');
 
         foreach ($files as $file) {
-            if ($this->container->filesystem->has($file)) {
-                $zip->write(basename($file), $this->container->filesystem->read($file));
+            if ($this->filesystem->has($file)) {
+                $zip->write(basename($file), $this->filesystem->read($file));
             }
         }
 

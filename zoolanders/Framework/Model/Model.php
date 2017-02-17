@@ -16,7 +16,6 @@
 
 namespace Zoolanders\Framework\Model;
 
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Data\Json;
 use Zoolanders\Framework\Event\Triggerable;
 use Zoolanders\Framework\Utils\NameFromClass;
@@ -35,21 +34,11 @@ class Model
     protected $state;
 
     /**
-     * The container attached to the model
-     *
-     * @var Container
-     */
-    protected $container;
-
-    /**
      * Model constructor.
-     * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->container = $container;
         $this->getName();
-
         $this->state = new Json();
     }
 
@@ -107,16 +96,6 @@ class Model
     }
 
     /**
-     * Returns a reference to the model's container
-     *
-     * @return Container
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
      * Magic getter; allows to use the name of model state keys as properties. Also handles magic properties:
      * $this->input  mapped to $this->container->input
      *
@@ -126,11 +105,6 @@ class Model
      */
     public function __get($name)
     {
-        // Handle $this->input
-        if ($name == 'input') {
-            return $this->container->input;
-        }
-
         return $this->getState($name);
     }
 

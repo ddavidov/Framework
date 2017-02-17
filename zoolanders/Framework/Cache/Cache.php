@@ -9,6 +9,7 @@
 namespace Zoolanders\Framework\Cache;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\Filesystem;
 
 /**
  * The cache class.
@@ -49,9 +50,9 @@ class Cache implements CacheInterface
     protected $hash = true;
 
     /**
-     * @var Container
+     * @var Filesystem
      */
-    protected $container;
+    protected $filesystem;
 
     /**
      * Class constructor
@@ -63,11 +64,11 @@ class Cache implements CacheInterface
      */
     public function __construct($file, $hash = true, $lifetime = null)
     {
-        $this->container = Container::getInstance();
+        $this->filesystem = Container::getInstance()->filesystem;
 
         // if cache file doesn't exist, create it
-        if (!$this->container->filesystem->has($file)) {
-            $this->container->filesystem->write($file, '');
+        if (!$this->filesystem->has($file)) {
+            $this->filesystem->write($file, '');
         }
 
         // set file and parse it
@@ -99,7 +100,7 @@ class Cache implements CacheInterface
      */
     public function check()
     {
-        return $this->container->filesystem->has($this->file);
+        return $this->filesystem->has($this->file);
     }
 
     /**
@@ -158,7 +159,7 @@ class Cache implements CacheInterface
      */
     protected function parse()
     {
-        $content = $this->container->filesystem->read($this->file);
+        $content = $this->filesystem->read($this->file);
 
         if (!empty($content)) {
             $items = json_decode($content, true);
@@ -182,7 +183,7 @@ class Cache implements CacheInterface
     {
         if ($this->dirty) {
             $data = json_encode($this->items);
-            $this->container->filesystem->put($this->file, $data);
+            $this->filesystem->put($this->file, $data);
         }
 
         return $this;

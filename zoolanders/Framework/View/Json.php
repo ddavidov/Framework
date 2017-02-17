@@ -19,7 +19,7 @@ class Json extends View
     /**
      * @inheritdoc
      */
-    public function render($tpl = null, $data = [])
+    public function render($data = [])
     {
         if (!empty($data)) {
             $this->data = $data;

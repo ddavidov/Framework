@@ -14,11 +14,6 @@ use Zoolanders\Framework\Model\Database;
 trait Date
 {
     /**
-     * @return Container
-     */
-    abstract public function getContainer();
-
-    /**
      * @return \JDatabaseQuery
      */
     abstract public function getQuery();

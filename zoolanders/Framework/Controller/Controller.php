@@ -8,10 +8,6 @@
 
 namespace Zoolanders\Framework\Controller;
 
-use Zoolanders\Framework\Container\Container;
-use Zoolanders\Framework\Controller\Exception\TaskNotFound;
-use Zoolanders\Framework\Event\Controller\AfterExecute;
-use Zoolanders\Framework\Event\Controller\BeforeExecute;
 use Zoolanders\Framework\Event\Triggerable;
 use Zoolanders\Framework\Response\ResponseInterface;
 use Zoolanders\Framework\Utils\NameFromClass;
@@ -27,18 +23,11 @@ class Controller
     use Triggerable, NameFromClass;
 
     /**
-     * Array of class methods
-     *
-     * @var    array
-     */
-    protected $methods;
-
-    /**
      * defaultTask
      *
      * @var    string
      */
-    protected $defaultTask = 'display';
+    protected $defaultTask = 'index';
 
     /**
      * The current view name; you can override it in the configuration
@@ -55,67 +44,19 @@ class Controller
     protected $layout = null;
 
     /**
-     * The container attached to this Controller
-     *
-     * @var Container
-     */
-    protected $container = null;
-
-    /**
      * Controller constructor.
-     * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        // Get a local copy of the container
-        $this->container = $container;
-
-        $this->registerDefaultTask($this->defaultTask ? $this->defaultTask : 'default');
+        $this->registerDefaultTask($this->defaultTask ? $this->defaultTask : 'index');
     }
 
     /**
-     * Magic get method. Handles magic properties:
-     * $this->input  mapped to $this->container->input
-     *
-     * @param   string $name The property to fetch
-     *
-     * @return  mixed|null
+     * @return string
      */
-    public function __get($name)
+    public function getDefaultTask()
     {
-        // Handle $this->input
-        if ($name == 'input') {
-            return $this->container->input;
-        }
-    }
-
-    /**
-     * Executes a given controller task. The onBefore<task> and onAfter<task>
-     * methods are called automatically if they exist.
-     *
-     * @param   string $task The task to execute, e.g. "browse"
-     *
-     * @return  null|bool  False on execution failure
-     *
-     * @throws  TaskNotFound  When the task is not found
-     */
-    public function execute($task)
-    {
-        if (empty($task)) {
-            $task = $this->defaultTask;
-        }
-
-        if (!method_exists($this, $task)) {
-            throw new TaskNotFound(\JText::sprintf('JLIB_APPLICATION_ERROR_TASK_NOT_FOUND', $task), 404);
-        }
-
-        $this->triggerEvent(new BeforeExecute($this, $task));
-
-        $ret = $this->container->execute([$this, $task]);
-
-        $this->triggerEvent(new AfterExecute($this, $task));
-
-        return $ret;
+        return $this->defaultTask;
     }
 
     /**

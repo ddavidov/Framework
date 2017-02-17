@@ -8,7 +8,7 @@
 
 namespace Zoolanders\Framework\Service;
 
-class Data extends Service
+class Data
 {
     /**
      * Create a data object

@@ -22,18 +22,6 @@ abstract class Event implements EventInterface
     protected $value;
 
     /**
-     * Add a fake container property
-     * @param $name
-     * @return Container
-     */
-    public function __get($name)
-    {
-        if ($name == 'container') {
-            return Container::getInstance();
-        }
-    }
-
-    /**
      * Get the name of the event
      *
      * @return string

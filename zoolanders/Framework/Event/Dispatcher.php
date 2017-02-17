@@ -9,27 +9,19 @@
 namespace Zoolanders\Framework\Event;
 
 use Zoolanders\Framework\Container\Container;
-use Zoolanders\Framework\Event\Environment\Init;
+use Zoolanders\Framework\Service\Zoo as ZooService;
 
-/**
- * Handles the dispatching of the Event events
- * Cloned from the ZOO EventDispatcher class (Copyright Yootheme)
- */
 class Dispatcher
 {
     /**
-     * @var Container
+     * @var Zoo
      */
-    protected $container;
+    public $zoo;
 
     /**
-     * Dispatcher constructor.
-     * @param Container $container
+     * @var \JEventDispatcher
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    public $joomla;
 
     /**
      * The listeners for the events
@@ -38,6 +30,15 @@ class Dispatcher
      * @since 1.0.0
      */
     protected $listeners = array();
+
+    /**
+     * Event constructor.
+     */
+    public function __construct(ZooService $zoo)
+    {
+        $this->zoo = new Zoo($this, $zoo);
+        $this->joomla = \JEventDispatcher::getInstance();
+    }
 
     /**
      * Connects a listener to a given event name.
@@ -79,38 +80,62 @@ class Dispatcher
         }
 
         // also, disconnect it to the core zoo listeners to keep b/c
-        $this->container->event->zoo->disconnect($name, $listener);
+        $this->zooEventDispatcher->disconnect($name, $listener);
     }
+
+    /**
+     * @param $string
+     * @return mixed
+     */
+    public function create($string)
+    {
+        $container = Container::getInstance();
+        return $container->make(Container::FRAMEWORK_NAMESPACE . 'Event\\' . $string);
+    }
+
 
     /**
      * @see notify
      */
     public function trigger(EventInterface &$event)
     {
-        if(ZF_TEST){
+        /*if(ZF_TEST){
             // Test mode, notify event catcher service
             $this->container->eventstack->push($event->getName(), $event);
-        }
+        }*/
 
         return $this->notify($event);
     }
 
     /**
-     * Notifies all listeners of a given event.
-     *
-     * @param EventInterface $event The event
-     *
-     * @return EventInterface The Event instance
-     *
-     * @since 1.0.0
+     * @param EventInterface $event
+     * @return bool|void
      */
     public function notify(EventInterface &$event)
     {
+        $container = Container::getInstance();
+
         foreach ($this->getListeners($event->getName()) as $listener) {
-            call_user_func_array($listener, [&$event]);
+            $parts = explode("@", $listener);
+
+            $method = 'handle';
+            $callback = $listener;
+
+            // we have a function to call
+            if (count($parts) >= 2) {
+                $listener = $parts[0];
+                $method = $parts[1];
+            }
+
+            if (class_exists($listener)) {
+                $listenerClass = $container->make($listener);
+                $callback = [$listenerClass, $method];
+            }
+
+            return $container->execute($callback, [&$event]);
         }
 
-        return $event;
+        return false;
     }
 
     /**
@@ -129,7 +154,7 @@ class Dispatcher
         }
 
         // Both local and zoo's
-        return (boolean) count($this->listeners[$name]);
+        return (boolean)count($this->listeners[$name]);
     }
 
     /**
@@ -157,28 +182,11 @@ class Dispatcher
     public function bindEvents($events)
     {
         foreach ($events as $event => $listeners) {
-            $listeners = (array) $listeners;
+            $listeners = (array)$listeners;
 
             foreach ($listeners as $listener) {
-                $parts = explode("@", $listener);
-
-                $method = 'handle';
-                $callback = $listener;
-
-                // we have a function to call
-                if (count($parts) >= 2) {
-                    $listener = $parts[0];
-                    $method = $parts[1];
-                }
-
-                if (class_exists($listener)) {
-                    $listenerClass = $this->container->make($listener);
-                    $callback = [$listenerClass, $method];
-                }
-
-                $this->connect($event, $callback);
+                $this->connect($event, $listener);
             }
         }
     }
-
 }

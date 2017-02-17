@@ -10,7 +10,7 @@ namespace Zoolanders\Framework\Event;
 
 use Zoolanders\Framework\Container\Container;
 
-class Zoo extends \Zoolanders\Framework\Service\Service
+class Zoo
 {
     /**
      * @var \EventHelper
@@ -19,14 +19,11 @@ class Zoo extends \Zoolanders\Framework\Service\Service
 
     /**
      * Event constructor.
-     * @param Container|null $c
      */
-    public function __construct(Container $c = null)
+    public function __construct(Dispatcher $dispatcher, \Zoolanders\Framework\Service\Zoo $zoo)
     {
-        parent::__construct($c);
-
-        $this->zoo = $this->container->zoo->event;
-
+        $this->dispatcher = $dispatcher;
+        $this->zoo = $zoo->event;
         $this->proxyAllZooEvents();
     }
 
@@ -71,7 +68,7 @@ class Zoo extends \Zoolanders\Framework\Service\Service
 
                     if ($event) {
                         $event->setReturnValue($zooEvent->getReturnValue());
-                        $this->container->event->dispatcher->trigger($event);
+                        $this->dispatcher->trigger($event);
                         $zooEvent->setReturnValue($event->getReturnValue());
                     }
                 });

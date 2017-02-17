@@ -11,7 +11,7 @@ namespace Zoolanders\Framework\Service;
 use League\Flysystem\Adapter\Local;
 use Zoolanders\Framework\Container\Container;
 
-class Filesystem extends Service
+class Filesystem
 {
     /**
      * Mime type related stuff
@@ -35,18 +35,16 @@ class Filesystem extends Service
 
     /**
      * Filesystem constructor.
-     * @param Container $c
      * @param \League\Flysystem\Filesystem|null $fs
      */
-    public function __construct(Container $c, \League\Flysystem\Filesystem $fs = null)
+    public function __construct(\League\Flysystem\Filesystem $fs = null, Zoo $zoo)
     {
-        parent::__construct($c);
-
         if (!$fs) {
             $adapter = new Local('/');
             $fs = new \League\Flysystem\Filesystem($adapter);
         }
 
+        $this->app = $zoo;
         $this->filesystem = $fs;
     }
 
@@ -68,10 +66,6 @@ class Filesystem extends Service
      */
     public function __get($name)
     {
-        if('app' == $name){
-            return $this->getContainer()->zoo;
-        }
-
         return $this->filesystem->$name;
     }
 

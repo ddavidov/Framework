@@ -12,14 +12,10 @@ use Assetic\Asset\AssetInterface;
 use Assetic\AssetWriter;
 use Assetic\Util\VarUtils;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\Filesystem;
 
 class Writer extends AssetWriter
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
     protected $dir;
 
     protected $values;
@@ -32,14 +28,13 @@ class Writer extends AssetWriter
      * @param array $dir
      * @param array $values
      */
-    public function __construct(Container $container, $dir, $values = [])
+    public function __construct(Filesystem $fs, $dir, $values = [])
     {
         parent::__construct($dir);
 
+        $this->filesystem = $fs;
         $this->values = $values;
         $this->dir = $dir;
-
-        $this->container = $container;
     }
 
     public function writeAsset(AssetInterface $asset)
@@ -69,8 +64,8 @@ class Writer extends AssetWriter
 
     protected function writeAssetFile($path, $contents)
     {
-        if (!$this->container->filesystem->has($path)) {
-            $this->container->filesystem->write($path, $contents);
+        if (!$this->filesystem->has($path)) {
+            $this->filesystem->write($path, $contents);
         }
     }
 }

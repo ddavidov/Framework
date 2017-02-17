@@ -9,8 +9,9 @@
 namespace Zoolanders\Framework\Service;
 
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\System\Config;
 
-class Crypt extends Service
+class Crypt
 {
     /**
      * @var \JCrypt
@@ -18,14 +19,11 @@ class Crypt extends Service
     public $crypt;
 
     /**
-     * Crypt constructor.
-     * @param Container $c
+     * Crypt constructor
      */
-    public function __construct(Container $c)
+    public function __construct(Config $config)
     {
-        parent::__construct($c);
-
-        $secret = $this->container->system->config->get('secret');
+        $secret = $config->get('secret');
 
         $key = new \JCryptKey('simple', $secret, $secret);
         $this->crypt = new \JCrypt(null, $key);

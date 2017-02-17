@@ -8,8 +8,11 @@
 
 namespace Zoolanders\Framework\View;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Event\Dispatcher;
 use Zoolanders\Framework\Event\View\GetTemplatePath;
+use Zoolanders\Framework\Service\System;
 
 /**
  * Class Html
@@ -38,11 +41,12 @@ class Html extends View
 
     /**
      * HtmlView constructor.
-     * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct(Dispatcher $event, System $system)
     {
-        parent::__construct($container);
+        parent::__construct($event);
+
+        $this->system = $system;
 
         $this->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($this->getName()) . '/tmpl');
     }
@@ -65,10 +69,10 @@ class Html extends View
 
         // Set the alternative template search dir
         $templatePath = JPATH_THEMES;
-        $fallback = $templatePath . '/' . $this->container->system->getTemplate() . '/html/com_zoolanders/' . $this->getName();
+        $fallback = $templatePath . '/' . $this->system->getTemplate() . '/html/com_zoolanders/' . $this->getName();
         $this->addTemplatePath($fallback);
 
-        $this->container->event->dispatcher->trigger(new GetTemplatePath($this));
+        $this->triggerEvent(new GetTemplatePath($this));
     }
 
     /**
@@ -165,7 +169,11 @@ class Html extends View
 
         // Extract forced parameters
         if (!empty($this->data)) {
-            extract($this->data);
+            if ($this->data instanceof Arrayable) {
+                extract($this->data->toArray());
+            } else {
+                extract($this->data);
+            }
         }
 
         include($this->templatePaths[0] . $tpl . '.php');
@@ -178,13 +186,13 @@ class Html extends View
      * @param array $data
      * @return string
      */
-    public function render($tpl = null, $data = [])
+    public function render($data = [])
     {
         if(!empty($data)){
             $this->data = $data;
         }
 
-        $templateResult = $this->loadTemplate($tpl);
+        $templateResult = $this->loadTemplate();
 
         return $templateResult;
     }

@@ -13,118 +13,49 @@ use Zoolanders\Framework\Controller\Controller;
 use Zoolanders\Framework\Event\Dispatcher\AfterDispatch;
 use Zoolanders\Framework\Event\Dispatcher\BeforeDispatch;
 use Zoolanders\Framework\Event\Triggerable;
+use Zoolanders\Framework\Request\Request;
 use Zoolanders\Framework\Response\ResponseInterface;
+use Zoolanders\Framework\Service\Environment;
+use Zoolanders\Framework\Service\Event;
 
 class Dispatcher
 {
-    use Triggerable;
-
     /**
      * @var Container
      */
     protected $container;
 
     /**
-     * @var string|null
-     */
-    protected $controller;
-
-    /**
-     * @var string|null
-     */
-    protected $task;
-
-    /**
      * Dispatcher constructor.
-     * @param Container $container
      */
     public function __construct(Container $container)
     {
         $this->container = $container;
-
-        $this->controller = $this->input->getCmd('controller', $this->input->getCmd('view', null));
-        $this->task = $this->input->getCmd('task');
     }
 
     /**
-     * Magic get method. Handles magic properties:
-     * $this->input  mapped to $this->container->input
-     *
-     * @param   string $name The property to fetch
-     *
-     * @return  mixed|null
+     * @return ResponseInterface
      */
-    public function __get($name)
+    public function dispatch(Request $request)
     {
-        // Handle $this->input
-        if ($name == 'input') {
-            return $this->container->input;
-        }
-    }
+        $controller = $this->container->factory->controller($request);
 
-    /**
-     * @return null|string
-     */
-    public function getController()
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @return Container
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTask()
-    {
-        return $this->task;
-    }
-
-    /**
-     * @param null $default
-     * @throws Exception\BadResponseType
-     * @throws Exception\ControllerNotFound
-     */
-    public function dispatch($default = null)
-    {
-        $this->triggerEvent(new BeforeDispatch($this));
-
-        // controller loaded ?
-        $controller = $this->controller ? $this->controller : $default;
-
-        $namespaces = [];
-        $namespaces[]= Container::FRAMEWORK_NAMESPACE;
-
-        if ($extension = $this->container->environment->currentExtension()) {
-            $namespaces = array_merge($this->container->getRegisteredExtensionNamespaces($extension), $namespaces);
+        if (!$controller) {
+            throw new Exception\ControllerNotFound();
         }
 
-        foreach ($namespaces as $namespace) {
-            $class = $namespace . 'Controller\\' . ucfirst($controller);
+        $response = $this->container->execute([$controller, $request->getCmd('task', $controller->getDefaultTask())]);
 
-            if (class_exists($class)) {
-                // perform the request task
-                /** @var Controller $ctrl */
-                $ctrl = $this->container->make($class);
-                $response = $ctrl->execute($this->task);
-
-                if ($response instanceof ResponseInterface) {
-                    $response->send();
-                    break;
-                } else {
-                    throw new Exception\BadResponseType();
-                }
-            } else {
-                throw new Exception\ControllerNotFound($class);
-            }
+        if ($response instanceof ResponseInterface) {
+            return $response;
         }
 
-        $this->triggerEvent(new AfterDispatch($this));
+        $content = $response;
+        $view = $this->container->factory->view($request);
+
+        $response = $this->container->factory->response($request);
+        $response->setContent($view->render($content));
+
+        return $response;
     }
 }

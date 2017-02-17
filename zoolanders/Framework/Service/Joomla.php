@@ -8,9 +8,10 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\System\Application;
+use Zoolanders\Framework\Service\System\Config;
 
-class Joomla extends Service
+class Joomla
 {
     /**
      * The current joomla version
@@ -25,13 +26,13 @@ class Joomla extends Service
      *
      * @param App $app A reference to the global app object
      */
-    public function __construct(Container $c)
+    public function __construct(Config $config, Application $application, \JVersion $version)
     {
-        parent::__construct($c);
-
         \JLoader::import('joomla.version');
 
-        $this->version = new \JVersion();
+        $this->config = $config;
+        $this->application = $application;
+        $this->version = $version;
     }
 
     /**
@@ -70,7 +71,7 @@ class Joomla extends Service
      */
     public function getDefaultAccess()
     {
-        return $this->container->system->config->get('access');
+        return $this->config->get('access');
     }
 
     /**
@@ -78,6 +79,6 @@ class Joomla extends Service
      */
     public function getMenu()
     {
-        return $this->container->system->application->getMenu('site');
+        return $this->application->getMenu('site');
     }
 }

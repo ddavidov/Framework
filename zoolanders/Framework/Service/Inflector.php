@@ -8,9 +8,7 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
-
-class Inflector extends Service
+class Inflector
 {
     /**
      * @var \Joomla\String\Inflector
@@ -19,12 +17,9 @@ class Inflector extends Service
 
     /**
      * Constructor
-     * @param Container $c
      */
-    public function __construct(Container $c)
+    public function __construct()
     {
-        parent::__construct($c);
-
         $this->inflector = \Joomla\String\Inflector::getInstance();
     }
 

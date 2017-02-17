@@ -8,9 +8,7 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
-
-class Path extends Service
+class Path
 {
     /**
      * Shortcut to the zoo's path helper (where zoo and zoolanders have to register the paths)
@@ -32,19 +30,13 @@ class Path extends Service
 
     /**
      * Path constructor.
-     * @param Container $c
      * @param Filesystem|null $fs
+     * @param Zoo $zoo
      */
-    public function __construct(Container $c, Filesystem $fs = null)
+    public function __construct(Filesystem $fs = null, Zoo $zoo)
     {
-        parent::__construct($c);
-
-        if (!$fs) {
-            $fs = $c->filesystem;
-        }
-
         $this->filesystem = $fs;
-        $this->helper = $this->container->zoo->path;
+        $this->helper = $zoo->path;
     }
 
     /**

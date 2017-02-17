@@ -8,9 +8,10 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Request\Request;
+use Zoolanders\Framework\Service\System\Application;
 
-class Environment extends Service
+class Environment
 {
     /**
      * @var
@@ -29,16 +30,14 @@ class Environment extends Service
 
     /**
      * Environment constructor.
-     * @param Container|null $container
      */
-    public function __construct(Container $container = null)
+    public function __construct(Request $input, Application $application, Zoo $zoo)
     {
-
-        // call parent constructor
-        parent::__construct($container);
-
         // set params as DATA class
-        $this->params = $container->zoo->getApp()->data->create(array());
+        $this->zoo = $zoo;
+        $this->params = $zoo->getApp()->data->create(array());
+        $this->input = $input;
+        $this->application = $application;
     }
 
     /**
@@ -56,34 +55,34 @@ class Environment extends Service
         if (!$this->environment) {
             // init vars
             $environment = array();
-            $jinput = $this->container->system->application->input;
+            $jinput = $this->input;
 
             $component = $jinput->getCmd('option', null);
             $task = $jinput->getCmd('task', null);
             $view = $jinput->getCmd('view', null);
 
             // set back or frontend
-            $environment[] = $this->container->system->application->isAdmin() ? 'admin' : 'site';
+            $environment[] = $this->application->isAdmin() ? 'admin' : 'site';
 
             // set component
             $environment[] = $component;
 
             // set controller
-            $environment[] = $this->container->zoo->getApp()->request->getCmd('controller', null);
+            $environment[] = $this->input->getCmd('controller', null);
 
             // if ZOO
             if ($component == 'com_zoo') {
                 // if zoo item full view
                 if ($task == 'item') {
                     $environment[] = 'item';
-                    $this->params->set('item_id', $this->container->zoo->getApp()->request->getCmd('item_id'));
+                    $this->params->set('item_id', $this->input->getCmd('item_id'));
                     unset($task);
                 } else if ($view == 'item') { // if joomla item menu route
                     $environment[] = 'item';
 
-                    if ($item_id = $this->container->zoo->getApp()->request->getInt('item_id')) {
+                    if ($item_id = $this->input->getInt('item_id')) {
                         $this->params->set('item_id', $item_id);
-                    } elseif ($menu = $this->container->zoo->getApp()->menu->getActive()) {
+                    } elseif ($menu = $this->zoo->getApp()->menu->getActive()) {
                         $this->params->set('item_id', $menu->params->get('item_id'));
                     }
 
@@ -91,7 +90,7 @@ class Environment extends Service
                 } // if zoo cat
                 else if ($task == 'category') {
                     $environment[] = 'category';
-                    $this->params->set('category_id', $this->container->zoo->getApp()->request->getCmd('category_id'));
+                    $this->params->set('category_id', $this->input->getCmd('category_id'));
                     unset($task);
                 } else if ($view == 'category') { // if joomla item menu route
                     $environment[] = 'category';
@@ -149,7 +148,7 @@ class Environment extends Service
     public function currentExtension(){
 
         if(empty($this->extension)){
-            $jinput = $this->container->system->application->input;
+            $jinput = $this->input;
             $this->extension = $jinput->getCmd('option', $jinput->getCmd('plugin', false));
             if(preg_match('/^\w{1,3}_/', $this->extension)){
                 $this->extension = preg_replace('/^\w{1,3}_/', '', $this->extension);

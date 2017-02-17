@@ -9,9 +9,15 @@
 namespace Zoolanders\Framework\Listener\Environment;
 
 use Zoolanders\Framework\Listener\Listener;
+use Zoolanders\Framework\Service\System\Document;
 
 class LoadCss extends Listener
 {
+    function __construct(Document $document)
+    {
+        $this->document = $document;
+    }
+
     /**
      * @param \Zoolanders\Framework\Event\Environment\Init $event
      */
@@ -19,7 +25,7 @@ class LoadCss extends Listener
     {
         // perform admin tasks
         if ($event->isAdmin()) {
-            $this->container->system->document->addStylesheet('zlfw:assets/css/zl_ui.css');
+            $this->document->addStylesheet('zlfw:assets/css/zl_ui.css');
         }
     }
 }

@@ -9,7 +9,6 @@
 namespace Zoolanders\Framework\Model;
 
 use Illuminate\Support\Collection;
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Model\Database\Date;
 use Zoolanders\Framework\Utils\IsString;
 
@@ -18,6 +17,11 @@ defined('_JEXEC') or die;
 abstract class Database extends Model
 {
     use Date, IsString;
+
+    /**
+     * @var \Zoolanders\Framework\Service\Database
+     */
+    protected $db;
 
     /**
      * @var array
@@ -61,19 +65,20 @@ abstract class Database extends Model
 
     /**
      * Database constructor.
-     * @param Container $container
      */
-    public function __construct(Container $container)
+    public function __construct(\Zoolanders\Framework\Service\Database $db)
     {
-        parent::__construct($container);
+        parent::__construct();
 
-        $this->query = $this->container->db->getQuery(true);
+        $this->db = $db;
+        $this->query = $this->db->getQuery(true);
     }
 
     /**
      * Get list of columns to be selected
      */
-    protected function getColumns(){
+    protected function getColumns()
+    {
         return empty($this->columns) ? [$this->getPrefix() . '*'] : $this->columns;
     }
 
@@ -85,12 +90,12 @@ abstract class Database extends Model
     {
         $prefix = $prefix ? $prefix : $this->tablePrefix;
 
-        $fields = array_map(function($item) use ($prefix){
+        $fields = array_map(function ($item) use ($prefix) {
             $cell = '';
-            if($prefix){
+            if ($prefix) {
                 $cell .= $this->getPrefix();
             }
-            return $cell . ($item!=='*' ? $this->query->qn($item) : $item);
+            return $cell . ($item !== '*' ? $this->query->qn($item) : $item);
         }, $fields);
 
         $this->columns = array_merge($this->columns, $fields);
@@ -149,7 +154,7 @@ abstract class Database extends Model
     public function get()
     {
         $query = $this->buildQuery();
-        $models = $this->container->db->queryObjectList($query);
+        $models = $this->db->queryObjectList($query);
 
         return new Collection($models);
     }
@@ -342,7 +347,7 @@ abstract class Database extends Model
         settype($ids, 'array');
 
         if (count($ids)) {
-            $this->wherePrefix( $this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
+            $this->wherePrefix($this->query->qn($field) . ' IN (' . implode(', ', $this->query->q($ids)) . ')');
         }
 
         return $this;
@@ -381,8 +386,7 @@ abstract class Database extends Model
     {
         $value = $this->query->q($value);
 
-        switch (strtolower($operator))
-        {
+        switch (strtolower($operator)) {
             case 'in':
                 settype($value, 'array');
                 $value = '(' . implode(",", $value) . ')';

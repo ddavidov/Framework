@@ -10,12 +10,12 @@ namespace Zoolanders\Framework\Service;
 
 use Zoolanders\Framework\Container\Container;
 
-class Route extends Service
+class Route
 {
-    public function __construct(Container $c)
+    public function __construct(Zoo $zoo)
     {
-        parent::__construct($c);
-
+        $this->zoo = $zoo;
+        $this->app = $zoo->getApp();
         $this->setupRouters();
     }
 
@@ -24,7 +24,7 @@ class Route extends Service
      */
     protected function setupRouters()
     {
-        $this->container->zoo->getApp()->event->dispatcher->connect('application:sefparseroute', function ($event) {
+        $this->zoo->getApp()->event->dispatcher->connect('application:sefparseroute', function ($event) {
 
             $app_id = $this->app->request->getInt('app_id', null);
             $app = $this->app->table->application->get($app_id);

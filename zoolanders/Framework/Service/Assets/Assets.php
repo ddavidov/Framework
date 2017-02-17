@@ -13,9 +13,12 @@ use Assetic\Factory\AssetFactory;
 use Assetic\Factory\Worker\CacheBustingWorker;
 use Assetic\FilterManager;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\Filesystem;
+use Zoolanders\Framework\Service\Path;
 use Zoolanders\Framework\Service\Service;
+use Zoolanders\Framework\Service\System\Document;
 
-abstract class Assets extends Service
+abstract class Assets
 {
     /**
      * @var AssetManager
@@ -46,10 +49,8 @@ abstract class Assets extends Service
      * Assets constructor.
      * @param Container $c
      */
-    public function __construct(Container $c)
+    public function __construct(Document $document, Path $path, Filesystem $fs)
     {
-        parent::__construct($c);
-
         $this->assetManager = new AssetManager();
         $this->filterManager = new FilterManager();
         $this->factory = new AssetFactory(JPATH_SITE);
@@ -57,6 +58,10 @@ abstract class Assets extends Service
         $this->factory->setAssetManager($this->assetManager);
         $this->factory->setFilterManager($this->filterManager);
         $this->factory->addWorker(new CacheBustingWorker());
+
+        $this->document = $document;
+        $this->path = $path;
+        $this->filesystem = $fs;
     }
 
     public function define($name, $assets)
@@ -70,7 +75,7 @@ abstract class Assets extends Service
         settype($assets, 'array');
 
         foreach ($assets as &$asset) {
-            $asset = $this->container->path->path($asset);
+            $asset = $this->path->path($asset);
         }
 
         $this->assets = array_unique(array_merge($this->assets, $assets));
@@ -83,8 +88,8 @@ abstract class Assets extends Service
         }
 
         $asset = $this->factory->createAsset($this->assets, $filters);
-        
-        $writer = new Writer($this->container, $this->container->path->path('cache:'));
+
+        $writer = new Writer($this->filesystem, $this->path->path('cache:'));
         $writer->writeAsset($asset);
 
         foreach ($writer->getPaths() as $path) {

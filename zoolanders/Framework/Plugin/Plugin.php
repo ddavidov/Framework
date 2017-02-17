@@ -18,6 +18,8 @@ abstract class Plugin extends \JPlugin
     {
         parent::__construct($subject, $config);
 
+        return;
+
         $this->container = \Zoolanders\Framework\Container\Container::getInstance();
 
         // load default and current language

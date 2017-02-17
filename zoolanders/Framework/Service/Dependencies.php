@@ -8,8 +8,19 @@
 
 namespace Zoolanders\Framework\Service;
 
-class Dependencies extends Service
+class Dependencies
 {
+    /**
+     * Dependencies constructor.
+     * @param Path $path
+     */
+    public function __construct(Path $path, Filesystem $fs, Zoo $zoo)
+    {
+        $this->path = $path;
+        $this->filesystem = $fs;
+        $this->zoo = $zoo;
+    }
+
     /**
      * Checks if ZOO extensions meet the required version
      *
@@ -20,10 +31,10 @@ class Dependencies extends Service
     {
         // init vars
         $status = array('state' => true, 'extensions' => array());
-        $groups = $this->container->path->path($file);
+        $groups = $this->path->path($file);
 
         // get the content from file
-        if ($groups && $groups = json_decode($this->container->filesystem->read($groups))) {
+        if ($groups && $groups = json_decode($this->filesystem->read($groups))) {
             // iterate over the groups
             foreach ($groups as $group => $dependencies) foreach ($dependencies as $name => $dependency) {
                 if ($group == 'plugins') {
@@ -44,9 +55,9 @@ class Dependencies extends Service
                 }
 
                 $version = $dependency->version;
-                $manifest = $this->container->path->path('root:' . $dependency->manifest);
+                $manifest = $this->path->path('root:' . $dependency->manifest);
 
-                if ($version && $this->container->filesystem->has($manifest) && $xml = simplexml_load_string($this->container->filesystem->read($manifest))) {
+                if ($version && $this->filesystem->has($manifest) && $xml = simplexml_load_string($this->filesystem->read($manifest))) {
 
                     // check if the extension is outdated
                     if (version_compare($version, (string)$xml->version, 'g')) {
@@ -79,7 +90,7 @@ class Dependencies extends Service
             $message = isset($dep_req->message) ? \JText::sprintf((string)$dep_req->message, $extension, $name) : \JText::sprintf('PLG_ZLFRAMEWORK_UPDATE_EXTENSION', $extension, $name);
 
             // raise notice
-            $this->container->zoo->getApp()->error->raiseNotice(0, $message);
+            $this->zoo->getApp()->error->raiseNotice(0, $message);
         }
 
     }

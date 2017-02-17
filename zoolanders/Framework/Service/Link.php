@@ -8,7 +8,7 @@
 
 namespace Zoolanders\Framework\Service;
 
-class Link extends Service
+class Link
 {
     /**
      * Get link to this component's related resources.

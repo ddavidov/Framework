@@ -36,5 +36,5 @@ interface ViewInterface
      * @param array $data
      * @return mixed
      */
-    public function render($tpl, $data = []);
+    public function render($data = []);
 }

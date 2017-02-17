@@ -8,7 +8,7 @@
 
 namespace Zoolanders\Framework\Service;
 
-class Cache extends Service
+class Cache
 {
 
     /**

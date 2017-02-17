@@ -14,7 +14,7 @@ use Zoolanders\Framework\Table;
 
 defined('_JEXEC') or die;
 
-class Zoo extends Service
+class Zoo
 {
     /**
      * @var App
@@ -27,13 +27,10 @@ class Zoo extends Service
     protected $loaded = false;
 
     /**
-     * Zoo Service constructor.
-     * @param Container $c
+     * Zoo constructor.
      */
-    public function __construct(Container $c)
+    public function __construct()
     {
-        parent::__construct($c);
-
         // Autoload zoo
         $this->load();
     }
@@ -242,6 +239,5 @@ class Zoo extends Service
             $this->app->loader->register('ElementRepeatablepro', 'elements:repeatablepro/repeatablepro.php');
             $this->app->loader->register('ElementFilespro', 'elements:filespro/filespro.php');
         }
-
     }
 }

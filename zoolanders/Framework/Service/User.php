@@ -15,14 +15,27 @@
 
 namespace Zoolanders\Framework\Service;
 
+use Zoolanders\Framework\Service\System\Session;
+
 /**
  * Helper to deal with user and user operations
  *
  * @package Framework.Helpers
  */
-class User extends Service
+class User
 {
     protected $queriedUsers = array();
+
+    /**
+     * User constructor.
+     * @param Database $db
+     */
+    public function __construct(Database $db, Request $request, Session $session)
+    {
+        $this->db = $db;
+        $this->session = $session;
+        $this->request = $request;
+    }
 
     /**
      * Get a user object
@@ -36,7 +49,7 @@ class User extends Service
     public function get($id = null)
     {
         // get database
-        $db = $this->container->db;
+        $db = $this->db;
 
         // check if user id exists
         if (!is_null($id) && !in_array($id, $this->queriesUsers) && !$db->queryResult('SELECT id FROM #__users WHERE id = ' . $db->escape($id))) {
@@ -66,7 +79,7 @@ class User extends Service
     public function getByUsername($username)
     {
         // get database
-        $db = $this->container->db;
+        $db = $this->db;
 
         // search username
         if ($id = $db->queryResult('SELECT id FROM #__users WHERE username = ' . $db->Quote($username))) {
@@ -88,7 +101,7 @@ class User extends Service
     public function getByEmail($email)
     {
         // get database
-        $db = $this->container->db;
+        $db = $this->db;
 
         // search email
         if ($id = $db->queryResult('SELECT id FROM #__users WHERE email = ' . $db->Quote($email))) {
@@ -109,7 +122,7 @@ class User extends Service
      */
     public function getState($key)
     {
-        $registry = $this->container->system->session->get('registry');
+        $registry = $this->session->get('registry');
 
         if (!is_null($registry)) {
             return $registry->get($key);
@@ -130,7 +143,7 @@ class User extends Service
      */
     public function setState($key, $value)
     {
-        $registry = $this->container->system->session->get('registry');
+        $registry = $this->session->get('registry');
 
         if (!is_null($registry)) {
             return $registry->setValue($key, $value);
@@ -156,7 +169,7 @@ class User extends Service
 
         $old = $this->getState($key);
         $cur = (!is_null($old)) ? $old : $default;
-        $new = $this->container->request->getVar($request, null, 'default', $type);
+        $new = $this->request->getVar($request, null, 'default', $type);
 
         if ($new !== null) {
             $this->setState($key, $new);

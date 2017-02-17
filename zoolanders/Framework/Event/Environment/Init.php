@@ -8,9 +8,8 @@
 
 namespace Zoolanders\Framework\Event\Environment;
 
-use Joomla\Input\Input;
-use Zoolanders\Framework\Service\Request;
-use Zoolanders\Framework\Service\Zoo;
+use Zoolanders\Framework\Request\Request;
+use Zoolanders\Framework\Service\System\Application;
 
 class Init extends \Zoolanders\Framework\Event\Event
 {
@@ -48,11 +47,12 @@ class Init extends \Zoolanders\Framework\Event\Event
      * Init constructor.
      *
      */
-    public function __construct($request)
+    public function __construct(Request $request, Application $application)
     {
         $this->request = $request;
+        $this->application = $application;
 
-        $this->side = $this->container->system->application->isAdmin() ? 'admin' : 'site';
+        $this->side = $this->application->isAdmin() ? 'admin' : 'site';
         $this->component = str_replace('com_', '', $request->getCmd('option', ''));
         $this->controller = $request->getCmd('controller', false);
         $this->view = $request->getCmd('view', false);

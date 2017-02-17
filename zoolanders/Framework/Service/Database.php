@@ -14,13 +14,14 @@
 
 namespace Zoolanders\Framework\Service;
 use Zoolanders\Framework\Container\Container;
+use Zoolanders\Framework\Service\System\Dbo;
 
 /**
  * Helper for the database operations
  *
  * @package Framework.Helpers
  */
-class Database extends Service
+class Database
 {
 
     /**
@@ -41,15 +42,11 @@ class Database extends Service
 
     /**
      * Class Constructor
-     *
-     * @param App $app A reference to the global app object
      */
-    public function __construct(Container $c = null)
+    public function __construct(Dbo $dbo)
     {
-        parent::__construct($c);
-
         // set database
-        $this->_database = $this->container->system->dbo;
+        $this->_database = $dbo;
         $this->name = $this->_database->name;
     }
 

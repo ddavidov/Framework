@@ -26,7 +26,7 @@ class ParamsServiceTest extends ServiceTest
      * @dataProvider    simpleKeyValueProvider
      */
     public function testBinding($key, $value){
-        $params = new Params(self::$container);
+        $params = self::$container->params;
         $db = self::$container->db;
         $db->transactionStart();
 
@@ -56,7 +56,7 @@ class ParamsServiceTest extends ServiceTest
      * @dataProvider    simpleKeyValueProvider
      */
     public function testMassBinding($key, $value){
-        $params = new Params(self::$container);
+        $params = self::$container->params;
         $db = self::$container->db;
         $db->transactionStart();
 

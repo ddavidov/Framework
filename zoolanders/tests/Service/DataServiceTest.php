@@ -20,7 +20,7 @@ class DataServiceTest extends ServiceTest
      * @dataProvider    dataFormatSet
      */
     public function testCreate($data, $format){
-        $data_service = new Data(self::$container);
+        $data_service = self::$container->data;
         $object = $data_service->create($data, $format);
 
         // Check interface(class)

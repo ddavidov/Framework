@@ -105,6 +105,7 @@ class Database
      * Generally used for SELECT fields operations
      *
      * @param string $query The query to be executed
+     * @param string Entity class name
      *
      * @return object The result of the query
      *
@@ -112,12 +113,11 @@ class Database
      *
      * @since 1.0.0
      */
-    public function queryObject($query)
+    public function queryObject($query, $class = 'stdClass')
     {
-
         // query database table
         $this->_database->setQuery($query);
-        return $this->_database->loadObject();
+        return $this->_database->loadObject($class);
 
     }
 

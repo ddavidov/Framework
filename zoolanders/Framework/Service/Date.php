@@ -17,12 +17,20 @@
 
 namespace Zoolanders\Framework\Service;
 
+use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Utils\IsString;
 
 class Date
 {
 
     use IsString;
+
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
     /**
      * Create a JDate object
@@ -172,8 +180,8 @@ class Date
      */
     public function getOffset($user = null)
     {
-        $user = $user == null ? $this->container->user->get() : $user;
-        return $user->getParam('timezone', $this->container->system->config->get('offset'));
+        $user = $user == null ? $this->user->get() : $user;
+        return $user->getParam('timezone', $this->system->config->get('offset'));
     }
 
     /**

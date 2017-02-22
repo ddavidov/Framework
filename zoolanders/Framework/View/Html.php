@@ -9,9 +9,9 @@
 namespace Zoolanders\Framework\View;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Event\Dispatcher;
 use Zoolanders\Framework\Event\View\GetTemplatePath;
+use Zoolanders\Framework\Request\Request;
 use Zoolanders\Framework\Service\System;
 
 /**
@@ -30,7 +30,7 @@ class Html extends View
      *
      * @var    string
      */
-    protected $layout = 'default';
+    protected $layout;
 
     /**
      * List of paths where to find templates
@@ -42,11 +42,13 @@ class Html extends View
     /**
      * HtmlView constructor.
      */
-    public function __construct(Dispatcher $event, System $system)
+    public function __construct(Dispatcher $event, System $system, Request $request)
     {
         parent::__construct($event);
 
         $this->system = $system;
+
+        $this->layout = $request->getCmd('task', 'default');
 
         $this->addTemplatePath(JPATH_COMPONENT . '/View/' . ucfirst($this->getName()) . '/tmpl');
     }
@@ -135,7 +137,7 @@ class Html extends View
     public function setLayout($layout)
     {
         if (is_null($layout)) {
-            $layout = 'default';
+            $layout = $this->getLayout();
         }
 
         if (strpos($layout, ':') === false) {
@@ -176,6 +178,7 @@ class Html extends View
             }
         }
 
+        // @TODO: Add fallback to default if assumed tpl does not exist
         include($this->templatePaths[0] . $tpl . '.php');
 
         return ob_get_clean();

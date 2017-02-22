@@ -15,20 +15,6 @@ use Zoolanders\Framework\Container\Container;
 class ModelTest extends ZFTestCase
 {
     /**
-     * Test model creation
-     *
-     * @covers      Model::create()
-     * @covers      Model::getContainer()
-     */
-    public function testMakeModel(){
-
-        $model = new Model(self::$container);
-        $container = $model->getContainer();
-
-        $this->assertTrue($container instanceof Container);
-    }
-
-    /**
      * Get Set state operations check
      *
      * @covers          Model::setState()

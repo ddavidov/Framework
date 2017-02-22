@@ -12,15 +12,7 @@ use Zoolanders\Framework\Container\Container;
  *
  * @package ZFTests\Service
  */
-class ServiceTest extends ZFTestCase
+abstract class ServiceTest extends ZFTestCase
 {
-    /**
-     * Simple check of returning container instance
-     *
-     * @covers      Service::getContainer()
-     */
-    public function testGetContainer(){
-        $service = new Service(self::$container);
-        $this->assertTrue($service->getContainer() instanceof Container);
-    }
+
 }

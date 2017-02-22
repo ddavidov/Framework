@@ -14,23 +14,6 @@ use ZFTests\Classes\TestController;
 class ControllerTest extends ZFTestCase
 {
     /**
-     * Test controller init
-     *
-     * @covers          Controller::execute()
-     * @dataProvider    actionMap
-     */
-    public function testExecute($action, $response){
-        $ctrl = new TestController(self::$container);
-
-        // Check expected response
-        $this->assertEquals($response, $ctrl->execute($action));
-
-        // Check if expected events were triggered
-        $this->assertEventTriggered('controller:beforeexecute', function(){});
-        $this->assertEventTriggered('controller:afterexecute', function(){});
-    }
-
-    /**
      * Test redirect flow
      *
      * @covers      Controller::setRedirect()

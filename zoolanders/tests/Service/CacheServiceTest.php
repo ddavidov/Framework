@@ -20,8 +20,8 @@ class CacheServiceTest extends ServiceTest
      */
     public function testCreate(){
         $filename = FIXTURES_PATH . '/cache/testcache';
-        $cache = new CacheService(self::$container);
-        $fs = new Filesystem(self::$container);
+        $cache = new CacheService(self::$container->filesystem);
+        $fs = self::$container->filesystem;
 
         $cache->create($filename);
         $this->assertFileExists($filename);

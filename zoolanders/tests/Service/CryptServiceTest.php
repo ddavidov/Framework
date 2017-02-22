@@ -22,7 +22,7 @@ class CryptServiceTest extends ServiceTest
      * @dataProvider    phraseDataSet
      */
     public function testEncryptDecrypt($testPhrase){
-        $crypt = new Crypt(self::$container);
+        $crypt = self::$container->crypt;
         $encrypted = $crypt->encrypt($testPhrase);
 
         $this->assertNotEmpty($encrypted);
@@ -39,7 +39,7 @@ class CryptServiceTest extends ServiceTest
      * @dataProvider    passwordDataSet
      */
     public function testPasswordDecryption($src, $expected){
-        $crypt = new Crypt(self::$container);
+        $crypt = self::$container->crypt;
         $this->assertEquals($expected, $crypt->decryptPassword($src));
     }
 

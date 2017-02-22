@@ -80,7 +80,7 @@ class Dispatcher
         }
 
         // also, disconnect it to the core zoo listeners to keep b/c
-        $this->zooEventDispatcher->disconnect($name, $listener);
+        $this->zoo->zoo->dispatcher->disconnect($name, $listener);
     }
 
     /**
@@ -115,6 +115,7 @@ class Dispatcher
     {
         $container = Container::getInstance();
 
+        // @TODO: Add processing for non-encapsulated listeners (like closures, global func. etc.)
         foreach ($this->getListeners($event->getName()) as $listener) {
             $parts = explode("@", $listener);
 

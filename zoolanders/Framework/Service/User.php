@@ -16,6 +16,7 @@
 namespace Zoolanders\Framework\Service;
 
 use Zoolanders\Framework\Service\System\Session;
+use Zoolanders\Framework\Request\Request;
 
 /**
  * Helper to deal with user and user operations

@@ -261,11 +261,11 @@ class Container
     }
 
     /**
-     * @param null $default
+     * @param string $default controller name
      * @throws Exception\BadResponseType
      * @throws Exception\ControllerNotFound
      */
-    public function dispatch()
+    public function dispatch($default_controller = null)
     {
         //$eventDispatcher = $this->make('\Zoolanders\Framework\Event\Event');
 
@@ -273,6 +273,8 @@ class Container
         //$eventDispatcher->trigger($event);
 
         $dispatcher = new Dispatcher($this);
+        $dispatcher->setDefaultController($default_controller);
+
         $response = $this->injector->execute([$dispatcher, 'dispatch']);
 
         //$event = $eventDispatcher->create('Dispatcher\AfterDispatch');

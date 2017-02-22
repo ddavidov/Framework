@@ -18,7 +18,7 @@ class PathServiceTest extends ServiceTest
      * Get Path service instance
      */
     private function getServiceInstance(){
-        return new Path(self::$container, new Filesystem(self::$container));
+        return self::$container->path;
     }
 
     /**

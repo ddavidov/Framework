@@ -10,13 +10,15 @@ use ZFTests\Classes\FixtureImporter;
  */
 class ZFTestCaseFixtures extends ZFTestCase
 {
+    static $fixtures = null;
+
     /**
      * SetUp before class
      */
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$container['fixtures'] = new FixtureImporter(self::$container, [
+        self::$fixtures = new FixtureImporter(self::$container, [
             'path' => 'sql'
         ]);
 
@@ -40,7 +42,7 @@ class ZFTestCaseFixtures extends ZFTestCase
         $dbo = self::$container->db;
         $dbo->transactionStart();
 
-        self::$container->fixtures->import( self::getPkgName() );
+        self::$fixtures->import( self::getPkgName() );
     }
 
     /**
@@ -48,7 +50,7 @@ class ZFTestCaseFixtures extends ZFTestCase
      */
     protected static function dropFixtures(){
 
-        self::$container->fixtures->import( self::getPkgName() . '_rollback' );
+        self::$fixtures->import( self::getPkgName() . '_rollback' );
 
         $dbo = self::$container->db;
         $dbo->transactionRollback();

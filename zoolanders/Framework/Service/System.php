@@ -35,7 +35,7 @@ class System
     public function __get($name)
     {
         // this is JFactory::get****()->$method($args)
-        return $this->getClass()->$name;
+        return $this->getClass()->{$name};
     }
 
     /**

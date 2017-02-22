@@ -8,6 +8,7 @@
 
 namespace Zoolanders\Framework\Controller;
 
+use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Event\Triggerable;
 use Zoolanders\Framework\Response\ResponseInterface;
 use Zoolanders\Framework\Utils\NameFromClass;
@@ -77,28 +78,6 @@ class Controller
         }
 
         return $this->render($layout);
-    }
-
-    /**
-     * Returns a named View object
-     *
-     * @param   string $name The Model name. If null we'll use the modelName
-     *                           variable or, if it's empty, the same name as
-     *                           the Controller
-     * @param   array $config Configuration parameters to the Model. If skipped
-     *                           we will use $this->config
-     *
-     * @return  ViewInterface  The instance of the Model known to this Controller
-     */
-    public function getView($name = null, $config = array())
-    {
-        // Use provided or default view
-        $viewName = !empty($name) ? $name : $this->getName();
-        $config['name'] = $viewName;
-
-        $view = $this->container->factory->view($this->input, $config);
-
-        return $view;
     }
 
     /**

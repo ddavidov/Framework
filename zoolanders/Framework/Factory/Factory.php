@@ -48,12 +48,12 @@ class Factory
      * @param $input
      * @return bool|mixed
      */
-    public function controller($input)
+    public function controller($input, $default_ctrl = null)
     {
         $namespaces = [];
         $namespaces[] = Container::FRAMEWORK_NAMESPACE;
 
-        $controller = $input->getCmd('controller', $input->getCmd('view', null));
+        $controller = $input->getCmd('controller', $input->getCmd('view', $default_ctrl));
 
         if ($extension = $this->container->environment->currentExtension()) {
             $namespaces = array_merge($this->container->getRegisteredExtensionNamespaces($extension), $namespaces);
@@ -79,10 +79,10 @@ class Factory
      *
      * @return  ViewInterface
      */
-    public function view($input, $config = [])
+    public function view($input, $default = null)
     {
         $type = $input->isAjax() ? 'Json' : 'Html';
-        $name = isset($config['name']) ? $config['name'] : $input->getCmd('view');
+        $name = $input->getCmd('view', $input->getCmd('controller', $default));
         $viewClass = '';
 
         $component = $this->container->environment->currentExtension();

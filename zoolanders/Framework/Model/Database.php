@@ -19,6 +19,16 @@ abstract class Database extends Model
     use Date, IsString;
 
     /**
+     * @var string Primary key column name
+     */
+    protected $primary_key = 'id';
+
+    /**
+     * @var string  Entity class name
+     */
+    protected $entity_class = 'stdClass';
+
+    /**
      * @var \Zoolanders\Framework\Service\Database
      */
     protected $db;
@@ -65,6 +75,7 @@ abstract class Database extends Model
 
     /**
      * Database constructor.
+     * @param Container $container
      */
     public function __construct(\Zoolanders\Framework\Service\Database $db)
     {
@@ -392,5 +403,22 @@ abstract class Database extends Model
                 $value = '(' . implode(",", $value) . ')';
                 break;
         }
+    }
+
+    /**
+     * Find single record by id
+     *
+     * @param $key
+     *
+     * @return mixed
+     */
+    public function find($key){
+
+        $this->where($this->primary_key, '=', $key);
+        $this->buildQuery();
+
+        $record = $this->db->queryObject($this->query, $this->entity_class);
+
+        return $record;
     }
 }

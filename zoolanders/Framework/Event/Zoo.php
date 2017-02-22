@@ -138,7 +138,7 @@ class Zoo
         if ($name == 'dispatcher') {
             return $this->zoo->$name;
         } else {
-            return $this->zoo->dispatcher->$name;
+            return $this->zoo->dispatcher->{$name};
         }
     }
 }

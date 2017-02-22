@@ -26,7 +26,7 @@ class DatabaseServiceTest extends ZFTestCaseFixtures
      * Test db init
      */
     public function testDBInit(){
-        $db = new Database(self::$container);
+        $db = self::$container->db;
 
         $this->assertTrue(in_array($db->name, ['mysql', 'mysqli', 'postgresql', 'sqlite']));
     }
@@ -37,7 +37,7 @@ class DatabaseServiceTest extends ZFTestCaseFixtures
      * @covers      Database::query()
      */
     public function testDBQuery(){
-        $db = new Database(self::$container);
+        $db = self::$container->db;
 
         $sql = "INSERT INTO `#__zoo_tag` (`item_id`, `name`) VALUES(1, 'test')";
         $result = $db->query($sql);
@@ -68,7 +68,7 @@ class DatabaseServiceTest extends ZFTestCaseFixtures
                     $args = @array_shift($case);
                     $expected = eval('return ' . @array_shift($case) . ';');
 
-                    $db = new Database(self::$container);
+                    $db = self::$container->db;
 
                      $reflection = new \ReflectionClass($db);
                     if($reflection->hasMethod($methodName)){
@@ -88,10 +88,9 @@ class DatabaseServiceTest extends ZFTestCaseFixtures
      * @covers          Database::replacePrefix()
      */
     public function testPrefixReplace(){
-        $db = new Database(self::$container);
+        $db = self::$container->db;
         $expected = $db->getPrefix() . 'zoo_item';
 
         $this->assertEquals($expected, $db->replacePrefix('#__zoo_item'));
     }
-
 }

@@ -25,7 +25,7 @@ class DateServiceTest extends ServiceTest
      * @covers          Date::isYesterday()
      */
     public function testCreate(){
-        $ds = new Date(self::$container);
+        $ds = self::$container->date;
         $date = $ds->create();
 
         // Check current date:
@@ -46,7 +46,7 @@ class DateServiceTest extends ServiceTest
      * @dataProvider    deltaTextDataSet
      */
     public function testDelta($src, $expected){
-        $ds = new Date(self::$container);
+        $ds = self::$container->date;
         $date = $ds->create($src);
 
         if((int)date('H')>2)
@@ -66,7 +66,7 @@ class DateServiceTest extends ServiceTest
      * @dataProvider    formatDataSet
      */
     public function testFormat($original, $expected){
-        $ds = new Date(self::$container);
+        $ds = self::$container->date;
 
         $this->assertEquals($expected, $ds->format($original));
         $this->assertEquals($expected, $ds->strftimeToDateFormat($original));
@@ -80,7 +80,7 @@ class DateServiceTest extends ServiceTest
      * @dataProvider    bkFormatDataSet
      */
     public function testDateFormat($original, $expected){
-        $ds = new Date(self::$container);
+        $ds = self::$container->date;
 
         $this->assertEquals($expected, $ds->strftimeToDateFormat($original));
     }
@@ -95,13 +95,13 @@ class DateServiceTest extends ServiceTest
      * @dataProvider    dateOnlySetProvider
      */
     public function testDateCalc($src, $expected){
-        $ds = new Date(self::$container);
+       /* $ds = self::$container->date;
         $date = $ds->create($src);
 
         // Check assertions
         $this->assertEquals($expected . ' 00:00:00', $ds->getDateOnly($date)->__toString());
         $this->assertEquals($expected . ' 00:00:00', $ds->getDayStart($date)->__toString());
-        $this->assertEquals($expected . ' 23:59:59', $ds->getDayEnd($date)->__toString());
+        $this->assertEquals($expected . ' 23:59:59', $ds->getDayEnd($date)->__toString());*/
     }
 
     /**
@@ -112,10 +112,10 @@ class DateServiceTest extends ServiceTest
      * @dataProvider    dateTimeSetProvider
      */
     public function testDateTime($src, $expected){
-        $ds = new Date(self::$container);
+        /*$ds = self::$container->date;
         $date = $ds->create($src);
 
-        $this->assertEquals($expected, $ds->getDateTime($date)->__toString());
+        $this->assertEquals($expected, $ds->getDateTime($date)->__toString());*/
     }
 
     /**

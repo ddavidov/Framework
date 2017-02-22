@@ -19,7 +19,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    formatDataSet
      */
     public function testFormatSize($actual, $format, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->formatFilesize($actual, $format));
     }
 
@@ -30,7 +30,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    precizeFilesizeSet
      */
     public function testGetSize($src, $format, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->getSourceSize($src, $format));
     }
 
@@ -40,7 +40,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    difMimeTypesDataSet
      */
     public function testGetMimeType($src, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->getContentType($src));
     }
 
@@ -50,7 +50,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    filenamesProvider
      */
     public function testMakeSafe($filename, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->makeSafe($filename));
     }
 
@@ -60,7 +60,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    filepathsProvider
      */
     public function testPathCleanup($src, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->cleanPath($src));
     }
 
@@ -74,7 +74,7 @@ class FilesystemServiceTest extends ZFTestCase
         $filteredFS = ['test1.txt', 'test2.txt'];
         $internalFS = ['subdir/test3.txt'];
 
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $content = $file->readDirectoryFiles(JOOMLA_ENV_PATH . '/fixtures/filesystem');
 
         $this->assertArraySubset(array_merge($internalFS, $filteredFS), $content);
@@ -94,7 +94,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @covers      Filesystem::readDirectory()
      */
     public function testReadDirectory(){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $content = $file->readDirectory(JOOMLA_ENV_PATH . '/fixtures/filesystem');
 
         $this->assertArraySubset(['subdir'], $content);
@@ -112,7 +112,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    filesExtDataSet
      */
     public function testGetExtension($filename, $ext){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($ext, $file->getExtension($filename));
     }
 
@@ -123,7 +123,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    makepathDataSet
      */
     public function testMakePath($arg1, $arg2, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->makePath($arg1, $arg2));
     }
 
@@ -133,7 +133,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @covers          Filesystem::folderCreate()
      */
     public function testFolderCreate(){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $dirPath = FIXTURES_PATH . '/testdir';
         // Create:
         $file->folderCreate($dirPath);
@@ -156,7 +156,7 @@ class FilesystemServiceTest extends ZFTestCase
      * @dataProvider    sizeStringDataProvider
      */
     public function testBytesOutput($src, $expected){
-        $file = new Filesystem(self::$container);
+        $file = self::$container->filesystem;
         $this->assertEquals($expected, $file->returnBytes($src));
     }
 

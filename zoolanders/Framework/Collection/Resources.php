@@ -23,15 +23,31 @@ class Resources extends Collection
      */
     public function find($key, $default = null)
     {
-        if ($key instanceof HasId) {
-            $key = $key->getId();
-        }
-
         return array_first($this->items, function ($itemKey, $item) use ($key) {
             /** @var HasId $item */
-            return $item->getId() == $key;
+            return $this->getKey($item) == $key;
 
         }, $default);
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    protected function getKey($key)
+    {
+        if ($key instanceof HasId) {
+            return $key->getId();
+        }
+        if (is_object($key) && isset($key->id)) {
+            return $key->id;
+        }
+
+        if (is_array($key) && isset($key['id'])) {
+            return $key['id'];
+        }
+
+        return $key;
     }
 
     /**
@@ -43,9 +59,7 @@ class Resources extends Collection
      */
     public function removeById($key)
     {
-        if ($key instanceof HasId) {
-            $key = $key->getId();
-        }
+       $key = $this->getKey($key);
 
         $index = array_search($key, $this->itemKeys());
 
@@ -129,8 +143,7 @@ class Resources extends Collection
     {
         return array_map(
             function ($item) {
-                /** @var HasId $item */
-                return $item->getId();
+                return $this->getKey($item);
             },
             $this->items);
     }
@@ -146,7 +159,7 @@ class Resources extends Collection
         $dictionary = $this->getDictionary($this);
 
         foreach ($collection as $item) {
-            $dictionary[$item->getId()] = $item;
+            $dictionary[$this-getKey($item)] = $item;
         }
 
         return new static(array_values($dictionary));
@@ -166,7 +179,7 @@ class Resources extends Collection
 
         foreach ($this->items as $item) {
             /** @var HasId $item */
-            if (!isset($dictionary[$item->getId()])) {
+            if (!isset($dictionary[$this->getKey($item)])) {
                 $diff->add($item);
             }
         }
@@ -188,8 +201,7 @@ class Resources extends Collection
         $dictionary = $this->getDictionary($collection);
 
         foreach ($this->items as $item) {
-            /** @var HasId $item */
-            if (isset($dictionary[$item->getId()])) {
+            if (isset($dictionary[$this->getKey($item)])) {
                 $intersect->add($item);
             }
         }
@@ -221,7 +233,7 @@ class Resources extends Collection
         $dictionary = array();
 
         foreach ($collection as $value) {
-            $dictionary[$value->getId()] = $value;
+            $dictionary[$this->getKey($value)] = $value;
         }
 
         return $dictionary;

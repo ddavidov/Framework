@@ -75,7 +75,7 @@ abstract class Database extends Model
 
     /**
      * Database constructor.
-     * @param Container $container
+     * @param DB service
      */
     public function __construct(\Zoolanders\Framework\Service\Database $db)
     {
@@ -420,5 +420,23 @@ abstract class Database extends Model
         $record = $this->db->queryObject($this->query, $this->entity_class);
 
         return $record;
+    }
+
+    /**
+     * Delete record by key
+     *
+     * @param $key
+     *
+     * @return bool
+     */
+    public function delete($key){
+
+        $query = $this->database->getQuery(true);
+
+        $query->delete()
+            ->from($query->qn($this->tableName))
+            ->where([$query->qn($this->primary_key) . '=' . $query->escape($key)]);
+
+        return $this->db->query($query);
     }
 }

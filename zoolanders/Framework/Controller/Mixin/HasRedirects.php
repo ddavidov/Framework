@@ -39,6 +39,11 @@ trait HasRedirects
     protected $redirectMessageType;
 
     /**
+     * @var App instance
+     */
+    protected $app;
+
+    /**
      * Returns true if there is a redirect set in the controller
      *
      * @return  boolean
@@ -73,9 +78,8 @@ trait HasRedirects
      */
     public function redirect()
     {
-        if ($this->redirectUrl) {
-            $app = $this->container->system->application;
-            $app->enqueueMessage($this->redirectMessage, $this->redirectMessageType);
+        if ($this->app && $this->redirectUrl) {
+            $this->app->enqueueMessage($this->redirectMessage, $this->redirectMessageType);
 
             return new RedirectResponse($this->redirectUrl);
         }

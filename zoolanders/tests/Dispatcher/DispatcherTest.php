@@ -21,7 +21,7 @@ class DispatcherTest extends ZFTestCase
 
         $this->expectException(ControllerNotFound::class);
 
-        $dispatcher = $this->container->make('Zoolanders\Framework\Dispatcher\Dispatcher', array($this->container));
+        $dispatcher = self::$container->make('Zoolanders\Framework\Dispatcher\Dispatcher', array(self::$container));
         $dispatcher->dispatch(new Request());
 
         // Check if expected events were triggered

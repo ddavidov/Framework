@@ -14,6 +14,44 @@ defined('_JEXEC') or die;
 class Resources extends Collection
 {
     /**
+     * Create a new collection.
+     *
+     * @param  array $items
+     */
+    public function __construct(array $items = array())
+    {
+        $this->items = [];
+
+        foreach ($items as $item) {
+            $this->items[$this->getKey($item)] = $item;
+        }
+    }
+
+    /**
+     * Create a new collection instance if the value isn't one already.
+     *
+     * @param  mixed $items
+     *
+     * @return static
+     */
+    public static function make($items)
+    {
+        if (is_null($items)) {
+            return new static;
+        }
+
+        if ($items instanceof Resources) {
+            return $items;
+        }
+
+        if ($items instanceof Collection) {
+            return new static($items->toArray());
+        }
+
+        return new static(is_array($items) ? $items : array($items));
+    }
+
+    /**
      * Find a model in the collection by key.
      *
      * @param  mixed $key

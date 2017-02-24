@@ -75,7 +75,7 @@ abstract class Database extends Model
 
     /**
      * Database constructor.
-     * @param DB service
+     * @param \Zoolanders\Framework\Service\Database service
      */
     public function __construct(\Zoolanders\Framework\Service\Database $db)
     {

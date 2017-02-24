@@ -9,14 +9,13 @@
 namespace Zoolanders\Framework\Event;
 
 use Zoolanders\Framework\Container\Container;
-use Zoolanders\Framework\Service\Zoo as ZooService;
 
 class Dispatcher
 {
     /**
-     * @var Zoo
+     * @var Container
      */
-    public $zoo;
+    public $container;
 
     /**
      * @var \JEventDispatcher
@@ -34,9 +33,10 @@ class Dispatcher
     /**
      * Event constructor.
      */
-    public function __construct(ZooService $zoo)
+    public function __construct(Container $c)
     {
-        $this->zoo = new Zoo($this, $zoo);
+        $this->container = $c;
+        $this->zoo = new Zoo($this, $c->make('\Zoolanders\Framework\Service\Zoo'));
         $this->joomla = \JEventDispatcher::getInstance();
     }
 
@@ -99,22 +99,20 @@ class Dispatcher
      */
     public function trigger(EventInterface &$event)
     {
-        /*if(ZF_TEST){
+        if(ZF_TEST){
             // Test mode, notify event catcher service
             $this->container->eventstack->push($event->getName(), $event);
-        }*/
+        }
 
         return $this->notify($event);
     }
 
     /**
      * @param EventInterface $event
-     * @return bool|void
+     * @return void
      */
     public function notify(EventInterface &$event)
     {
-        $container = Container::getInstance();
-
         // @TODO: Add processing for non-encapsulated listeners (like closures, global func. etc.)
         foreach ($this->getListeners($event->getName()) as $listener) {
             $parts = explode("@", $listener);
@@ -129,14 +127,12 @@ class Dispatcher
             }
 
             if (class_exists($listener)) {
-                $listenerClass = $container->make($listener);
+                $listenerClass = $this->container->make($listener);
                 $callback = [$listenerClass, $method];
             }
 
-            return $container->execute($callback, [&$event]);
+            $this->container->execute($callback, [&$event]);
         }
-
-        return false;
     }
 
     /**

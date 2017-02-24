@@ -10,9 +10,24 @@ namespace Zoolanders\Framework\Listener\Category;
 
 use Zoolanders\Framework\Event\Category;
 use Zoolanders\Framework\Listener\Listener;
+use Zoolanders\Framework\Service\Database;
 
 class SaveTranslations extends Listener
 {
+    /**
+     * @var Database
+     */
+    protected $db;
+
+    /**
+     * SaveTranslations constructor.
+     * @param Database $db
+     */
+    function __construct(Database $db)
+    {
+        $this->db = $db;
+    }
+
     /**
      * @param Category\Saved $event
      */
@@ -54,7 +69,7 @@ class SaveTranslations extends Listener
             }
         }
 
-        $db = $this->container->db;
+        $db = $this->db;
 
         foreach ($values as &$value) {
             $value = implode(",", $db->q($value));

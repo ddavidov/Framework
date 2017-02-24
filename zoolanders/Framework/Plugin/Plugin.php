@@ -18,13 +18,11 @@ abstract class Plugin extends \JPlugin
     {
         parent::__construct($subject, $config);
 
-        return;
-
         $this->container = \Zoolanders\Framework\Container\Container::getInstance();
 
         // load default and current language
-        $this->container->system->language->load('plg_zoolanders_' . $this->_name, JPATH_ADMINISTRATOR, 'en-GB', true);
-        $this->container->system->language->load('plg_zoolanders_' . $this->_name, JPATH_ADMINISTRATOR, null, true);
+        $this->container->language->load('plg_zoolanders_' . $this->_name, JPATH_ADMINISTRATOR, 'en-GB', true);
+        $this->container->language->load('plg_zoolanders_' . $this->_name, JPATH_ADMINISTRATOR, null, true);
 
         $this->registerNamespace();
         $this->loadEvents();
@@ -40,6 +38,6 @@ abstract class Plugin extends \JPlugin
 
     protected function loadEvents()
     {
-        $this->container->event->dispatcher->bindEvents($this->events);
+        $this->container->event->bindEvents($this->events);
     }
 }

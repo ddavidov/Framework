@@ -9,9 +9,24 @@
 namespace Zoolanders\Framework\Listener\Type;
 
 use Zoolanders\Framework\Listener\Listener;
+use Zoolanders\Framework\Service\Crypt;
 
 class EncryptPasswords extends Listener
 {
+    /**
+     * @var Crypt
+     */
+    protected $crypt;
+
+    /**
+     * EncryptPasswords constructor.
+     * @param Crypt $crypt
+     */
+    function __construct(Crypt $crypt)
+    {
+        $this->crypt = $crypt;
+    }
+
     /**
      * @param \Zoolanders\Framework\Event\Type\Beforesave $event
      */
@@ -37,7 +52,7 @@ class EncryptPasswords extends Listener
     {
         $matches = array();
         if (preg_match('/zl-decrypted\[(.*)\]/', $item, $matches)) {
-            $item = 'zl-encrypted[' . $this->container->encrypt($matches[1]) . ']';
+            $item = 'zl-encrypted[' . $this->crypt->encrypt($matches[1]) . ']';
         }
     }
 }

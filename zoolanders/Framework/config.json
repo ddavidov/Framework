@@ -1,20 +1,14 @@
 {
     "services": {
-        "event": "\\Zoolanders\\Framework\\Event\\Dispatcher",
         "filesystem": "\\Zoolanders\\Framework\\Service\\Filesystem",
         "path": "\\Zoolanders\\Framework\\Service\\Path",
-        "system": {
-            "language": "\\Zoolanders\\Framework\\Service\\System\\Language",
-            "application": "\\Zoolanders\\Framework\\Service\\System\\Application",
-            "session": "\\Zoolanders\\Framework\\Service\\System\\Session",
-            "document": "\\Zoolanders\\Framework\\Service\\System\\Document",
-            "dbo": "\\Zoolanders\\Framework\\Service\\System\\Dbo",
-            "config": "\\Zoolanders\\Framework\\Service\\System\\Config"
-        },
-        "assets": {
-            "css": "\\Zoolanders\\Framework\\Service\\Assets\\Css",
-            "js": "\\Zoolanders\\Framework\\Service\\Assets\\Js"
-        },
+        "language": "\\Zoolanders\\Framework\\Service\\System\\Language",
+        "application": "\\Zoolanders\\Framework\\Service\\System\\Application",
+        "session": "\\Zoolanders\\Framework\\Service\\System\\Session",
+        "dbo": "\\Zoolanders\\Framework\\Service\\System\\Dbo",
+        "config": "\\Zoolanders\\Framework\\Service\\System\\Config",
+        "css": "\\Zoolanders\\Framework\\Service\\Assets\\Css",
+        "js": "\\Zoolanders\\Framework\\Service\\Assets\\Js",
         "inflector": "\\Zoolanders\\Framework\\Service\\Inflector",
         "factory": "\\Zoolanders\\Framework\\Service\\Factory",
         "zoo": "\\Zoolanders\\Framework\\Service\\Zoo",

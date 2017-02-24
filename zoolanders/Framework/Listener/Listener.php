@@ -8,8 +8,6 @@
 
 namespace Zoolanders\Framework\Listener;
 
-use Zoolanders\Framework\Container\Container;
-
 abstract class Listener
 {
 

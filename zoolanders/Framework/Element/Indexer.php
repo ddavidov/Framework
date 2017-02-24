@@ -22,20 +22,6 @@ class Indexer
     const TYPE_TEXT = 'text';
 
     /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * Indexer constructor.
-     * @param Container $container
-     */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
      * @param \Element $element
      * @param array $items Can be both array of ids or array of Item
      */

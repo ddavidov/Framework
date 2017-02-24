@@ -106,6 +106,7 @@ class Container
         $this->loader = Autoloader::getInstance();
         $this->injector = new Injector();
         $this->factory = new Factory($this);
+        $this->event = new \Zoolanders\Framework\Event\Dispatcher($this);
     }
 
     /**
@@ -187,6 +188,7 @@ class Container
 
         $container = new Container();
         $container->share($container->factory);
+        $container->share($container->event);
 
         // get the config file
         $config = new Registry();
@@ -220,7 +222,7 @@ class Container
         try {
             // Bind any listener for events
             $services = $config->get('events', []);
-            $this->bindEvents($services);
+            $this->event->bindEvents($services);
         } catch (\InvalidArgumentException $e) {
             // Ignore the event argument exception, we know that, thank you very much
         }
@@ -236,15 +238,6 @@ class Container
         foreach ($services as $name => $class) {
             $this->share($class);
         }
-    }
-
-    /**
-     * @param $events
-     */
-    protected function bindEvents($events)
-    {
-        $eventDispatcher = $this->make('\Zoolanders\Framework\Event\Dispatcher');
-        $eventDispatcher->bindEvents($events);
     }
 
     /**
@@ -267,18 +260,16 @@ class Container
      */
     public function dispatch($default_controller = null)
     {
-        //$eventDispatcher = $this->make('\Zoolanders\Framework\Event\Event');
-
-        //$event = $eventDispatcher->create('Dispatcher\BeforeDispatch');
-        //$eventDispatcher->trigger($event);
+        $event = $this->event->create('Dispatcher\BeforeDispatch');
+        $this->event->trigger($event);
 
         $dispatcher = new Dispatcher($this);
         $dispatcher->setDefaultController($default_controller);
 
         $response = $this->injector->execute([$dispatcher, 'dispatch']);
 
-        //$event = $eventDispatcher->create('Dispatcher\AfterDispatch');
-        // $eventDispatcher->trigger($event);
+        $event = $this->event->create('Dispatcher\AfterDispatch');
+        $this->event->trigger($event);
 
         if ($response instanceof ResponseInterface) {
             $response->send();

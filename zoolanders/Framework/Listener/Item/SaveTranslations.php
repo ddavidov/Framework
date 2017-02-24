@@ -8,24 +8,27 @@
 
 namespace Zoolanders\Framework\Listener\Item;
 
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Event\Item;
-use Zoolanders\Framework\Item\Indexer;
 use Zoolanders\Framework\Listener\Listener;
+use Zoolanders\Framework\Service\Database;
 
 class SaveTranslations extends Listener
 {
+    /**
+     * @var Database
+     */
+    protected $db;
     /**
      * @var Indexer
      */
     protected $indexer;
 
     /**
-     * IndexSearchValues constructor.
+     * SearchValues constructor.
      */
-    function __construct(Container $c)
+    function __construct(Database $db)
     {
-        parent::__construct($c);
+        $this->db = $db;
     }
 
     /**
@@ -69,7 +72,7 @@ class SaveTranslations extends Listener
             }
         }
 
-        $db = $this->container->db;
+        $db = $this->db;
 
         foreach ($values as &$value) {
             $value = implode(",", $db->q($value));

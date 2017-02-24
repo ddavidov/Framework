@@ -8,7 +8,7 @@
 
 namespace Zoolanders\Framework\Model;
 
-use Illuminate\Support\Collection;
+use Zoolanders\Framework\Collection\Resources;
 use Zoolanders\Framework\Model\Database\Date;
 use Zoolanders\Framework\Utils\IsString;
 
@@ -160,14 +160,14 @@ abstract class Database extends Model
 
     /**
      * Execute the query as a "select" statement.
-     * @return Collection
+     * @return Resources
      */
     public function get()
     {
         $query = $this->buildQuery();
         $models = $this->db->queryObjectList($query);
 
-        return new Collection($models);
+        return Resources::make($models);
     }
 
     /**

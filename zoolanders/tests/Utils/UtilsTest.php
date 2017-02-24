@@ -3,9 +3,7 @@
 namespace ZFTests\Utils;
 
 use ZFTests\TestCases\ZFTestCase;
-use Zoolanders\Framework\Utils\ArrayColumn;
 use Zoolanders\Framework\Utils\IsString;
-use Zoolanders\Framework\Utils\NameFromClass;
 
 /**
  * Class UtilsTest
@@ -15,18 +13,7 @@ use Zoolanders\Framework\Utils\NameFromClass;
  */
 class UtilsTest extends ZFTestCase
 {
-    use IsString, ArrayColumn;
-
-    /**
-     * Test array column class methods
-     *
-     * @covers          ArrayColumn::array_column()
-     * @dataProvider    recordSetData
-     */
-    public function testArrayColumn($input, $key, $output){
-        // Check against array_column method:
-        $this->assertArraySubset($output, $this->array_column($input, $key));
-    }
+    use IsString;
 
     /**
      * Check if provided bvalue is a string
@@ -34,7 +21,8 @@ class UtilsTest extends ZFTestCase
      * @covers          IsString::isString()
      * @dataProvider    dataSet
      */
-    public function testIsString($value, $expected){
+    public function testIsString($value, $expected)
+    {
         // Check against isString method:
         $this->assertEquals($expected, $this->isString($value));
     }
@@ -42,25 +30,27 @@ class UtilsTest extends ZFTestCase
     /**
      * IsString testing dataset
      */
-    public function dataSet(){
+    public function dataSet()
+    {
 
         $obj = new \stdClass();
 
         return [
-            [ 'alpha', true ],
-            [ '42', true ],
-            [ 42, false ],
-            [ 0.56, false ],
-            [ null, false ],
-            [ [1, 2, 3], false ],
-            [ $obj, false ]
+            ['alpha', true],
+            ['42', true],
+            [42, false],
+            [0.56, false],
+            [null, false],
+            [[1, 2, 3], false],
+            [$obj, false]
         ];
     }
 
     /**
      * Testing record set
      */
-    public function recordSetData(){
+    public function recordSetData()
+    {
         return [
             [
                 [

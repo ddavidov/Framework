@@ -21,7 +21,6 @@
         "guzzlehttp/guzzle": "^6.2",
         "natxet/cssmin": "^3.0",
         "linkorb/jsmin-php": "^1.0",
-        "tightenco/collect": "^5.2",
         "robmorgan/phinx": "^0.6.6"
     },
     "repositories": [

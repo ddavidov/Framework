@@ -26,6 +26,12 @@ class Item extends Database
     protected $join_frontpage = false;
     protected $join_tags = false;
     protected $entity_class= 'Item';
+    protected $tableClassName = 'item';
+
+    protected $cast = [
+        'elements' => 'json',
+        'params' => 'json'
+    ];
 
     /*
         Function: _buildQueryFrom

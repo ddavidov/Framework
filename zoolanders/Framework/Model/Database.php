@@ -8,8 +8,11 @@
 
 namespace Zoolanders\Framework\Model;
 
+use Zoolanders\Framework\Collection\Collection;
 use Zoolanders\Framework\Collection\Resources;
+use Zoolanders\Framework\Data\Json;
 use Zoolanders\Framework\Model\Database\Date;
+use Zoolanders\Framework\Service\Zoo;
 use Zoolanders\Framework\Utils\IsString;
 
 defined('_JEXEC') or die;
@@ -49,6 +52,21 @@ abstract class Database extends Model
     protected $tableName = '';
 
     /**
+     * @var string
+     */
+    protected $tableClassName = '';
+
+    /**
+     * @var \AppTable
+     */
+    protected $table;
+
+    /**
+     * @var array
+     */
+    protected $cast = [];
+
+    /**
      * @var \JDatabaseQuery
      */
     protected $query;
@@ -77,12 +95,22 @@ abstract class Database extends Model
      * Database constructor.
      * @param \Zoolanders\Framework\Service\Database service
      */
-    public function __construct(\Zoolanders\Framework\Service\Database $db)
+    public function __construct(\Zoolanders\Framework\Service\Database $db, Zoo $zoo)
     {
         parent::__construct();
 
         $this->db = $db;
         $this->query = $this->db->getQuery(true);
+
+        $this->table = $zoo->table->{$this->tableClassName};
+    }
+
+    /**
+     * @return \AppTable
+     */
+    public function getTable()
+    {
+        return $this->table;
     }
 
     /**
@@ -167,7 +195,68 @@ abstract class Database extends Model
         $query = $this->buildQuery();
         $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class);
 
+        foreach ($models as &$model) {
+            $model = $this->castAttributes($model);
+        }
+
         return Resources::make($models);
+    }
+
+    /**
+     * @param $item
+     * @return mixed
+     */
+    protected function castAttributes($item)
+    {
+        foreach ($item as $key => &$value) {
+            $value = $this->castAttribute($key, $value);
+        }
+
+        return $item;
+    }
+
+    /**
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    protected function castAttribute($key, $value)
+    {
+        $columns = $this->getTable()->getTableColumns();
+        $columns = array_merge($columns, $this->cast);
+
+        if (is_null($value)) {
+            return $value;
+        }
+
+        switch (@$columns[$key]) {
+            case 'int':
+            case 'integer':
+            case 'int unsigned':
+                return (int) $value;
+            case 'real':
+            case 'float':
+            case 'double':
+                return (float) $value;
+            case 'string':
+            case 'varchar':
+            case 'text':
+                return (string) $value;
+            case 'bool':
+            case 'boolean':
+                return (bool) $value;
+            case 'collection':
+                return Collection::make($value);
+            case 'json':
+                return new Json($value);
+           /** case 'date':
+            case 'datetime':
+            case 'timestamp':
+                return \Zoolanders\Framework\Service\Date::create($value);**/
+
+            default:
+                return $value;
+        }
     }
 
     /**
@@ -412,7 +501,8 @@ abstract class Database extends Model
      *
      * @return mixed
      */
-    public function find($key){
+    public function find($key)
+    {
 
         $this->where($this->primary_key, '=', $key);
         $this->buildQuery();
@@ -429,7 +519,8 @@ abstract class Database extends Model
      *
      * @return bool
      */
-    public function delete($key){
+    public function delete($key)
+    {
 
         $query = $this->database->getQuery(true);
 

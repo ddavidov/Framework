@@ -42,7 +42,7 @@ class Model
         $this->state = new Json();
     }
 
-    /**
+    /**arra
      * Get a filtered state variable
      *
      * @param   string $key The state variable's name

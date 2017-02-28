@@ -9,6 +9,7 @@
 namespace Zoolanders\Framework\Listener\Environment;
 
 use Zoolanders\Framework\Listener\Listener;
+use Zoolanders\Framework\Service\Data;
 use Zoolanders\Framework\Service\Filesystem;
 use Zoolanders\Framework\Service\Link;
 use Zoolanders\Framework\Service\System\Document;
@@ -16,12 +17,13 @@ use Zoolanders\Framework\Service\Zoo;
 
 class LoadFieldAssets extends Listener
 {
-    function __construct(Document $document, Zoo $zoo, Link $link, Filesystem $fs)
+    public function __construct(Document $document, Zoo $zoo, Link $link, Filesystem $fs, Data $data)
     {
         $this->document = $document;
         $this->zoo = $zoo;
         $this->link = $link;
         $this->fs = $fs;
+        $this->data = $data;
     }
 
     /**
@@ -62,7 +64,7 @@ class LoadFieldAssets extends Listener
             $this->document->addStylesheet('zlfw:assets/libraries/zlux/zlux.css');
 
             // load wk2 assets
-            if ($this->filesystem->has(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit.xml')) {
+            if ($this->fs->has(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit.xml')) {
                 $wk_manifest = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit.xml');
 
                 if (version_compare($wk_manifest->version, '2.0', '>=') &&

@@ -137,12 +137,12 @@ class Database
      *
      * @since 1.0.0
      */
-    public function queryObjectList($query, $key = '')
+    public function queryObjectList($query, $key = '', $class = 'stdClass')
     {
 
         // query database table
         $this->_database->setQuery($query);
-        return $this->_database->loadObjectList($key);
+        return $this->_database->loadObjectList($key, $class);
 
     }
 

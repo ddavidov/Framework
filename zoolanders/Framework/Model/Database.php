@@ -165,7 +165,7 @@ abstract class Database extends Model
     public function get()
     {
         $query = $this->buildQuery();
-        $models = $this->db->queryObjectList($query);
+        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class);
 
         return Resources::make($models);
     }

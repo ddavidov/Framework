@@ -17,20 +17,11 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Utils\IsString;
 
 class Date
 {
-
     use IsString;
-
-    protected $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
 
     /**
      * Create a JDate object
@@ -40,7 +31,7 @@ class Date
      *
      * @return \JDate The JDate object set to the given time / offset
      */
-    public function create($time = 'now', $offset = null)
+    public static function create($time = 'now', $offset = null)
     {
         return \JFactory::getDate($time, $offset);
     }
@@ -52,11 +43,11 @@ class Date
      *
      * @return boolean If the date is today
      */
-    public function isToday($date)
+    public static function isToday($date)
     {
         // get dates
-        $now = $this->create();
-        $date = $this->create($date);
+        $now = self::create();
+        $date = self::create($date);
 
         return date('Y-m-d', $date->toUnix()) == date('Y-m-d', $now->toUnix());
     }
@@ -68,11 +59,11 @@ class Date
      *
      * @return boolean If the date is yesterday
      */
-    public function isYesterday($date)
+    public static function isYesterday($date)
     {
         // get dates
-        $now = $this->create();
-        $date = $this->create($date);
+        $now = self::create();
+        $date = self::create($date);
 
         return date('Y-m-d', $date->toUnix()) == date('Y-m-d', $now->toUnix() - 86400);
     }
@@ -87,14 +78,14 @@ class Date
      *
      * @return string The text representing the time difference
      */
-    public function getDeltaOrWeekdayText($date)
+    public static function getDeltaOrWeekdayText($date)
     {
         // get dates
-        $now = $this->create();
-        $date = $this->create($date);
+        $now = self::create();
+        $date = self::create($date);
         $delta = $now->toUnix() - $date->toUnix();
 
-        if ($this->isToday($date)) {
+        if (self::isToday($date)) {
             $hours = intval($delta / 3600);
             $hours = $hours > 0 ? $hours . \JText::_('hr') : '';
             $mins = intval(($delta % 3600) / 60);
@@ -116,7 +107,7 @@ class Date
      */
     public function format($format)
     {
-        return $this->strftimeToDateFormat($format);
+        return self::strftimeToDateFormat($format);
     }
 
     /**
@@ -126,9 +117,9 @@ class Date
      *
      * @return string The date format in strftime() usable format
      */
-    public function dateFormatToStrftime($dateFormat)
+    public static function dateFormatToStrftime($dateFormat)
     {
-        return strtr((string)$dateFormat, $this->getDateFormatToStrftimeMapping());
+        return strtr((string)$dateFormat, self::getDateFormatToStrftimeMapping());
     }
 
     /**
@@ -138,9 +129,9 @@ class Date
      *
      * @return string The date format in JDate usable format
      */
-    public function strftimeToDateFormat($strftime)
+    public static function strftimeToDateFormat($strftime)
     {
-        return strtr((string)preg_replace("/(?<![\%|\\\\])(\w)/i", '\\\\$1', $strftime), array_flip($this->getDateFormatToStrftimeMapping()));
+        return strtr((string)preg_replace("/(?<![\%|\\\\])(\w)/i", '\\\\$1', $strftime), array_flip(self::getDateFormatToStrftimeMapping()));
     }
 
     /**
@@ -148,7 +139,7 @@ class Date
      *
      * @return array The mapping array
      */
-    protected function getDateFormatToStrftimeMapping()
+    protected static function getDateFormatToStrftimeMapping()
     {
         return array(
             // Day - no strf eq : S
@@ -178,10 +169,10 @@ class Date
      *
      * @return int The timezone offset
      */
-    public function getOffset($user = null)
+    public static function getOffset($user = null)
     {
-        $user = $user == null ? $this->user->get() : $user;
-        return $user->getParam('timezone', $this->system->config->get('offset'));
+        $user = $user == null ? \JFactory::getUser() : $user;
+        return $user->getParam('timezone', \JFactory::getConfig()->get('offset'));
     }
 
     /**
@@ -191,23 +182,23 @@ class Date
     public function getDateOnly($dateTime)
     {
         // replace placeholders
-        $value = $this->getFromPlaceholder($dateTime);
-        $tzoffset = $this->getOffset();
+        $value = self::getFromPlaceholder($dateTime);
+        $tzoffset = self::getOffset();
 
-        return $this->create($value, $tzoffset)->setTime(0, 0, 0);
+        return self::create($value, $tzoffset)->setTime(0, 0, 0);
     }
 
     /**
      * @param $dateTime
      * @return \JDate
      */
-    public function getDateTime($dateTime)
+    public static function getDateTime($dateTime)
     {
         // replace placeholders
-        $value = $this->getFromPlaceholder($dateTime);
-        $tzoffset = $this->getOffset();
+        $value = self::getFromPlaceholder($dateTime);
+        $tzoffset = self::getOffset();
 
-        return $this->create($value, $tzoffset);
+        return self::create($value, $tzoffset);
     }
 
     /**
@@ -216,23 +207,23 @@ class Date
      * @param mixed $value
      * @return mixed
      */
-    public function getFromPlaceholder($value)
+    public static function getFromPlaceholder($value)
     {
-        if ($this->isString($value)) {
+        if (self::isString($value)) {
             // init vars
-            $tzoffset = $this->getOffset();
+            $tzoffset = self::getOffset();
 
             switch (trim($value)) {
                 case '[yesterday]':
-                    $value = $this->create('yesterday', $tzoffset);
+                    $value = self::create('yesterday', $tzoffset);
                     $value->setTime(0, 0, 0);
                     break;
                 case '[today]':
-                    $value = $this->create('today', $tzoffset);
+                    $value = self::create('today', $tzoffset);
                     $value->setTime(0, 0, 0);
                     break;
                 case '[tomorrow]':
-                    $value = $this->create('tomorrow', $tzoffset);
+                    $value = self::create('tomorrow', $tzoffset);
                     $value->setTime(0, 0, 0);
                     break;
             }
@@ -243,11 +234,11 @@ class Date
 
     /**
      * @param $value
-     * @return array
+     * @return \JDate
      */
-    public function getDayStart($value)
+    public static function getDayStart($value)
     {
-        $date = $this->getDateOnly($value);
+        $date = self::getDateOnly($value);
         $date->setTime(0, 0, 0);
 
         return $date;
@@ -255,11 +246,11 @@ class Date
 
     /**
      * @param $value
-     * @return array
+     * @return \JDate
      */
-    public function getDayEnd($value)
+    public static function getDayEnd($value)
     {
-        $date = $this->getDateOnly($value);
+        $date = self::getDateOnly($value);
         $date->setTime(23, 59, 59);
 
         return $date;

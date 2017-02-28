@@ -34,7 +34,7 @@ class LoadFieldAssets extends Listener
         // perform admin tasks
         if ($event->is('zoo-type-edit')) {
             // init vars
-            $cid  = $event->getRequest()->get('cid.0', 'string', '');
+            $cid = $event->getRequest()->get('cid.0', 'string', '');
             $type = $cid ? $cid : $event->getRequest()->get('type', 'string', '');
 
             $url = $this->link->link(array('option' => 'com_zoo', 'controller' => 'zlframework', 'format' => 'raw', 'type' => $type), false);
@@ -68,7 +68,8 @@ class LoadFieldAssets extends Listener
                 $wk_manifest = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit.xml');
 
                 if (version_compare($wk_manifest->version, '2.0', '>=') &&
-                    $app = @include(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit-app.php')) {
+                    $app = @include(JPATH_ADMINISTRATOR . '/components/com_widgetkit/widgetkit-app.php')
+                ) {
                     $app->trigger('init.admin', array($app));
                 }
             }

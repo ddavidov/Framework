@@ -59,8 +59,8 @@ trait Date
      */
     public function whereDateBetween($field, $valueFrom, $valueTo)
     {
-        $from = $this->getQuery()->q($this->getContainer()->date->getDayStart($valueFrom));
-        $to = $this->getQuery()->q($this->getContainer()->date->getDayEnd($valueTo));
+        $from = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDayStart($valueFrom));
+        $to = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDayEnd($valueTo));
 
         $field = $this->getQuery()->qn($field);
 
@@ -77,8 +77,8 @@ trait Date
      */
     public function orWhereDateBetween($field, $valueFrom, $valueTo)
     {
-        $from = $this->getQuery()->q($this->getContainer()->date->getDayStart($valueFrom));
-        $to = $this->getQuery()->q($this->getContainer()->date->getDayEnd($valueTo));
+        $from = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDayStart($valueFrom));
+        $to = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDayEnd($valueTo));
 
         $field = $this->getQuery()->qn($field);
 
@@ -95,8 +95,8 @@ trait Date
      */
     public function whereDateTimeBetween($field, $valueFrom, $valueTo)
     {
-        $from = $this->getQuery()->q($this->getContainer()->date->getDateTime($valueFrom));
-        $to = $this->getQuery()->q($this->getContainer()->date->getDateTime($valueTo));
+        $from = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDateTime($valueFrom));
+        $to = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDateTime($valueTo));
 
         $field = $this->getQuery()->qn($field);
 
@@ -113,8 +113,8 @@ trait Date
      */
     public function orWhereDateTimeBetween($field, $valueFrom, $valueTo)
     {
-        $from = $this->getQuery()->q($this->getContainer()->date->getDateTime($valueFrom));
-        $to = $this->getQuery()->q($this->getContainer()->date->getDateTime($valueTo));
+        $from = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDateTime($valueFrom));
+        $to = $this->getQuery()->q(\Zoolanders\Framework\Service\Date::getDateTime($valueTo));
 
         $field = $this->getQuery()->qn($field);
 
@@ -217,8 +217,8 @@ trait Date
      */
     protected function doWhereDate($field, $operator, $date, $mode)
     {
-        $from = $this->getContainer()->date->getDayStart($date);
-        $to = $this->getContainer()->date->getDayEnd($date);
+        $from = \Zoolanders\Framework\Service\Date::getDayStart($date);
+        $to = \Zoolanders\Framework\Service\Date::getDayEnd($date);
 
         switch ($operator) {
             // Special case: equal a date means within a day => betwen start day and end day
@@ -266,7 +266,7 @@ trait Date
      */
     public function whereDateTime($field, $operator, $date)
     {
-        $date = $this->getContainer()->date->getDateTime($date);
+        $date = \Zoolanders\Framework\Service\Date::getDateTime($date);
         $this->where($field, $operator, $date);
 
         return $this;
@@ -281,7 +281,7 @@ trait Date
      */
     public function orWhereDateTime($field, $operator, $date)
     {
-        $date = $this->getContainer()->date->getDateTime($date);
+        $date = \Zoolanders\Framework\Service\Date::getDateTime($date);
         $this->orWhere($field, $operator, $date);
 
         return $this;

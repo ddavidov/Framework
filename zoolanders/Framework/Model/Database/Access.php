@@ -21,12 +21,11 @@ trait Access
             $user = \JFactory::getUser();
         }
 
-        $db = $this->container->db;
         $field = isset($this->tablePrefix) ? $this->tablePrefix . '.access' : 'access';
 
         $groups = implode(',', array_unique($user->getAuthorisedViewLevels()));
 
-        $this->where($db->qn($field) . ' IN ' . $db->q($groups));
+        $this->where($this->db->qn($field) . ' IN ' . $this->db->q($groups));
 
         return $this;
     }

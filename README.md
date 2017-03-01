@@ -117,3 +117,17 @@ The old zlfw dependecies helper
 
 - **check($file)** Check the dependecies listed in a given json file
 - **warn($extensions, $extension)**: Displays a warning about a list of not resolved extensions dependecies
+
+## Devflow
+
+Dependencies must be installed with composer which will check if the PHP version satisfy the requirements during the update. As such make sure you run this command from the virtual machine.
+
+```
+composer update
+```
+
+If for some reason the autoloader needs to be re-generated:
+
+```
+composer dump-autoload
+```

@@ -13,6 +13,7 @@
  */
 
 namespace Zoolanders\Framework\Service;
+
 use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Service\System\Dbo;
 
@@ -130,6 +131,8 @@ class Database
      *
      * @param string $query The query to be executed
      * @param string $key The class to be used to create objects (default: stdClass)
+     * @param int   Offset
+     * @param int   Limit
      *
      * @return array The results of the query
      *
@@ -137,11 +140,11 @@ class Database
      *
      * @since 1.0.0
      */
-    public function queryObjectList($query, $key = '', $class = 'stdClass')
+    public function queryObjectList($query, $key = '', $class = 'stdClass', $offset = 0, $limit = 0)
     {
 
         // query database table
-        $this->_database->setQuery($query);
+        $this->_database->setQuery($query, $offset, $limit);
         return $this->_database->loadObjectList($key, $class);
 
     }
@@ -201,6 +204,8 @@ class Database
      *
      * @param string $query The query to be executed
      * @param string $key The name of a field on which to key the result array
+     * @param int   Offset
+     * @param int   Limit
      *
      * @return array The results of the query
      *
@@ -208,11 +213,11 @@ class Database
      *
      * @since 1.0.0
      */
-    public function queryAssocList($query, $key = '')
+    public function queryAssocList($query, $key = '', $offset = 0, $limit = 0)
     {
 
         // query database table
-        $this->_database->setQuery($query);
+        $this->_database->setQuery($query, $offset, $limit);
         return $this->_database->loadAssocList($key);
     }
 

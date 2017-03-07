@@ -27,7 +27,7 @@ class DatabaseTest extends ZFTestCaseFixtures
      */
     protected function getTestInstance(){
 
-        return new DatabaseModel(self::$container->db);
+        return new DatabaseModel(self::$container->db, self::$container->zoo);
     }
 
     /**

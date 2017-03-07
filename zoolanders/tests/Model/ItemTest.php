@@ -22,7 +22,7 @@ class ItemTest extends DatabaseTest
      */
     protected function getTestInstance(){
 
-        return new Item(self::$container->db);
+        return new Item(self::$container->db, self::$container->zoo);
     }
 
     /**

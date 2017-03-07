@@ -193,7 +193,7 @@ abstract class Database extends Model
     public function get()
     {
         $query = $this->buildQuery();
-        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class);
+        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class, $this->getState('offset', 0), $this->getState('limit', 0));
 
         foreach ($models as &$model) {
             $model = $this->castAttributes($model);
@@ -529,5 +529,22 @@ abstract class Database extends Model
             ->where([$query->qn($this->primary_key) . '=' . $query->escape($key)]);
 
         return $this->db->query($query);
+    }
+
+    /**
+     * Set pagination for the query
+     *
+     * @param $page
+     * @param int $per_page
+     *
+     * @return self
+     */
+    public function paginate($page, $per_page){
+
+        $this->setState('limit', $per_page);
+        $offset = ($page-1) * $per_page;
+        $this->setState('offset', ($offset >= 0) ? $offset : 0);
+
+        return $this;
     }
 }

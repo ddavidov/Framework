@@ -101,9 +101,9 @@ class Indexer
      * @param \Element $element
      * @return array
      */
-    public function getValuesFromElement(\Element $element)
+    public static function getValuesFromElement(\Element $element)
     {
-        if ($this->isRepeatable($element)) {
+        if (self::isRepeatable($element)) {
             $values = explode("\n", $element->getSearchData());
             return $values;
         }
@@ -115,7 +115,7 @@ class Indexer
      * @param \Element $element
      * @return bool
      */
-    public function isRepeatable(\Element $element)
+    public static function isRepeatable(\Element $element)
     {
         if ($element instanceof \ElementRepeatable) {
             return true;
@@ -136,7 +136,7 @@ class Indexer
      * @param \Element $element
      * @return string
      */
-    public function getDataTypeFromElement(\Element $element)
+    public static function getDataTypeFromElement(\Element $element)
     {
         $type = $element->getElementType();
 

@@ -12,102 +12,24 @@ namespace Zoolanders\Framework\Model;
 use Zoolanders\Framework\Model\Database\Date;
 use Zoolanders\Framework\Model\Item\Basics;
 use Zoolanders\Framework\Model\Item\Categories;
+use Zoolanders\Framework\Model\Item\Elements;
 use Zoolanders\Framework\Model\Item\Tags;
 
 defined('_JEXEC') or die();
 
 class Item extends Database
 {
-    use Basics, Tags, Categories;
+    use Basics, Tags, Categories, Elements;
 
     protected $tablePrefix = 'a';
     protected $tableName = ZOO_TABLE_ITEM;
-    protected $join_cats = false;
-    protected $join_frontpage = false;
-    protected $join_tags = false;
-    protected $entity_class= 'Item';
+    protected $entityClass = 'Item';
     protected $tableClassName = 'item';
 
     protected $cast = [
         'elements' => 'json',
         'params' => 'json'
     ];
-
-    /*
-        Function: _buildQueryFrom
-            Builds FROM tables list for the query
-    */
-    protected function _buildQueryFrom(&$query)
-    {
-        $query->from(ZOO_TABLE_ITEM . ' AS ' . $this->getTablePrefix());
-    }
-
-    /*
-        Function: _buildQueryJoins
-            Builds JOINS clauses for the query
-    */
-    protected function _buildQueryJoins(&$query)
-    {
-        // frontpage
-        if ($this->join_frontpage) {
-            $query->join('LEFT', ZOO_TABLE_CATEGORY_ITEM . " AS f ON " . $this->getPrefix(). "id = f.item_id");
-        }
-
-        // tags
-        if ($this->join_tags) {
-            $query->join('LEFT', ZOO_TABLE_TAG . " AS t ON " . $this->getPrefix(). ".id = t.item_id");
-        }
-
-        // elements
-        if ($orderby = $this->getState('order_by')) {
-            // get item ordering
-            list($join, $order) = $this->_getItemOrder($orderby);
-
-            // save order for order query
-            $this->orderby = $order;
-
-            // join
-            if ($join) { // don't use escape() here
-                $query->leftJoin($join);
-            }
-        }
-    }
-
-    /*
-        Function: _buildQueryWhere
-            Builds WHERE query
-    */
-    protected function _buildQueryWhere(&$query)
-    {
-        // Apply basic filters
-        $this->basicFilters($query);
-
-        // Element filters
-        $this->elementFilters($query);
-    }
-
-    /*
-        Function: _buildQueryGroup
-            Builds a GROUP BY clause for the query
-    */
-    protected function _buildQueryGroup(&$query)
-    {
-        if ($group_by = $this->_db->escape($this->getState('group_by'))) {
-            $query->group($this->getTablePrefix() . $group_by);
-        }
-    }
-
-    /*
-        Function: _buildQueryOrder
-            Bilds ORDER BY query
-    */
-    protected function _buildQueryOrder(&$query)
-    {
-        // custom order
-        if ($this->getState('order_by') && isset($this->orderby)) {
-            $query->order($this->orderby);
-        }
-    }
 
     /**
      * Create and returns a nested array of App->Type->Elements
@@ -220,7 +142,7 @@ class Item extends Database
      * @param array $order Array of order params
      * Example:array(0 => '_itemcreated', 1 => '_reversed', 2 => '_random')
      */
-    protected function _getItemOrder($order)
+    protected function getItemOrder($order)
     {
         // if string, try to convert ordering
         if (is_string($order)) {

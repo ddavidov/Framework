@@ -29,12 +29,17 @@ abstract class Database extends Model
     /**
      * @var string  Entity class name
      */
-    protected $entity_class = 'stdClass';
+    protected $entityClass = 'stdClass';
 
     /**
      * @var \Zoolanders\Framework\Service\Database
      */
     protected $db;
+
+    /**
+     * @var Zoo
+     */
+    protected $zoo;
 
     /**
      * @var array
@@ -101,6 +106,8 @@ abstract class Database extends Model
 
         $this->db = $db;
         $this->query = $this->db->getQuery(true);
+
+        $this->zoo = $zoo;
 
         $this->table = $zoo->table->{$this->tableClassName};
     }
@@ -193,7 +200,7 @@ abstract class Database extends Model
     public function get()
     {
         $query = $this->buildQuery();
-        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class);
+        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entityClass);
 
         foreach ($models as &$model) {
             $model = $this->castAttributes($model);
@@ -507,7 +514,7 @@ abstract class Database extends Model
         $this->where($this->primary_key, '=', $key);
         $this->buildQuery();
 
-        $record = $this->db->queryObject($this->query, $this->entity_class);
+        $record = $this->db->queryObject($this->query, $this->entityClass);
 
         return $record;
     }
@@ -521,7 +528,6 @@ abstract class Database extends Model
      */
     public function delete($key)
     {
-
         $query = $this->database->getQuery(true);
 
         $query->delete()

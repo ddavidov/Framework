@@ -100,6 +100,7 @@ abstract class Database extends Model
         parent::__construct();
 
         $this->db = $db;
+        $this->zoo = $zoo;
         $this->query = $this->db->getQuery(true);
 
         $this->table = $zoo->table->{$this->tableClassName};
@@ -529,6 +530,23 @@ abstract class Database extends Model
             ->where([$query->qn($this->primary_key) . '=' . $query->escape($key)]);
 
         return $this->db->query($query);
+    }
+
+    /**
+     * Save object data to db
+     *
+     * @param $record
+     *
+     * @return bool True on success
+     */
+    public function save($record){
+        $success = false;
+
+        if($record instanceof $this->entity_class){
+            $success = $this->table->save($record);
+        }
+
+        return $success;
     }
 
     /**

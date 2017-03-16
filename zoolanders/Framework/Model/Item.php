@@ -25,7 +25,7 @@ class Item extends Database
     protected $join_cats = false;
     protected $join_frontpage = false;
     protected $join_tags = false;
-    protected $entity_class= 'Item';
+    protected $entity_class= '\Item';
     protected $tableClassName = 'item';
 
     protected $cast = [

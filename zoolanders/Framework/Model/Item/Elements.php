@@ -8,27 +8,52 @@
 
 namespace Zoolanders\Framework\Model\Item;
 
+use Zoolanders\Framework\Element\Indexer;
+
 trait Elements
 {
+    protected $elements = [];
+
+    protected $types = [];
+
     protected $elementJoins = 0;
 
-    abstract public function join($table, $condition, $alias, $type = 'LEFT');
+    /**
+     * @return array
+     */
+    public function getTypes()
+    {
+        if (!$this->types) {
+            $groups = $this->zoo->getApp()->application->groups();
+            foreach ($groups as $group) {
+                $this->types = array_merge($this->types, $group->getTypes());
+            }
+        }
 
-    abstract public function where($field, $operator, $value);
+        return $this->types;
+    }
 
-    abstract public function orWhere($field, $operator, $value);
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function getElement($id)
+    {
+        if (!isset($this->elements[$id])){
+            /** @var \Type $type */
+            foreach ($this->getTypes() as $type) {
+                if ($element = $type->getElement($id)) {
+                    $this->elements[$id] = $element;
+                }
+            }
+        }
 
-    abstract public function whereAny($field, $operator, $value);
+        if (!isset($this->elements[$id])) {
+            return false;
+        }
 
-    abstract public function orWhereAny($field, $operator, $value);
-
-    abstract public function whereRaw($sql);
-
-    abstract public function orWhereRaw($sql);
-
-    abstract public function getQuery();
-
-    abstract public function getTablePrefix();
+        return $this->elements[$id];
+    }
 
     /**
      * @param $id
@@ -41,7 +66,7 @@ trait Elements
         $value = $this->getQuery()->q($value);
         $alias = $this->getJoinElementAlias();
 
-        $this->joinElement($id);
+        $this->joinElement($id, $alias);
 
         // Decimal conversion fix
         if (strtoupper($convert) == 'DECIMAL') {
@@ -53,14 +78,16 @@ trait Elements
             $value = floatval($value);
         }
 
-        $this->where( $this->getQuery()->qn($alias . '.element_id'), '=', $this->getQuery()->q($id));
+        $this->whereRaw( $alias . '.element_id = ' . $this->getQuery()->q($id));
 
         if ($convert) {
             $this->where( "CONVERT(TRIM( " . $this->getQuery()->qn($alias . '.value') . "+0), {$convert})", $operator, $value);
             return;
         }
 
-        $this->where( "TRIM( " . $this->getQuery()->qn($alias . '.value') . " )", $operator, $value);
+        $this->whereRaw( $alias . '.value  = ' . $value);
+
+        return $this;
     }
 
     /**
@@ -78,6 +105,8 @@ trait Elements
 
         $this->where( $this->getQuery()->qn($alias . '.element_id'), '=', $this->getQuery()->q($id));
         $this->whereAny( "TRIM( " . $this->getQuery()->qn($alias . '.value') . " )", $operator, $value);
+
+        return $this;
     }
 
     /**
@@ -95,6 +124,8 @@ trait Elements
 
         $this->where( $this->getQuery()->qn($alias . '.element_id'), '=', $this->getQuery()->q($id));
         $this->orWhereAny( "TRIM( " . $this->getQuery()->qn($alias . '.value') . " )", $operator, $value);
+
+        return $this;
     }
 
     /**
@@ -112,6 +143,8 @@ trait Elements
 
         $this->orWhere( $this->getQuery()->qn($alias . '.element_id'), '=', $this->getQuery()->q($id));
         $this->orWhere("TRIM( " . $this->getQuery()->qn($alias . '.value') . " )", $operator, $value);
+
+        return $this;
     }
 
     /**
@@ -131,6 +164,8 @@ trait Elements
         $multiples = $this->getMultipleElementValues($values, $alias);
 
         $this->whereRaw( '(' . implode(" AND ", $multiples));
+
+        return $this;
     }
 
     /**
@@ -149,24 +184,33 @@ trait Elements
 
 
         $this->whereRaw( '(' . implode(" OR ", $multiples));
+
+        return $this;
     }
 
     /**
      * @param $id
      */
-    public function joinElement($id)
+    public function joinElement($id, $alias = null)
     {
+        if (!$alias) {
+            $alias = $this->getJoinElementAlias();
+        }
+
         // new join here
         $this->elementJoins++;
+        $element = $this->getElement($id);
 
-        $alias = $this->getJoinElementAlias();
+        $dataType = Indexer::getDataTypeFromElement($element);
 
-        $this->join(
-            ZOO_TABLE_SEARCH,
-            $this->getQuery()->qn($this->getTablePrefix() . ".id") . ' = ' . $this->getQuery()->qn($alias . '.item_id') .
-            ' AND ' . $this->getQuery()->qn($alias . '.element_id') . ' = ' . $this->getQuery()->q($id),
-            $alias
-        );
+        if ($element) {
+            $this->join(
+                '#__zoo_zl_search_' . $dataType,
+                $this->getQuery()->qn($this->getTablePrefix() . ".id") . ' = ' . $this->getQuery()->qn($alias . '.item_id') .
+                ' AND ' . $this->getQuery()->qn($alias . '.element_id') . ' = ' . $this->getQuery()->q($id),
+                $alias
+            );
+        }
     }
 
     /**

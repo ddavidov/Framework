@@ -86,7 +86,7 @@ class SaveTranslations extends Listener
         $db->execute();
 
         // Insert
-        $query->insert('#__zoo_zl_item_languages')->columns(['item_id', 'language', 'name', 'alias', 'enabled'])->values($values);
+        $query->insert('#__zoo_zl_item_languages')->columns(['item_id', 'language', 'name', 'alias', 'enabled'])->values(array_values($values));
         $db->setQuery($query);
         $db->execute();
     }

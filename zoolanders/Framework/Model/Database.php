@@ -29,12 +29,17 @@ abstract class Database extends Model
     /**
      * @var string  Entity class name
      */
-    protected $entity_class = 'stdClass';
+    protected $entityClass = 'stdClass';
 
     /**
      * @var \Zoolanders\Framework\Service\Database
      */
     protected $db;
+
+    /**
+     * @var Zoo
+     */
+    protected $zoo;
 
     /**
      * @var array
@@ -100,7 +105,10 @@ abstract class Database extends Model
         parent::__construct();
 
         $this->db = $db;
+        $this->zoo = $zoo;
         $this->query = $this->db->getQuery(true);
+
+        $this->zoo = $zoo;
 
         $this->table = $zoo->table->{$this->tableClassName};
     }
@@ -193,7 +201,8 @@ abstract class Database extends Model
     public function get()
     {
         $query = $this->buildQuery();
-        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entity_class, $this->getState('offset', 0), $this->getState('limit', 0));
+
+        $models = $this->db->queryObjectList($query, $this->primary_key, $this->entityClass, $this->getState('offset', 0), $this->getState('limit', 0));
 
         foreach ($models as &$model) {
             $model = $this->castAttributes($model);
@@ -503,13 +512,7 @@ abstract class Database extends Model
      */
     public function find($key)
     {
-
-        $this->where($this->primary_key, '=', $key);
-        $this->buildQuery();
-
-        $record = $this->db->queryObject($this->query, $this->entity_class);
-
-        return $record;
+        return $this->table->get($key);
     }
 
     /**
@@ -521,7 +524,6 @@ abstract class Database extends Model
      */
     public function delete($key)
     {
-
         $query = $this->database->getQuery(true);
 
         $query->delete()
@@ -529,6 +531,23 @@ abstract class Database extends Model
             ->where([$query->qn($this->primary_key) . '=' . $query->escape($key)]);
 
         return $this->db->query($query);
+    }
+
+    /**
+     * Save object data to db
+     *
+     * @param $record
+     *
+     * @return bool True on success
+     */
+    public function save($record){
+        $success = false;
+
+        if ($record instanceof $this->entityClass){
+            $success = $this->table->save($record);
+        }
+
+        return $success;
     }
 
     /**
@@ -546,5 +565,21 @@ abstract class Database extends Model
         $this->setState('offset', ($offset >= 0) ? $offset : 0);
 
         return $this;
+    }
+
+    /**
+     * Init the object adding the reference to the global app object
+     *
+     * @param object $object The object to init
+     * @return object The object with an app property referencing the gobal app object
+     */
+    protected function initObject($object) {
+
+        // add reference to related app instance
+        if (property_exists($object, 'app')) {
+            $object->app = $this->zoo->getApp();
+        }
+
+        return $object;
     }
 }

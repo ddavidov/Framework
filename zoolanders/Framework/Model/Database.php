@@ -512,13 +512,7 @@ abstract class Database extends Model
      */
     public function find($key)
     {
-
-        $this->where($this->primary_key, '=', $key);
-        $this->buildQuery();
-
-        $record = $this->db->queryObject($this->query, $this->entityClass);
-
-        return $record;
+        return $this->table->get($key);
     }
 
     /**
@@ -549,7 +543,7 @@ abstract class Database extends Model
     public function save($record){
         $success = false;
 
-        if($record instanceof $this->entity_class){
+        if ($record instanceof $this->entityClass){
             $success = $this->table->save($record);
         }
 
@@ -571,5 +565,21 @@ abstract class Database extends Model
         $this->setState('offset', ($offset >= 0) ? $offset : 0);
 
         return $this;
+    }
+
+    /**
+     * Init the object adding the reference to the global app object
+     *
+     * @param object $object The object to init
+     * @return object The object with an app property referencing the gobal app object
+     */
+    protected function initObject($object) {
+
+        // add reference to related app instance
+        if (property_exists($object, 'app')) {
+            $object->app = $this->zoo->getApp();
+        }
+
+        return $object;
     }
 }

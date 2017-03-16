@@ -14,7 +14,6 @@
 
 namespace Zoolanders\Framework\Service;
 
-use Zoolanders\Framework\Container\Container;
 use Zoolanders\Framework\Service\System\Dbo;
 
 /**

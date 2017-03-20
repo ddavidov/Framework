@@ -220,4 +220,24 @@ class Item extends Database
 
         return $result;
     }
+
+
+    /**
+     * Delete record by key
+     *
+     * @param $key
+     *
+     * @return bool
+     */
+    public function copy($key)
+    {
+        $record = $this->find($key);
+
+        $record->{$this->primary_key} = null;
+        $record->name = 'Copy of ' . $record->name;
+        $record->alias = 'copy-of-' . $record->alias;
+        $result = $this->save($record);
+
+        return $result;
+    }
 }

@@ -29,7 +29,8 @@
         "link": "\\Zoolanders\\Framework\\Service\\Link",
         "cache": "\\Zoolanders\\Framework\\Service\\Cache",
         "user": "\\Zoolanders\\Framework\\Service\\User",
-        "zip": "\\Zoolanders\\Framework\\Service\\Zip"
+        "zip": "\\Zoolanders\\Framework\\Service\\Zip",
+        "alerts": "\\Zoolanders\\Framework\\Service\\Alerts"
     },
     "events": {
         "item:saved": [

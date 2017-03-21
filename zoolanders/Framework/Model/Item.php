@@ -10,6 +10,7 @@
 namespace Zoolanders\Framework\Model;
 
 use Zoolanders\Framework\Model\Database\Date;
+use Zoolanders\Framework\Model\Database\UniqueAlias;
 use Zoolanders\Framework\Model\Item\Basics;
 use Zoolanders\Framework\Model\Item\Categories;
 use Zoolanders\Framework\Model\Item\Elements;
@@ -19,7 +20,7 @@ defined('_JEXEC') or die();
 
 class Item extends Database
 {
-    use Basics, Tags, Categories, Elements;
+    use Basics, Tags, Categories, Elements, UniqueAlias;
 
     protected $tablePrefix = 'a';
     protected $tableName = ZOO_TABLE_ITEM;
@@ -217,26 +218,6 @@ class Item extends Database
 
         // set priority at the end
         if ($priority) $result[1] = "a.priority $reversed, " . $result[1];
-
-        return $result;
-    }
-
-
-    /**
-     * Delete record by key
-     *
-     * @param $key
-     *
-     * @return bool
-     */
-    public function copy($key)
-    {
-        $record = $this->find($key);
-
-        $record->{$this->primary_key} = null;
-        $record->name = 'Copy of ' . $record->name;
-        $record->alias = 'copy-of-' . $record->alias;
-        $result = $this->save($record);
 
         return $result;
     }

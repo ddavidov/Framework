@@ -167,7 +167,6 @@ abstract class Database extends Model
         // Prefix the table if necessary
         $prefix = (strlen($this->tablePrefix) > 0) ? ' AS ' . $this->query->qn($this->tablePrefix) : '';
 
-
         // Autoperform SELECT AND FROM statement
         $query->select($this->getColumns());
         $query->from($this->query->qn($this->tableName) . $prefix);

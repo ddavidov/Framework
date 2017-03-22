@@ -2,7 +2,7 @@
 
 namespace Zoolanders\Framework\Event\Item;
 
-class Item extends \Zoolanders\Framework\Event\Event
+abstract class Item extends \Zoolanders\Framework\Event\Event
 {
     /**
      * @var \Item

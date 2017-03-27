@@ -12,6 +12,8 @@ use Illuminate\Contracts\Support\Arrayable;
 use Zoolanders\Framework\Event\Dispatcher;
 use Zoolanders\Framework\Event\View\GetTemplatePath;
 use Zoolanders\Framework\Request\Request;
+use Zoolanders\Framework\Service\Assets\Css;
+use Zoolanders\Framework\Service\Assets\Js;
 use Zoolanders\Framework\Service\System;
 
 /**
@@ -40,14 +42,14 @@ class Html extends View
     protected $templatePaths = [];
 
     /**
-     * @var System\Document
+     * @var Asset mgr
      */
     public $document;
 
     /**
      * HtmlView constructor.
      */
-    public function __construct(Dispatcher $event, System $system, Request $request, System\Document $document)
+    public function __construct(Dispatcher $event, System $system, System\Document $document, Request $request)
     {
         parent::__construct($event);
 

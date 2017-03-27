@@ -40,13 +40,20 @@ class Html extends View
     protected $templatePaths = [];
 
     /**
+     * @var System\Document
+     */
+    public $document;
+
+    /**
      * HtmlView constructor.
      */
-    public function __construct(Dispatcher $event, System $system, Request $request)
+    public function __construct(Dispatcher $event, System $system, Request $request, System\Document $document)
     {
         parent::__construct($event);
 
         $this->system = $system;
+
+        $this->document = $document;
 
         $this->layout = $request->getCmd('task', 'default');
 

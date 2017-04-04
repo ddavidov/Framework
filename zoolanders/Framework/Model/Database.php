@@ -581,4 +581,14 @@ abstract class Database extends Model
 
         return $object;
     }
+
+    /**
+     * Creates and returns a new entity instance
+     *
+     * @return mixed
+     */
+    public function createEntity(){
+
+        return $this->zoo->object->create( $this->entityClass );
+    }
 }

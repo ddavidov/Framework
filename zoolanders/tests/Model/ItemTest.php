@@ -55,9 +55,9 @@ class ItemTest extends DatabaseTest
      */
     public function prefixDataProvider(){
         return [
-            ['a', 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE `a`.`id` = \'1\''],
-            ['b', 'SELECT `b`.*FROM `#__zoo_item` AS `b`WHERE `b`.`id` = \'1\''],
-            ['c', 'SELECT `c`.*FROM `#__zoo_item` AS `c`WHERE `c`.`id` = \'1\'']
+            ['a', 'SELECT `a`.*FROM `#__zoo_item` AS `a`WHERE `a`.`id` = 1'],
+            ['b', 'SELECT `b`.*FROM `#__zoo_item` AS `b`WHERE `b`.`id` = 1'],
+            ['c', 'SELECT `c`.*FROM `#__zoo_item` AS `c`WHERE `c`.`id` = 1']
         ];
     }
 }

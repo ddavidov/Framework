@@ -97,6 +97,15 @@ abstract class Database extends Model
     ];
 
     /**
+     * Sort Ordering options e.g. ['name' => 'asc']
+     *
+     * @var array
+     */
+    protected $ordering = [
+
+    ];
+
+    /**
      * Database constructor.
      * @param \Zoolanders\Framework\Service\Database service
      */
@@ -190,11 +199,20 @@ abstract class Database extends Model
             $query->where($where);
         }
 
+        if(!empty($this->ordering)){
+            $order_columns = [];
+            foreach($this->ordering as $column => $order){
+                $order_columns[] = $this->getPrefix() . $this->query->qn($column) . ' ' .$order;
+            }
+            $query->order($order_columns);
+        }
+
         return $query;
     }
 
     /**
      * Execute the query as a "select" statement.
+     *
      * @return Resources
      */
     public function get()
@@ -492,12 +510,16 @@ abstract class Database extends Model
      */
     protected function setupOperatorAndValue(&$operator, &$value)
     {
-        $value = $this->query->q($value);
-
         switch (strtolower($operator)) {
             case 'in':
+                $value = $this->query->q($value);
                 settype($value, 'array');
                 $value = '(' . implode(",", $value) . ')';
+                break;
+            case 'like':
+                $value = filter_var($value, FILTER_SANITIZE_STRING);
+                $value = $this->query->q('%' . $value . '%');
+                $value = "(" . $value . ")";
                 break;
         }
     }
@@ -547,6 +569,16 @@ abstract class Database extends Model
         }
 
         return $success;
+    }
+
+    /**
+     * Set ordering options
+     *
+     * @param $ordering
+     */
+    public function orderBy($ordering)
+    {
+        $this->ordering = array_merge($this->ordering, (array)$ordering);
     }
 
     /**

@@ -22,9 +22,9 @@ trait Basics
         return $this->filterIn('id', $ids);
     }
 
-    protected function filterName($names)
+    protected function filterName($name)
     {
-        return $this->filterIn('name', $names);
+        return $this->where('name', 'like', $name);
     }
 
     protected function filterApplication($applications)

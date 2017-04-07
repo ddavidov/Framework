@@ -117,9 +117,9 @@ class DatabaseTest extends ZFTestCaseFixtures
      */
     public function prefixDataProvider(){
         return [
-            ['a', 'SELECT `a`.*FROM `` AS `a`WHERE `a`.`id` = \'1\''],
-            ['b', 'SELECT `b`.*FROM `` AS `b`WHERE `b`.`id` = \'1\''],
-            ['c', 'SELECT `c`.*FROM `` AS `c`WHERE `c`.`id` = \'1\'']
+            ['a', 'SELECT `a`.*FROM `` AS `a`WHERE `a`.`id` = 1'],
+            ['b', 'SELECT `b`.*FROM `` AS `b`WHERE `b`.`id` = 1'],
+            ['c', 'SELECT `c`.*FROM `` AS `c`WHERE `c`.`id` = 1']
         ];
     }
 

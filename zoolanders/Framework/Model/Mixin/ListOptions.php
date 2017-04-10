@@ -99,8 +99,9 @@ trait ListOptions
             'perPage' => $perPage
         ];
 
-        if(!empty($this->sorting)){
-            $state['sort'] = $this->sorting;
+        $sorting = $this->getSorting();
+        if(!empty($sorting)){
+            $state['sort'] = $sorting;
         }
 
         return $state;
